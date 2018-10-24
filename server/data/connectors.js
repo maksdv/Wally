@@ -5,9 +5,10 @@ const db = new Sequelize('chatty', null, null, {
   storage: './chatty.sqlite',
   logging: false, // mark this true if you want to see logs
 });
-// define groups
-const GroupModel = db.define('group', {
+// define articles
+const ArticleModel = db.define('article', {
   name: { type: Sequelize.STRING },
+  price: { type: Sequelize.INTEGER },
 });
 // define messages
 const MessageModel = db.define('message', {
@@ -19,19 +20,13 @@ const UserModel = db.define('user', {
   username: { type: Sequelize.STRING },
   password: { type: Sequelize.STRING },
 });
- // users belong to multiple groups
-UserModel.belongsToMany(GroupModel, { through: 'GroupUser' });
-// users belong to multiple users as friends
-UserModel.belongsToMany(UserModel, { through: 'Friends', as: 'friends' });
 // messages are sent from users
 MessageModel.belongsTo(UserModel);
-// messages are sent to groups
-MessageModel.belongsTo(GroupModel);
-// groups have multiple users
-GroupModel.belongsToMany(UserModel, { through: 'GroupUser' });
-const Group = db.models.group;
+// articles belong to users
+ArticleModel.belongsTo(UserModel);
+const Article = db.models.article;
 const Message = db.models.message;
 const User = db.models.user;
 export {
-  db, Group, Message, User,
+  db, Article, Message, User,
 };

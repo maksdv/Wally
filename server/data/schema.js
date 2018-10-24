@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server';
- export const typeDefs = gql`
+
+export const typeDefs = gql`
  scalar Date
  
  type User {
@@ -29,7 +30,7 @@ import { gql } from 'apollo-server';
 type Query{
     user(email: String, id: Int): User
     messages(userId: Int): [Message]
-    article(id: Int) : Article
+    articles(userId: Int) : [Article]
 
 }
 
@@ -39,4 +40,4 @@ schema {
 
 
  `;
- export default typeDefs;
+export default typeDefs;
