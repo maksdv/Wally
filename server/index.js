@@ -11,8 +11,8 @@ const startServer = async () => {
   const { url } = await server.listen({ port: PORT });
   console.log(`🚀 Server ready at ${url}`);
 };
- const init = async () => {
+const init = async () => {
   await mockDB();
   startServer();
 };
- init();
+init();

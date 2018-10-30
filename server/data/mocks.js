@@ -1,16 +1,23 @@
 import R from 'ramda';
 import faker from 'faker';
 import { db } from './connectors';
+import { race } from 'async';
 
 // create fake starter data
-const USERS = 10;
-const ARTICLES_PER_USER = 5;
-const MESSAGES_PER_USER = 5;
+const USERS = 5;
+const ARTICLES_PER_USER = 2;
+const MESSAGES_PER_CHAT = 2;
+const CHATS_PER_ARTICLE = 2;
 
 faker.seed(123); // get consistent data every time we reload app
 
 // you don't need to stare at this code too hard
 // just trust that it fakes a bunch of groups, users, and messages
+
+const randomUser = async (ammount,self) =>{
+  const hoy = Math.floor((Math.random() * (ammount)) + 1);
+  return (hoy !== self) ? hoy: randomUser(ammount, self);
+}
 
 const mockDB = async ({ populating = true, force = true } = {}) => {
   console.log('creating database....');
@@ -21,33 +28,44 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
   }
 
   console.log('Populating users');
-  Promise.all(
+  const users = await Promise.all(
     R.times(async () => {
       const user = await db.models.user.create({
         username: faker.internet.userName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
       });
-      R.times(
-        () => db.models.message.create({
-          userId: user.id,
-          text: faker.lorem.sentences(3),
-        }),
-        MESSAGES_PER_USER,
-      );
-      R.times(
-        () => db.models.article.create({
+      R.times(async () => {
+        const article = await db.models.article.create({
           name: faker.internet.color(),
           price: Math.random(100, 200),
           userId: user.id,
-        }),
-        ARTICLES_PER_USER,
-      );
+        });
+        R.times(async () => {
+          const chat = await db.models.chat.create({
+            articleId: article.id,
+            ownerId: user.id,
+            buyerId: await randomUser(USERS+1,user.id),
+          });
+          R.times(
+            () => db.models.message.create({
+              chatId: chat.id,
+              userId: user.id,
+              
+              text: faker.lorem.sentences(3),
+            }),
+            MESSAGES_PER_CHAT,
+          );
+        },
+        CHATS_PER_ARTICLE);
+      },
+      ARTICLES_PER_USER);
       return user;
     },
     USERS),
   );
 
+  console.log('limpito');
   console.log('¡DATABASE CREATED!');
 };
 

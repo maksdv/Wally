@@ -7,13 +7,13 @@ export const typeDefs = gql`
     id: Int! 
     email: String! 
     username: String!
-    messages: [Message!]!
     articles: [Article!]!
+    chats: [Chat!]!
     
   }
   type Message {
     id: Int!
-    to: User!
+    to: Chat!
     from: User!
     text: String!
     createdAt: Date!
@@ -25,12 +25,23 @@ export const typeDefs = gql`
       description: String!
       price: Int!
       owner: User!
+      chats: [Chat!]!
+  }
+
+  type Chat{
+    id: Int!
+    buyer: User!
+    owner: User!
+    messages: [Message!]!
+    from: Article!
+
   }
 
 type Query{
     user(email: String, id: Int): User
     messages(userId: Int): [Message]
-    articles(userId: Int) : [Article]
+    articles(userId: Int): [Article]
+    chats(articleId: Int): [Chat]
 
 }
 

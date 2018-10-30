@@ -1,6 +1,10 @@
+import Sequelize from 'sequelize';
 import GraphQLDate from 'graphql-date';
+import {
+  Article, Message, User, Chat,
+} from './connectors';
 
-import { Article, Message, User } from './connectors';
+const Op = Sequelize.Op;
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -21,26 +25,32 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
+    chats(_, args) {
+      return Chat.findAll({
+        where: args,
+        order: [['createdAt', 'DESC']],
+      });
+    },
   },
 
   Message: {
     to(message) {
-      return message.getUser();
+      return message.getChat();
     },
     from(message) {
       return message.getUser();
     },
   },
   User: {
-    messages(user) {
-      return Message.findAll({
-        where: { from: user.id },
+    chats(user) {
+      return Chat.findAll({
+        where: {[Op.or]: [{ownerId: user.id}, {buyerId: user.id}]},
         order: [['createdAt', 'DESC']],
       });
     },
     articles(user) {
       return Article.findAll({
-        where: { owner: user.id },
+        where: { userId: user.id },
         order: [['createdAt', 'DESC']],
       });
     },
@@ -48,6 +58,29 @@ export const resolvers = {
   Article: {
     owner(article) {
       return article.getUser();
+    },
+    chats(article) {
+      return Chat.findAll({
+        where: { articleId: article.id },
+        order: [['createdAt', 'DESC']],
+      });
+    },
+  },
+  Chat: {
+    messages(chat) {
+      return Message.findAll({
+        where: { to: chat.id },
+        order: [['createdAt', 'DESC']],
+      });
+    },
+    buyer(chat) {
+      return chat.getBuyer();
+    },
+    owner(chat) {
+      return chat.getOwner();
+    },
+    from(chat) {
+      return chat.getArticle();
     },
   },
 };
