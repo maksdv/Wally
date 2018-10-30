@@ -42,6 +42,7 @@ type Query{
     messages(userId: Int): [Message]
     articles(userId: Int): [Article]
     chats(articleId: Int): [Chat]
+    users(id: Int): [User]
 
 }
 

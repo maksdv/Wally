@@ -4,7 +4,7 @@ import {
   Article, Message, User, Chat,
 } from './connectors';
 
-const Op = Sequelize.Op;
+const { Op } = Sequelize;
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -18,6 +18,12 @@ export const resolvers = {
     },
     user(_, args) {
       return User.findOne({ where: args });
+    },
+    users(_, args) {
+      return User.findAll({
+        where: args,
+        order: [['createdAt', 'DESC']],
+      });
     },
     articles(_, args) {
       return Article.findAll({

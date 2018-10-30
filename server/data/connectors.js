@@ -8,6 +8,7 @@ const db = new Sequelize('wally', null, null, {
 // define articles
 const ArticleModel = db.define('article', {
   name: { type: Sequelize.STRING },
+  description: { type: Sequelize.STRING },
   price: { type: Sequelize.INTEGER },
 });
 // define messages
