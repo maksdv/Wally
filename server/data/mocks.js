@@ -14,10 +14,10 @@ faker.seed(123); // get consistent data every time we reload app
 // you don't need to stare at this code too hard
 // just trust that it fakes a bunch of groups, users, and messages
 
-const randomUser = async (ammount, self) => {
+const randomUser = async (ammount,self) =>{
   const hoy = Math.floor((Math.random() * (ammount)) + 1);
-  return (hoy !== self) ? hoy : randomUser(ammount, self);
-};
+  return (hoy !== self) ? hoy: randomUser(ammount, self);
+}
 
 const mockDB = async ({ populating = true, force = true } = {}) => {
   console.log('creating database....');
@@ -38,20 +38,31 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
       R.times(async () => {
         const article = await db.models.article.create({
           name: faker.internet.color(),
-          price: Math.floor((Math.random() * 201)),
-          description: faker.lorem.sentences(5),
+          price: Math.floor(Math.random()*201),
+          description: faker.lorem.sentences(4),
           userId: user.id,
         });
         R.times(async () => {
+          const buyer = await randomUser(USERS+1,user.id)
           const chat = await db.models.chat.create({
             articleId: article.id,
             ownerId: user.id,
-            buyerId: await randomUser(USERS + 1, user.id),
+            buyerId: buyer,
           });
           R.times(
             () => db.models.message.create({
               chatId: chat.id,
-              userId: user.id, 
+              userId: user.id,
+              
+              text: faker.lorem.sentences(3),
+            }),
+            MESSAGES_PER_CHAT,
+          );
+          R.times(
+            () => db.models.message.create({
+              chatId: chat.id,
+              userId: buyer,
+              
               text: faker.lorem.sentences(3),
             }),
             MESSAGES_PER_CHAT,
