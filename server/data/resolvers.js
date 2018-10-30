@@ -75,7 +75,7 @@ export const resolvers = {
   Chat: {
     messages(chat) {
       return Message.findAll({
-        where: { to: chat.id },
+        where: { chatId: chat.id },
         order: [['createdAt', 'DESC']],
       });
     },
