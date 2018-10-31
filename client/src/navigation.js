@@ -12,7 +12,10 @@ import {
 } from 'react-navigation-redux-helpers';
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
- const styles = StyleSheet.create({
+import Articles from './screens/articles.screen';
+import InfoArticles from './screens/infoArticle.screen';
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -28,9 +31,9 @@ const TestScreen = title => () => (
 // tabs in main screen
 const MainScreenNavigator = createMaterialTopTabNavigator(
   {
-    Rayitas : { screen: TestScreen('Rayitas') },
-    Buscador: {screen: TestScreen('search')},
-    Settings: { screen: TestScreen('Settings') },
+    Rayitas: { screen: TestScreen('Rayitas') },
+    Buscador: { screen: Articles },
+    Settings: { screen: InfoArticles },
   },
   {
     initialRouteName: 'Buscador',
@@ -39,8 +42,10 @@ const MainScreenNavigator = createMaterialTopTabNavigator(
 const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainScreenNavigator },
+    InfoArticles: { screen: InfoArticles },
   },
   {
+    mode: 'modal',
     headerMode: 'none',
   },
 );
