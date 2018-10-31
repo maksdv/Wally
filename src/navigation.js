@@ -13,6 +13,7 @@ import {
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Articles from './screens/articles.screen';
+import InfoArticles from './screens/infoArticle.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,8 +32,8 @@ const TestScreen = title => () => (
 const MainScreenNavigator = createMaterialTopTabNavigator(
   {
     Rayitas: { screen: TestScreen('Rayitas') },
-    Buscador: {screen: Articles },
-    Settings: { screen: TestScreen('Settings') },
+    Buscador: { screen: Articles },
+    Settings: { screen: InfoArticles },
   },
   {
     initialRouteName: 'Buscador',
@@ -41,8 +42,10 @@ const MainScreenNavigator = createMaterialTopTabNavigator(
 const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainScreenNavigator },
+    InfoArticles: { screen: InfoArticles },
   },
   {
+    mode: 'modal',
     headerMode: 'none',
   },
 );
