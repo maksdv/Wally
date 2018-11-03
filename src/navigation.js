@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import Articles from './screens/articles.screen';
 import InfoArticles from './screens/infoArticle.screen';
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 const fakeData = () => R.times(
   i => ({
     id: i,
-    name: `Articlee ${i}`,
+    name: `Article ${i}`,
   }),
   40,
 );
@@ -75,7 +75,7 @@ class Articles extends Component {
 
   render() {
     const { loading, user } = this.props;
-    if (loading || !user) {
+    if (loading) {
       return (
         <View style={[styles.loading, styles.container]}>
           <ActivityIndicator />
@@ -84,7 +84,7 @@ class Articles extends Component {
     }
     return (
       <View style={styles.container}>
-        <FlatList data={fakeData()} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+        <FlatList data={user.articles.name} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
       </View>
     );
   }
@@ -109,5 +109,11 @@ Articles.propTypes = {
   }),
 };
 
-
-export default Articles;
+const userQuery = graphql(USER_QUERY, {
+  options: () => ({ variables: { id: 1 } }), // fake the user for now
+  props: ({ data: { loading, user } }) => ({
+    loading,
+    user,
+  }),
+});
+export default userQuery(Articles);
