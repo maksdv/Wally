@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { Component } from 'react';
 
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
@@ -13,7 +13,7 @@ import ReduxLink from 'apollo-link-redux';
 import { onError } from 'apollo-link-error';
 import AppWithNavigationState, { navigationReducer, navigationMiddleware } from './navigation';
 
-const URL = '172.16.100.238:8080'; // set your comp's url here
+const URL = '192.168.1.132:8080'; // set your comp's url here
 const store = createStore(
   combineReducers({
     apollo: apolloReducer,

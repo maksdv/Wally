@@ -15,12 +15,13 @@ import { connect } from 'react-redux';
 import Articles from './screens/articles.screen';
 import InfoArticles from './screens/infoArticle.screen';
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: 'red',
   },
 });
 const TestScreen = title => () => (
