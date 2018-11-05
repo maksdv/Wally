@@ -33,14 +33,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-// create fake data to populate our ListView
-const fakeData = () => R.times(
-  i => ({
-    id: i,
-    name: `Article ${i}`,
-  }),
-  40,
-);
 
 const Article = ({ goToInfoArticle, article: { id, name } }) => (
   <TouchableHighlight key={id} onPress={goToInfoArticle}>

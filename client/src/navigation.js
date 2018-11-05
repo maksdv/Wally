@@ -14,6 +14,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Articles from './screens/articles.screen';
 import InfoArticles from './screens/infoArticle.screen';
+import Chats from './screens/chats.screen';
 
 
 const styles = StyleSheet.create({
@@ -34,6 +35,7 @@ const MainScreenNavigator = createMaterialTopTabNavigator(
   {
     Rayitas: { screen: TestScreen('Rayitas') },
     Buscador: { screen: Articles },
+    Chats: { screen: Chats },
     Settings: { screen: InfoArticles },
   },
   {
