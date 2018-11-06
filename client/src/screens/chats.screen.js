@@ -1,4 +1,3 @@
-import R from 'ramda';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -75,7 +74,7 @@ class Chats extends Component {
           </View>
         );
       }
-      //if (!user) return null;
+      if (!user) return null;
 
       return (
         <View style={styles.container}>

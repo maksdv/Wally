@@ -1,4 +1,3 @@
-import R from 'ramda';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -74,8 +73,7 @@ class Articles extends Component {
         </View>
       );
     }
-    //if (!user) return null;
-
+    if (!user) return null;
     return (
       <View style={styles.container}>
         <FlatList data={user.articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
