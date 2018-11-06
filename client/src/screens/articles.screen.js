@@ -7,6 +7,7 @@ import {
 import { graphql } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
 
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
@@ -48,6 +49,7 @@ Article.propTypes = {
     description: PropTypes.string,
   }),
 };
+
 class Articles extends Component {
   static navigationOptions = {
     title: 'Articulos',
@@ -59,7 +61,7 @@ class Articles extends Component {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate('Articles', { ArticleId: article.id, title: article.name, articleDescr: article.description });
+    navigate('InfoArticles', { ArticleId: article.id, title: article.name, articleDescr: article.description });
   };
 
   renderItem = ({ item }) => <Article article={item} goToInfoArticle={this.goToInfoArticle(item)} />;
@@ -74,6 +76,7 @@ class Articles extends Component {
       );
     }
     if (!user) return null;
+
     return (
       <View style={styles.container}>
         <FlatList data={user.articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />

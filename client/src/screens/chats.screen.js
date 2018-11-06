@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
   chatContainer: {
     flex: 1,
     flexDirection: 'row',
-    width: 170,
-    height: 170,
+    width: 300,
+    height: 30,
     margin: 5,
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 8,
     backgroundColor: '#c3d0e5',
     borderColor: 'grey',
   },
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 const Chat = ({ goToChat, chat: { id, owner, buyer } }) => (
   <TouchableHighlight key={id} onPress={goToChat}>
     <View style={styles.chatContainer}>
-      <Text style={styles.chatName}>{owner}</Text>
+      <Text style={styles.chatName}>{'  Chat numero '+id}</Text>
     </View>
   </TouchableHighlight>
 );
@@ -60,7 +60,7 @@ class Chats extends Component {
       const {
         navigation: { navigate },
       } = this.props;
-      navigate('Chats', { ChatId: chat.id, title: chat.id, articleId: chat.articleId });
+      navigate('Messeges', { ChatId: chat.id, title: chat.id, articleId: chat.articleId });
     };
 
     renderItem = ({ item }) => <Chat chat={item} goToChat={this.goToChat(item)} />;
@@ -78,7 +78,7 @@ class Chats extends Component {
 
       return (
         <View style={styles.container}>
-          <FlatList data={user.articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+          <FlatList data={user.chats} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
         </View>
       );
     }
@@ -95,7 +95,7 @@ Chats.propTypes = {
     username: PropTypes.string.isRequired,
     chats: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.arrayOf,
         owner: PropTypes.number.isRequired,
         buyer: PropTypes.number.isRequired,
         article: PropTypes.number.isRequired,
