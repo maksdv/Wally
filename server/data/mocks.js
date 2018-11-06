@@ -14,10 +14,11 @@ faker.seed(123); // get consistent data every time we reload app
 // you don't need to stare at this code too hard
 // just trust that it fakes a bunch of groups, users, and messages
 
-const randomUser = async (ammount,self) =>{
+const randomUser = async (ammount, self) => {
+  console.log('loop');
   const hoy = Math.floor((Math.random() * (ammount)) + 1);
-  return (hoy !== self) ? hoy: randomUser(ammount, self);
-}
+  return (hoy !== self) ? hoy : randomUser(ammount, self);
+};
 
 const mockDB = async ({ populating = true, force = true } = {}) => {
   console.log('creating database....');
@@ -54,7 +55,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
               chatId: chat.id,
               userId: user.id,
               
-              text: faker.lorem.sentences(3),
+              text: faker.hacker.phrase(),
             }),
             MESSAGES_PER_CHAT,
           );
@@ -63,7 +64,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
               chatId: chat.id,
               userId: buyer,
               
-              text: faker.lorem.sentences(3),
+              text: faker.hacker.phrase(),
             }),
             MESSAGES_PER_CHAT,
           );
