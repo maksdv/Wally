@@ -33,13 +33,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const Chat = ({ goToChat, chat: { id, owner, buyer } }) => (
+const Chat = ({ goToChat, chat: { id } }) => (
   <TouchableHighlight key={id} onPress={goToChat}>
     <View style={styles.chatContainer}>
       <Text style={styles.chatName}>{'  Chat numero '+id}</Text>
     </View>
   </TouchableHighlight>
 );
+
 Chat.propTypes = {
   goToChat: PropTypes.func.isRequired,
   chat: PropTypes.shape({
@@ -49,39 +50,40 @@ Chat.propTypes = {
     articleId: PropTypes.number,
   }),
 };
+
 class Chats extends Component {
-    static navigationOptions = {
-      title: 'Chats',
-    };
+  static navigationOptions = {
+    title: 'Chats',
+  };
 
-    keyExtractor = item => item.id.toString();
+  keyExtractor = item => item.id.toString();
 
-    goToChat = chat => () => {
-      const {
-        navigation: { navigate },
-      } = this.props;
-      navigate('Messeges', { ChatId: chat.id, title: chat.id, articleId: chat.articleId });
-    };
+  goToChat = chat => () => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate('Messeges', { ChatId: chat.id, title: chat.id, articleId: chat.articleId });
+  };
 
-    renderItem = ({ item }) => <Chat chat={item} goToChat={this.goToChat(item)} />;
+  renderItem = ({ item }) => <Chat chat={item} goToChat={this.goToChat(item)} />;
 
-    render() {
-      const { loading, user } = this.props;
-      if (loading) {
-        return (
-          <View style={[styles.loading, styles.container]}>
-            <ActivityIndicator />
-          </View>
-        );
-      }
-      if (!user) return null;
-
+  render() {
+    const { loading, user } = this.props;
+    if (loading) {
       return (
-        <View style={styles.container}>
-          <FlatList data={user.chats} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+        <View style={[styles.loading, styles.container]}>
+          <ActivityIndicator />
         </View>
       );
     }
+    if (!user) return null;
+
+    return (
+      <View style={styles.container}>
+        <FlatList data={user.chats} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+      </View>
+    );
+  }
 }
 
 Chats.propTypes = {
@@ -111,4 +113,5 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
+
 export default userQuery(Chats);

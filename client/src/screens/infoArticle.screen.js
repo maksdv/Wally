@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 
 import InfoArticle from '../components/infoArticle.component';
 
-
 const styles = StyleSheet.create({
   container: {
     alignItems: 'stretch',
@@ -13,6 +12,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 });
+
 const fakeData = () => R.times(
   i => ({
     article: {
@@ -23,6 +23,7 @@ const fakeData = () => R.times(
   }),
   40,
 );
+
 class InfoArticles extends Component {
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;

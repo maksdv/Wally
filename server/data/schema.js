@@ -49,6 +49,7 @@ export const typeDefs = gql`
     addUser(email: String!, username: String!): User
     updateUserEmail(id: Int!, email: String!): User
     deleteUser(id: Int!): User
+    
     addArticle(name: String!, price: Int!, description: String!, userId: Int!): Article
     updatePrice(id: Int!, price: Int!): Article
     updateDesc(id: Int!, description: String!): Article
@@ -57,11 +58,13 @@ export const typeDefs = gql`
     deleteChat(id: Int!): Chat
     addMessage(userId: Int!, chatId: Int!, Text: String!): Message
     deleteMessage(id: Int!): Message
+
   }
 
 schema {
     query: Query
     mutation: Mutation
+
   }
 
 

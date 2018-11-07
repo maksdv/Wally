@@ -7,7 +7,6 @@ import {
 import { graphql } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
 
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
@@ -40,6 +39,7 @@ const Article = ({ goToInfoArticle, article: { id, name } }) => (
       <Text style={styles.articleName}>{name}</Text>
     </View>
   </TouchableHighlight>
+
 );
 Article.propTypes = {
   goToInfoArticle: PropTypes.func.isRequired,
@@ -75,7 +75,7 @@ class Articles extends Component {
         </View>
       );
     }
-    if (!user) return null;
+    //if (!user) return null;
 
     return (
       <View style={styles.container}>
@@ -111,4 +111,5 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
+
 export default userQuery(Articles);
