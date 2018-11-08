@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  FlatList, StyleSheet, Text, TouchableHighlight, View, ActivityIndicator,
+  FlatList, StyleSheet, Text, TouchableHighlight, View, ActivityIndicator, Image
 } from 'react-native';
 
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
+import { ARTICLES_QUERY } from '../graphql/articles.query';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -14,38 +16,60 @@ const styles = StyleSheet.create({
   },
   articleContainer: {
     flex: 1,
-    flexDirection: 'row',
-    width: 170,
-    height: 170,
-    margin: 5,
+    width: 160,
+    height: 180,
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderColor: '#eee',
+    borderWidth: 1.75,
+    borderBottomColor: '#DDD',
+    borderBottomWidth: 3.0,
     borderRadius: 10,
-    backgroundColor: '#c3d0e5',
-    borderColor: 'grey',
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    margin: 10,
   },
-  articleName: {
+  price: {
+    width: '50%',
+    color: '#EF4413',
+    backgroundColor: 'rgba(255,255,255,0.72)',
+    alignContent: 'center',
+    textAlign: 'center',
+    fontSize: 15,
     fontWeight: 'bold',
-    flex: 0.7,
+    position: 'absolute',
+    top: 10,
+    borderRadius: 10,
   },
   loading: {
     justifyContent: 'center',
     flex: 1,
   },
+  userImage: {
+    width: 150,
+    height: 135,
+    borderRadius: 10,
+  },
 });
 
-const Article = ({ goToInfoArticle, article: { id, name } }) => (
+const Article = ({ goToInfoArticle, article: { id, name, price, image } }) => (
   <TouchableHighlight key={id} onPress={goToInfoArticle}>
     <View style={styles.articleContainer}>
+      
+      <Image style={styles.userImage}  source={{ uri: image}}/>
       <Text style={styles.articleName}>{name}</Text>
+      <Text style={styles.price}>{price+'$'}</Text>
     </View>
   </TouchableHighlight>
-
 );
+
 Article.propTypes = {
   goToInfoArticle: PropTypes.func.isRequired,
   article: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
+    price: PropTypes.number,
+    image: PropTypes.string.isRequired,
     description: PropTypes.string,
   }),
 };
@@ -55,7 +79,7 @@ class Articles extends Component {
     title: 'Articulos',
   };
 
-  keyExtractor = item => item.id.toString();
+  keyExtractor = item => item.toString();
 
   goToInfoArticle = article => () => {
     const {
@@ -67,7 +91,7 @@ class Articles extends Component {
   renderItem = ({ item }) => <Article article={item} goToInfoArticle={this.goToInfoArticle(item)} />;
 
   render() {
-    const { loading, user } = this.props;
+    const { loading, articles } = this.props;
     if (loading) {
       return (
         <View style={[styles.loading, styles.container]}>
@@ -75,34 +99,38 @@ class Articles extends Component {
         </View>
       );
     }
-    //if (!user) return null;
 
     return (
       <View style={styles.container}>
-        <FlatList data={user.articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+        <FlatList data={articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
       </View>
     );
   }
 }
-
 Articles.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }),
   loading: PropTypes.bool,
-  user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    email: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    articles: PropTypes.arrayOf(
+  articles: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.number,
         name: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        image: PropTypes.string.isRequired,       
       }),
     ),
-  }),
 };
+
+const articlesquery = graphql(ARTICLES_QUERY, {
+  options: () => ({}),
+  props: ({
+    data: {loading, articles} }) => ({
+      loading,
+      articles: articles || [],
+  }),
+});
 
 const userQuery = graphql(USER_QUERY, {
   options: () => ({ variables: { id: 1 } }), // fake the user for now
@@ -112,4 +140,4 @@ const userQuery = graphql(USER_QUERY, {
   }),
 });
 
-export default userQuery(Articles);
+export default compose (articlesquery)(Articles);

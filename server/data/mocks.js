@@ -5,7 +5,7 @@ import { race } from 'async';
 
 // create fake starter data
 const USERS = 5;
-const ARTICLES_PER_USER = 2;
+const ARTICLES_PER_USER = 4;
 const MESSAGES_PER_CHAT = 2;
 const CHATS_PER_ARTICLE = 2;
 
@@ -38,9 +38,9 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
       });
       R.times(async () => {
         const article = await db.models.article.create({
-          name: faker.internet.color(),
+          name: faker.commerce.productName(),
           price: Math.floor(Math.random() * 201),
-          image: faker.image.cats(),
+          image: faker.image.avatar(),
           description: faker.lorem.sentences(4),
 
           userId: user.id,

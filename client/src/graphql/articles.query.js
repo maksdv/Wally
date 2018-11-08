@@ -13,8 +13,8 @@ export const NEW_ARTICLE = gql`
 `;
 
 export const ARTICLE_QUERY = gql`
-  query {
-    article{
+  query articlequery($id: Int) {
+    article(id: $id){
       name
       description
       price
@@ -29,4 +29,19 @@ export const ARTICLE_QUERY = gql`
   }
 `;
 
-export default ARTICLE_QUERY;
+export const ARTICLES_QUERY = gql`
+  query articlesquery {
+    articles {
+      name
+      description
+      price
+      image
+      owner{
+        id
+      }
+      chats{
+        id
+      }
+    }
+  }
+  `;

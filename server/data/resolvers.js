@@ -31,11 +31,17 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
+    article(_, args) {
+      return Article.findOne({ where: args });
+    },
     chats(_, args) {
       return Chat.findAll({
         where: args,
         order: [['createdAt', 'DESC']],
       });
+    },
+    chat(_, args) {
+      return Chat.findOne({ where: args });
     },
   },
 
