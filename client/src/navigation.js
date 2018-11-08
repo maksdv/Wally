@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, Image } from 'react';
 
 import {
   StackActions,
@@ -25,6 +25,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
 });
+
+const Prueba = () => <Image source="./media/tapusguapus.jpg" style={{ width: 30, height: 30 }} />;
+
+class SettingsScreen extends Component {
+  static navigationOptions = {
+    tabBarLabel: 'mecagoendios',
+    tabBarIcon: <Image source="./media/tapusguapus.jpg" style={{ width: 30, height: 30 }} />,
+  };
+
+  render = () => <View />;
+}
+
 const TestScreen = title => () => (
   <View style={styles.container}>
     <Text>{title}</Text>
@@ -33,7 +45,14 @@ const TestScreen = title => () => (
 // tabs in main screen
 const MainScreenNavigator = createMaterialTopTabNavigator(
   {
-    Rayitas: { screen: TestScreen('Rayitas') },
+    Rayitas: {
+      screen: SettingsScreen,
+      navigationOptions: {
+        tabBarLabel: 'mecagoendios',
+        tabBarIcon: <Image source="./media/tapusguapus.jpg" style={{ width: 30, height: 30 }} />,
+        tabBarColor: '#ffff',
+      },
+    },
     Buscador: { screen: Articles },
     Chats: { screen: Chats },
     Settings: { screen: InfoArticles },
@@ -48,7 +67,6 @@ const AppNavigator = createStackNavigator(
     InfoArticles: { screen: InfoArticles },
   },
   {
-    mode: 'modal',
     headerMode: 'none',
   },
 );

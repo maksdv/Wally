@@ -38,7 +38,7 @@ export const client = new ApolloClient({
 const App = () => (
   <ApolloProvider client={client}>
     <Provider store={store}>
-      <AppWithNavigationState />
+      <AppWithNavigationState/>
     </Provider>
   </ApolloProvider>
 );

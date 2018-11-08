@@ -10,6 +10,7 @@ const ArticleModel = db.define('article', {
   name: { type: Sequelize.STRING },
   price: { type: Sequelize.INTEGER },
   description: { type: Sequelize.STRING },
+  image: { type: Sequelize.STRING },
 });
 // define messages
 const MessageModel = db.define('message', {
@@ -35,6 +36,7 @@ ChatModel.belongsTo(UserModel, {as: 'owner'},);
 ChatModel.belongsTo(UserModel, {as: 'buyer'},);
 // articles belong to users
 ArticleModel.belongsTo(UserModel);
+
 const Article = db.models.article;
 const Message = db.models.message;
 const User = db.models.user;

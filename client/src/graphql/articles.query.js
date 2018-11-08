@@ -16,8 +16,14 @@ export const ARTICLE_QUERY = gql`
   query {
     article{
       name
+      description
+      price
+      image
       owner{
-        username
+        id
+      }
+      chats{
+        id
       }
     }
   }

@@ -39,12 +39,14 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
       R.times(async () => {
         const article = await db.models.article.create({
           name: faker.internet.color(),
-          price: Math.floor(Math.random()*201),
+          price: Math.floor(Math.random() * 201),
+          image: faker.image.cats(),
           description: faker.lorem.sentences(4),
+
           userId: user.id,
         });
         R.times(async () => {
-          const buyer = await randomUser(USERS+1,user.id)
+          const buyer = await randomUser(USERS + 1, user.id);
           const chat = await db.models.chat.create({
             articleId: article.id,
             ownerId: user.id,

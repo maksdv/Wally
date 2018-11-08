@@ -23,6 +23,7 @@ export const typeDefs = gql`
       name: String!
       description: String!
       price: Int!
+      image: String!
       owner: User!
       chats: [Chat!]!
   }
@@ -37,6 +38,7 @@ export const typeDefs = gql`
   }
 
   type Query{
+
     user(email: String, id: Int): User
     messages(userId: Int): [Message]
     articles(userId: Int): [Article]
@@ -46,6 +48,7 @@ export const typeDefs = gql`
   }
 
   type Mutation{
+
     addUser(email: String!, username: String!): User
     updateUserEmail(id: Int!, email: String!): User
     deleteUser(id: Int!): User
@@ -54,8 +57,10 @@ export const typeDefs = gql`
     updatePrice(id: Int!, price: Int!): Article
     updateDesc(id: Int!, description: String!): Article
     deleteArticle(id: Int!): Article
+
     addChat(id: Int!, ownerId: Int!, buyerId: Int!, artileId: Int!): Chat
     deleteChat(id: Int!): Chat
+
     addMessage(userId: Int!, chatId: Int!, Text: String!): Message
     deleteMessage(id: Int!): Message
 
