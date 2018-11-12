@@ -75,10 +75,38 @@ const MainScreenNavigator = createBottomTabNavigator(
 const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainScreenNavigator },
-    InfoArticles: { screen: InfoArticles},
+    InfoArticles: { screen: InfoArticles,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#4b6fe5',
+        height: 50,
+        
+      },
+      headerTitleStyle: {
+        marginHorizontal:150,
+      },
+      headerTintColor: '#fff',
+      title: 'Producto',
+      
+      
+    }},
+    InfoArticles: {screen: InfoArticles},
   },
   {
-    headerMode: 'none',
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#4b6fe5',
+        height: 50,
+        
+      },
+      headerTitleStyle: {
+        marginHorizontal:150,
+      },
+      headerTintColor: '#fff',
+      title: 'Wally',
+      
+      
+    }
   },
 );
 // reducer initialization code

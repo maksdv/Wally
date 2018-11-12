@@ -21,6 +21,7 @@ export const ARTICLE_QUERY = gql`
       image
       owner{
         id
+        username
       }
       chats{
         id

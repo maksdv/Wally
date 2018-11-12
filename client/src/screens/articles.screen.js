@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {
   FlatList, StyleSheet, Text, TouchableHighlight, View, ActivityIndicator, Image
 } from 'react-native';
-
+import AddButton from '../components/addButton';
 import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
 import { ARTICLES_QUERY } from '../graphql/articles.query';
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 });
 
 const Article = ({ goToInfoArticle, article: { id, name, price, image } }) => (
-  <TouchableHighlight key={id} onPress={goToInfoArticle}>
+  <TouchableHighlight key={id} onPress={goToInfoArticle} underlayColor='transparent'>
     <View style={styles.articleContainer}>
       
       <Image style={styles.userImage}  source={{ uri: image}}/>
@@ -103,6 +103,7 @@ class Articles extends Component {
     return (
       <View style={styles.container}>
         <FlatList data={articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+          <View><AddButton/></View>
       </View>
     );
   }
@@ -118,7 +119,11 @@ Articles.propTypes = {
         name: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,       
+        image: PropTypes.string.isRequired,
+        owner: PropTypes.shape({
+          id: PropTypes.number,
+          username: PropTypes.string,
+        }),
       }),
     ),
 };
