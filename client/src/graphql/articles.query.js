@@ -21,7 +21,6 @@ export const ARTICLE_QUERY = gql`
       image
       owner{
         id
-        username
       }
       chats{
         id
@@ -37,6 +36,7 @@ export const ARTICLES_QUERY = gql`
       description
       price
       image
+      id
       owner{
         id
       }
