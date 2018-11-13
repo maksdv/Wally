@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
 const Article = ({ goToInfoArticle, article: { id, name, price, image } }) => (
   <TouchableHighlight key={id} onPress={goToInfoArticle} underlayColor='transparent'>
     <View style={styles.articleContainer}>
-      
-      <Image style={styles.userImage}  source={{ uri: image}}/>
+
+      <Image style={styles.userImage} source={{ uri: image }} />
       <Text style={styles.articleName}>{name}</Text>
       <Text style={styles.price}>{price+'$'}</Text>
     </View>
@@ -79,7 +79,7 @@ class Articles extends Component {
     title: 'Articulos',
   };
 
-  keyExtractor = item => item.toString();
+  keyExtractor = item => item.id.toString();
 
   goToInfoArticle = article => () => {
     const {
@@ -88,25 +88,25 @@ class Articles extends Component {
     navigate('InfoArticles', { ArticleId: article.id, title: article.name, articleDescr: article.description });
   };
 
-  renderItem = ({ item }) => <Article article={item} goToInfoArticle={this.goToInfoArticle(item)} />;
+renderItem = ({ item }) => <Article article={item} goToInfoArticle={this.goToInfoArticle(item)} />;
 
-  render() {
-    const { loading, articles } = this.props;
-    if (loading) {
-      return (
-        <View style={[styles.loading, styles.container]}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
-
+render() {
+  const { loading, articles } = this.props;
+  if (loading) {
     return (
-      <View style={styles.container}>
-        <FlatList data={articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
-          <View><AddButton/></View>
+      <View style={[styles.loading, styles.container]}>
+        <ActivityIndicator />
       </View>
     );
   }
+
+  return (
+    <View style={styles.container}>
+      <FlatList data={articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+      <View><AddButton /></View>
+    </View>
+  );
+}
 }
 Articles.propTypes = {
   navigation: PropTypes.shape({
@@ -114,26 +114,25 @@ Articles.propTypes = {
   }),
   loading: PropTypes.bool,
   articles: PropTypes.arrayOf(
-      PropTypes.shape({
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+      owner: PropTypes.shape({
         id: PropTypes.number,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        owner: PropTypes.shape({
-          id: PropTypes.number,
-          username: PropTypes.string,
-        }),
+        username: PropTypes.string,
       }),
-    ),
+    }),
+  ),
 };
 
 const articlesquery = graphql(ARTICLES_QUERY, {
   options: () => ({}),
-  props: ({
-    data: {loading, articles} }) => ({
-      loading,
-      articles: articles || [],
+  props: ({ data: { loading, articles } }) => ({
+    loading,
+    articles: articles || [],
   }),
 });
 
@@ -145,4 +144,4 @@ const userQuery = graphql(USER_QUERY, {
   }),
 });
 
-export default compose (articlesquery)(Articles);
+export default compose(articlesquery)(Articles);
