@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   container: {
+    
   },
   article: {
     flex: 1,

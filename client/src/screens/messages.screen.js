@@ -17,7 +17,7 @@ const fakeData = () => R.times(
     // every message will have a different color
     color: randomColor(),
     // every 5th message will look like it's from the current user
-    isCurrentUser: i % 5 === 0,
+    isCurrentUser: i % 2 === 0,
     message: {
       id: i,
       createdAt: new Date().toISOString(),
