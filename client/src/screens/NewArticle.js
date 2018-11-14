@@ -6,9 +6,6 @@ import {
 import AddButton from '../components/addButton';
 import { graphql, compose } from 'react-apollo';
 import { ARTICLES_QUERY } from '../graphql/articles.query';
-import PhotoUpload from 'react-native-photo-upload'
-
-
 
 const styles = StyleSheet.create({
     container:{

@@ -3,8 +3,9 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import React, { Component } from 'react';
 import randomColor from 'randomcolor';
 import Message from '../components/message.component';
+import MessageInput from '../components/inputMessages.component';
 
- const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
   container: {
     alignItems: 'stretch',
     backgroundColor: '#e5ddd5',
@@ -17,7 +18,7 @@ const fakeData = () => R.times(
     // every message will have a different color
     color: randomColor(),
     // every 5th message will look like it's from the current user
-    isCurrentUser: i % 2 === 0,
+    isCurrentUser: i % 5 === 0,
     message: {
       id: i,
       createdAt: new Date().toISOString(),
@@ -37,9 +38,16 @@ class Messages extends Component {
     };
   };
    keyExtractor = item => item.message.id.toString();
+
    renderItem = ({ item: { isCurrentUser, message, color } }) => (
     <Message color={color} isCurrentUser={isCurrentUser} message={message} />
   );
+
+  send = (text) => {
+    // TODO: send the message
+    console.log(`sending message: ${text}`);
+  };
+
    render() {
     // render list of messages for group
     return (
@@ -50,6 +58,7 @@ class Messages extends Component {
           renderItem={this.renderItem}
           ListEmptyComponent={<View />}
         />
+        <MessageInput send={this.send} />
       </View>
     );
   }
