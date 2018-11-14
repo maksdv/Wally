@@ -16,6 +16,7 @@ import Articles from './screens/articles.screen';
 import InfoArticles from './screens/infoArticle.screen';
 import Chats from './screens/chats.screen';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Messages from './screens/messages.screen';
 
 
 const styles = StyleSheet.create({
@@ -75,6 +76,19 @@ const MainScreenNavigator = createBottomTabNavigator(
 const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainScreenNavigator },
+    Messages: { screen: Messages, 
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#4b6fe5',
+          height: 50,
+        },
+        headerTitleStyle: {
+
+        },
+        headerTintColor: '#fff',
+        title: 'Producto',
+      },
+     },
     InfoArticles: { screen: InfoArticles,
       navigationOptions: {
         headerStyle: {

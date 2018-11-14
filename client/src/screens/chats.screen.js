@@ -1,3 +1,4 @@
+import R from 'ramda';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -33,16 +34,24 @@ const styles = StyleSheet.create({
   },
 });
 
-const Chat = ({ goToChat, chat: { id } }) => (
-  <TouchableHighlight key={id} onPress={goToChat}>
+const fakeData = () => R.times(
+  i => ({
+    id: i,
+    name: `Chat ${i}`,
+ }),
+ 100,
+);
+
+const Chat = ({ chat: { id }, goToMessages }) => (
+  <TouchableHighlight key={id} onPress={goToMessages}>
     <View style={styles.chatContainer}>
-      <Text style={styles.chatName}>{'  Chat numero '+id}</Text>
+      <Text style={styles.chatName}>{' Chat numero '+id}</Text>
     </View>
   </TouchableHighlight>
 );
 
 Chat.propTypes = {
-  goToChat: PropTypes.func.isRequired,
+  goToMessages: PropTypes.func.isRequired,
   chat: PropTypes.shape({
     id: PropTypes.number,
     owner: PropTypes.number,
@@ -58,17 +67,17 @@ class Chats extends Component {
 
   keyExtractor = item => item.id.toString();
 
-  goToChat = chat => () => {
+  goToMessages = chat => () => {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate('Messeges', { ChatId: chat.id, title: chat.id, articleId: chat.articleId });
+    navigate('Messages', { ChatId: chat.id, title: chat.id });
   };
 
-  renderItem = ({ item }) => <Chat chat={item} goToChat={this.goToChat(item)} />;
+  renderItem = ({ item }) => <Chat chat={item} goToMessages={this.goToMessages(item)} />;
 
   render() {
-    const { loading, user } = this.props;
+    const { loading, chats } = this.props;
     if (loading) {
       return (
         <View style={[styles.loading, styles.container]}>
@@ -76,11 +85,13 @@ class Chats extends Component {
         </View>
       );
     }
-    if (!user) return null;
-
+    
     return (
       <View style={styles.container}>
-        <FlatList data={user.chats} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+        <FlatList 
+          data={fakeData()} 
+          keyExtractor={this.keyExtractor} 
+          renderItem={this.renderItem} />
       </View>
     );
   }
@@ -114,4 +125,4 @@ const userQuery = graphql(USER_QUERY, {
   }),
 });
 
-export default userQuery(Chats);
+export default Chats;
