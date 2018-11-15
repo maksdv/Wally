@@ -17,6 +17,7 @@ import InfoArticles from './screens/infoArticle.screen';
 import Chats from './screens/chats.screen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Messages from './screens/messages.screen';
+import NewArticle from './screens/NewArticle';
 
 
 const styles = StyleSheet.create({
@@ -100,6 +101,19 @@ const AppNavigator = createStackNavigator(
         },
         headerTintColor: '#fff',
         title: 'Producto',
+      },
+    },
+    NewArticle: { screen: NewArticle,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#4b6fe5',
+          height: 50,
+        },
+        headerTitleStyle: {
+
+        },
+        headerTintColor: '#fff',
+        title: 'Vendiendo',
       },
     },
   },

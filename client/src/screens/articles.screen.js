@@ -7,15 +7,15 @@ import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
 import { ARTICLES_QUERY } from '../graphql/articles.query';
 import AddButton from '../components/addButton';
-
+import NewArticle from '../screens/NewArticle';
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    
     flex: 1,
   },
   articleContainer: {
     flex: 1,
-    width: 160,
+    width: 180,
     height: 180,
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 5,
-    margin: 10,
+    margin: 5,
+    marginStart: 14,
   },
   price: {
     width: '50%',
@@ -86,10 +87,17 @@ class Articles extends Component {
     navigate('InfoArticles', { id: article.id, title: article.name, articleDescr: article.description });
   };
 
+  goToNewArticle = user => () => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate('NewArticle', { id: user.id, });
+  };
+
 renderItem = ({ item }) => <Article article={item} goToInfoArticle={this.goToInfoArticle(item)} />;
 
 render() {
-  const { loading, articles } = this.props;
+  const { loading, articles, user } = this.props;
   if (loading) {
     return (
       <View style={[styles.loading, styles.container]}>
@@ -102,7 +110,7 @@ render() {
     <View style={styles.container}>
       <FlatList data={articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
       <View>
-        <AddButton />
+        <AddButton onPress={this.goToNewArticle(user)}/>
       </View>
     </View>
   );
@@ -113,6 +121,10 @@ Articles.propTypes = {
     navigate: PropTypes.func,
   }),
   loading: PropTypes.bool,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+  }),
   articles: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
@@ -128,6 +140,14 @@ Articles.propTypes = {
   ),
 };
 
+const userQuery = graphql(USER_QUERY, {
+  options: () => ({ variables: { id: 1 } }), // fake the user for now
+  props: ({ data: { loading, user } }) => ({
+    loading,
+    user,
+  }),
+});
+
 const articlesquery = graphql(ARTICLES_QUERY, {
   options: () => ({}),
   props: ({ data: { loading, articles } }) => ({
@@ -136,4 +156,4 @@ const articlesquery = graphql(ARTICLES_QUERY, {
   }),
 });
 
-export default compose(articlesquery)(Articles);
+export default compose(articlesquery,userQuery)(Articles);

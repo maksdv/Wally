@@ -3,8 +3,9 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import React, { Component } from 'react';
 import randomColor from 'randomcolor';
 import Message from '../components/message.component';
+import MessageInput from '../components/inputMessages.component';
 
- const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
   container: {
     alignItems: 'stretch',
     backgroundColor: '#e5ddd5',
@@ -37,9 +38,16 @@ class Messages extends Component {
     };
   };
    keyExtractor = item => item.message.id.toString();
+
    renderItem = ({ item: { isCurrentUser, message, color } }) => (
     <Message color={color} isCurrentUser={isCurrentUser} message={message} />
   );
+
+  send = (text) => {
+    // TODO: send the message
+    console.log(`sending message: ${text}`);
+  };
+
    render() {
     // render list of messages for group
     return (
@@ -50,6 +58,7 @@ class Messages extends Component {
           renderItem={this.renderItem}
           ListEmptyComponent={<View />}
         />
+        <MessageInput send={this.send} />
       </View>
     );
   }

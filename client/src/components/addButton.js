@@ -1,33 +1,32 @@
-import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
-    StyleSheet, Text, TouchableHighlight, View, Header
+    StyleSheet,TouchableHighlight, View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import React from 'react';
+
  const styles = StyleSheet.create({
     button:{
         zIndex: 100,
         position: 'absolute',
         bottom: 10,
-        right: 161,
+        right: '46%',
          
     }
 });
- class AddButton extends Component{
-    constructor(props){
-        super(props);
-        this.state={};
-    }
-     addItem (){
-       
-    };
-     render(){
-        return(
-            <View>
-                <TouchableHighlight onPress={this.addItem} style={styles.button} underlayColor='transparent'>
-                    <Icon name="ios-add-circle" size={47} color='#366cc1' />
-                </TouchableHighlight>
-            </View>
-        );
-    }
-}
+
+const AddButton = ({ onPress }) => (
+    <View>
+        <TouchableHighlight onPress={onPress} style={styles.button} underlayColor='transparent'>
+            <Icon name="ios-add-circle" size={47} color='#366cc1' />
+        </TouchableHighlight>
+    </View>
+
+ );
+
+ AddButton.propTypes = {
+     onPress: PropTypes.func,
+ };
+
+
  export default AddButton;
