@@ -5,6 +5,7 @@ import {
   NavigationActions,
   createStackNavigator,
   createBottomTabNavigator,
+  createMaterialTopTabNavigator
 } from 'react-navigation';
 import {
   reduxifyNavigator,
@@ -18,6 +19,7 @@ import Chats from './screens/chats.screen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Messages from './screens/messages.screen';
 import NewArticle from './screens/NewArticle';
+import UserArticles from './screens/userArticles.screen';
 
 
 const styles = StyleSheet.create({
@@ -34,9 +36,36 @@ const TestScreen = title => () => (
   </View>
 );
 // tabs in main screen
+const MyStoreNavigate = createMaterialTopTabNavigator({
+  Store: { screen: Articles},
+  MyStore: { screen: UserArticles },
+},
+{
+  tabBarOptions: {
+    activeTintColor: 'red',
+    inactiveTintColor: '#aaaaaa',
+    labelStyle: {
+        fontSize: 15,
+    },
+    indicatorStyle: {
+      borderBottomColor: 'red',
+      borderBottomWidth: 1,
+    },
+    tabStyle: {
+        indicatorStyle: 'red',
+    },
+    style: {
+        backgroundColor: '#e3e8ef',
+        height: 50,
+    },
+  },
+  initialRouteName: 'Store',
+},
+);
+
 const MainScreenNavigator = createBottomTabNavigator(
   {
-    Buscador: {screen: Articles,
+    Buscador: {screen: MyStoreNavigate,
     navigationOptions: {
       tabBarLabel: 'Search',
       tabBarIcon: ({tintColor}) => (
@@ -66,11 +95,11 @@ const MainScreenNavigator = createBottomTabNavigator(
     initialRouteName: 'Buscador',
     order: ['Messeges','Buscador', 'Settings'],
     navigationOptions: {
-        tabBarVisible: true
+        
       },
       tabBarOptions: {
         activeTintColor: 'red',
-        inactiveTintColor: '#4b6fe5'
+        inactiveTintColor: '#02c8ef'
       }
       }
 );
@@ -80,7 +109,7 @@ const AppNavigator = createStackNavigator(
     Messages: { screen: Messages, 
       navigationOptions: {
         headerStyle: {
-          backgroundColor: '#4b6fe5',
+          backgroundColor: '#02c8ef',
           height: 50,
         },
         headerTitleStyle: {
@@ -93,7 +122,7 @@ const AppNavigator = createStackNavigator(
     InfoArticles: { screen: InfoArticles,
       navigationOptions: {
         headerStyle: {
-          backgroundColor: '#4b6fe5',
+          backgroundColor: '#02c8ef',
           height: 50,
         },
         headerTitleStyle: {
@@ -106,7 +135,7 @@ const AppNavigator = createStackNavigator(
     NewArticle: { screen: NewArticle,
       navigationOptions: {
         headerStyle: {
-          backgroundColor: '#4b6fe5',
+          backgroundColor: '#02c8ef',
           height: 50,
         },
         headerTitleStyle: {
@@ -120,7 +149,7 @@ const AppNavigator = createStackNavigator(
   {
     navigationOptions: {
       headerStyle: {
-        backgroundColor: '#4b6fe5',
+        backgroundColor: '#02c8ef',
         height: 50,
       },
       headerTitleStyle: {

@@ -74,7 +74,7 @@ Article.propTypes = {
 
 class Articles extends Component {
   static navigationOptions = {
-    title: 'Store',
+    title: 'My Store',
   };
 
   keyExtractor = item => item.toString();
@@ -107,7 +107,7 @@ render() {
 
   return (
     <View style={styles.container}>
-      <FlatList data={articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+      <FlatList data={user.articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
       <View>
         <AddButton onPress={this.goToNewArticle(user)}/>
       </View>
