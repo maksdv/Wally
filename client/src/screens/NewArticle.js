@@ -1,94 +1,98 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-  StyleSheet, Text, Alert, TouchableHighlight,Picker, View, TextInput,Input, ActivityIndicator, WebView, Image
-} from 'react-native';
-import { graphql, compose, Mutation } from 'react-apollo';
-import { NEW_ARTICLE } from '../graphql/articles.query';
+import { graphql, compose } from 'react-apollo';
 
+import {
+  StyleSheet, Text, TouchableHighlight, Picker, View, TextInput, Input, Alert,
+} from 'react-native';
+import { NEW_ARTICLE } from '../graphql/articles.query';
+import NumericInput from 'react-native-numeric-input';
 
 const styles = StyleSheet.create({
-   container:{
-     alignItems: 'center',
-   },
-   input: {
-       borderBottomWidth: 0.5,
-       borderColor: '#b7b9bc',
-       width: '95%',
-   },
-   chooseCat: {
-     marginTop: 10,
-   },
-   button:{
-     alignItems: 'center',
-     backgroundColor: '#69e0ba',
-     padding: 10,
-     borderRadius: 20,
-     width: '80%',
-     height: 40,
-     marginTop: 20,
+  container: {
+    alignItems: 'center',
+  },
+  input: {
+    borderBottomWidth: 0.5,
+    borderColor: '#b7b9bc',
+    width: '95%',
+  },
+  chooseCat: {
+    marginTop: 10,
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#69e0ba',
+    padding: 10,
+    borderRadius: 20,
+    width: '80%',
+    height: 40,
+    marginTop: 20,
+  },
+});
+const emptyData = data => data.some(item => item.length === 0);
+class NewArticle extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      price: 0,
+      description: '',
+      id: 0,
+      image: 'https://cdn-images-1.medium.com/max/1200/1*DVkLFr953djSo0q6cA0-kg.png',
+    };
+  }
 
-   }
-})
+  newName = (text) => {
+    this.setState({
+      name: text,
+    });
+  };
 
+  newId = (text) => {
+    this.setState({
+      id: text,
+    });
+  };
 
+  newPrice = (text) => {
+    this.setState({
+      price: text,
+    });
+  };
 
-class NewArticle extends Component{
-   static navigationOptions = ({navigation}) => {
-       const { state } = navigation;
-       
-       return {
-          
-       };
-   };
+  newDescription = (text) => {
+    this.setState({
+      description: text,
+    });
+  };
 
-   constructor(props){
-       super(props);
-   }
-
-
- refreshNavigation(ready) {
-   const { navigation } = this.props;
-   navigation.setParams({
-     create: this.create,
-   });
- }
-
- goToInfoArticle = article => () => {
-  const {
-    navigation: { navigate },
-  } = this.props;
-  navigate('InfoArticles', { id: article.id, title: article.name, articleDescr: article.description });
-};
-
- create = () => {
-  const { createArticle, navigation } = this.props;
-  const { name, price, description } = this.state;
-
-  createArticle({
-    name,
-    price,
-    description,
-    userId: 1,
+  handleCreate = async () => {
+    const {
+      id, name, price, description, image
+    } = this.state;
+    const { addArticle, onChangeText } = this.props;
+    let msg = 'Oooops something went wrong...';
     
-  })
-    .then((res) => {
-      navigation.dispatch(goToNewArticle(res.data.createArticle));
-    })
-    
-};
+    if (!emptyData([id, name, price, description, image])) {
+      const newArti = await addArticle(id, name, price, description, image)
+        .then(res => res.data.addArticle)
+        .catch(err => console.log(err));
+      msg = `Yeah! The  ${newArti.name} has been created!`;
+      screenChange = onChangeText;
+    }
+    Alert.alert('Register', msg, [{ text: 'OK' }], {
+      cancelable: false,
+    });
+  };
 
+  render() {
+    const {
+      id, name, price, description,
+    } = this.state;
 
- render() {
-   const { navigation } = this.props;
-  
-
-   return (
-   <View style={styles.container}>
-       <Picker
-          mode='dropdown'
-          style={{ height: 50, width: 200 }}>
-        
+    return (
+      <View style={styles.container}>
+        <Picker mode="dropdown" style={{ height: 50, width: 200 }}>
           <Picker.Item label="Elige una categoría" value="ere" />
           <Picker.Item label="Deportes" value="deportes" />
           <Picker.Item label="Pesca" value="pesca" />
@@ -98,63 +102,52 @@ class NewArticle extends Component{
           <Picker.Item label="Tecnología" value="tecnologia" />
           <Picker.Item label="Bebes" value="bebes" />
           <Picker.Item label="Hogar" value="hogar" />
-       </Picker>
-    
-      
-       <TextInput style={styles.input}
-               autoFocus
-               maxLength={50}
-               placeholder="Titulo"
-               onChangeText={name => this.setState({ name })}              
-       />
-       <TextInput style={styles.input}
-               onChangeText={price =>
-                 isNaN(price) ? alert("Introduzca un precio valido. Gracias") : this.setState({ price })
-               }
-               placeholder="Precio"
-       />
-       <TextInput
-               maxLength={200}
-               multiline={true}
-               numberOfLines={4}
-               onChangeText={description => this.setState({ description })}
-               placeholder="Descripción"
-               style={styles.input}
-       />
-       <TouchableHighlight
-        style={styles.button}
-        underlayColor="#02c8ef"
-        onPress={this.create}>
-        <Text> V e n d e r </Text>
-       </TouchableHighlight>
-      
-     </View>
-   );
- }
+        </Picker>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Titulo"
+          value={name}
+          onChangeText={this.newName}
+        />
+
+        <TextInput
+          style={styles.input}
+          keyboardType={'numeric'}
+          value={price}
+          onChangeText={this.newPrice}
+          placeholder="Precio"
+        />
+        <TextInput
+          placeholder="Descripción"
+          value={description}
+          onChangeText={this.newDescription}
+          style={styles.input}
+        />
+        <TouchableHighlight
+          style={styles.button}
+          underlayColor="#02c8ef"
+          onPress={this.handleCreate}
+        >
+          <Text> V e n d e r </Text>
+        </TouchableHighlight>
+      </View>
+    );
+  }
 }
 
-NewArticle.propTypes = {
-  createArticle: PropTypes.func,
-  navigation: PropTypes.shape({
-    dispatch: PropTypes.func,
-    state: PropTypes.shape({
-      params: PropTypes.object,
-      article: PropTypes.object,
+const getArtic = graphql(NEW_ARTICLE, {
+  props: ({ mutate }) => ({
+    addArticle: (id, name, price, description, image) => mutate({
+      variables: {
+        id,
+        name,
+        price,
+        description,
+        image
+      },
     }),
   }),
+});
 
-}
-
-const createArticleMutation = graphql(NEW_ARTICLE, {
-  props : ({ mutate }) => ({
-    createArticle: name => mutate ({
-      variables: { name },
-      update: ({ data: { createArticle } } ) => {
-        data.article.push(createArticle);
-      }
-    })
-  })
-})
-
-export default compose( createArticleMutation )(NewArticle);
-
+export default compose(getArtic)(NewArticle);
