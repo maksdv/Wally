@@ -3,11 +3,14 @@ import gql from 'graphql-tag';
 // get the user and all user's groups
 
 export const NEW_ARTICLE = gql`
-  mutation addArticle($description: String!, $price: Int! $userId: Int!,) {
-    addArticle(description: $description, price: $price, userId: $userId,) {
+  mutation addArticle($id: Int!, $name: String!, $description: String!, $price: Int!, $image: String!) {
+    addArticle(id: $id, name: $name, description: $description, price: $price, image: $image) {
+      name
       description
       price
-      userId
+      id
+      image
+      
     }
   }
 `;

@@ -130,7 +130,7 @@ Articles.propTypes = {
       name: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
+      image: PropTypes.string,
       owner: PropTypes.shape({
         id: PropTypes.number,
         username: PropTypes.string,

@@ -93,7 +93,7 @@ class InfoArticles extends Component {
          </View>
          <View>
            <Text style={styles.description}>{article.description}</Text>
-           <Text style={styles.priceStyle}>{article.owner.username}</Text>
+          
          </View>
        </View>
      );
