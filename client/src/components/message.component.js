@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 
- const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
@@ -42,9 +42,10 @@ import { StyleSheet, Text, View } from 'react-native';
 });
 class Message extends PureComponent {
   render() {
-    const { color, message, isCurrentUser } = this.props;
+    const { message, isCurrentUser } = this.props;
+    const color = isCurrentUser ? '#00ff00' : '#0000ff';
     return (
-      <View key={message.id} style={styles.container}>
+      <View style={styles.container}>
         {isCurrentUser ? <View style={styles.messageSpacer} /> : undefined}
         <View style={[styles.message, isCurrentUser && styles.myMessage]}>
           <Text style={[styles.messageUsername, { color }]}>{message.from.username}</Text>
@@ -57,7 +58,6 @@ class Message extends PureComponent {
   }
 }
 Message.propTypes = {
-  color: PropTypes.string.isRequired,
   message: PropTypes.shape({
     createdAt: PropTypes.string.isRequired,
     from: PropTypes.shape({

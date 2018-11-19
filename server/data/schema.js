@@ -3,6 +3,12 @@ import { gql } from 'apollo-server';
 export const typeDefs = gql`
  scalar Date
  
+ input CreateMessageInput {
+    userId: Int!
+    chatId: Int!
+    text: String!
+  }
+
  type User {
     id: Int! 
     email: String! 
@@ -16,6 +22,7 @@ export const typeDefs = gql`
     to: Chat!
     from: User!
     text: String!
+    createdAt: Date!
   }
 
   type Article{
@@ -63,7 +70,7 @@ export const typeDefs = gql`
     addChat(id: Int!, ownerId: Int!, buyerId: Int!, artileId: Int!): Chat
     deleteChat(id: Int!): Chat
 
-    addMessage(userId: Int!, chatId: Int!, Text: String!): Message
+    addMessage(message: CreateMessageInput!): Message
     deleteMessage(id: Int!): Message
 
   }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
- const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     alignSelf: 'flex-end',
     backgroundColor: '#f5f1ee',
@@ -55,14 +55,16 @@ class MessageInput extends Component {
     super(props);
     this.state = {};
   }
-   handleSend = () => {
+
+  handleSend = () => {
     const { text } = this.state;
     const { send } = this.props;
     send(text);
     this.textInput.clear();
     this.textInput.blur();
   };
-   render() {
+
+  render() {
     return (
       <View style={styles.container}>
         <View style={styles.inputContainer}>
@@ -72,7 +74,7 @@ class MessageInput extends Component {
             }}
             onChangeText={text => this.setState({ text })}
             style={styles.input}
-            placeholder="Escribe algo"
+            placeholder="Escribe aqui"
           />
         </View>
         <View style={styles.sendButtonContainer}>{sendButton(this.handleSend)}</View>

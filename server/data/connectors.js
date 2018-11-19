@@ -32,8 +32,8 @@ MessageModel.belongsTo(ChatModel);
 // chats belong to articles
 ChatModel.belongsTo(ArticleModel);
 // chats belong to users
-ChatModel.belongsTo(UserModel, {as: 'owner'},);
-ChatModel.belongsTo(UserModel, {as: 'buyer'},);
+ChatModel.belongsTo(UserModel, { as: 'owner' });
+ChatModel.belongsTo(UserModel, { as: 'buyer' });
 // articles belong to users
 ArticleModel.belongsTo(UserModel);
 

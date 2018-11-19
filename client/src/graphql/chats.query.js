@@ -13,16 +13,47 @@ export const NEW_CHAT = gql`
 `;
 
 export const CHAT_QUERY = gql`
-  query {
-    chat{
-      article{
+  query chatquery($id: Int) {
+    chat(id: $id){
+      id
+      from{
         id
+        name
       }
-      buyerId{
+      buyer{
         id
+        username
       }
       owner{
         id
+        username
+      }
+      messages{
+        id
+        text
+        createdAt
+        from {
+          username
+        }
+      }
+    }
+  }
+`;
+
+export const CHATS_QUERY = gql`
+  query chatsquery {
+    chats{
+      id
+      from{
+        id
+      }
+      buyer{
+        id
+        username
+      }
+      owner{
+        id
+        username
       }
       messages{
         id

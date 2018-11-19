@@ -1,12 +1,12 @@
-import R from 'ramda';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
   FlatList, StyleSheet, Text, TouchableHighlight, View, ActivityIndicator,
 } from 'react-native';
-
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
+import { CHAT_QUERY } from '../graphql/chats.query';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -34,31 +34,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const fakeData = () => R.times(
-  i => ({
-    id: i,
-    name: `Chat ${i}`,
- }),
- 100,
-);
-
 const Chat = ({ chat: { id }, goToMessages }) => (
   <TouchableHighlight key={id} onPress={goToMessages}>
     <View style={styles.chatContainer}>
-      <Text style={styles.chatName}>{' Chat numero '+id}</Text>
+      <Text style={styles.chatName}>{` Chat numero ${id}`}</Text>
     </View>
   </TouchableHighlight>
 );
-
-Chat.propTypes = {
-  goToMessages: PropTypes.func.isRequired,
-  chat: PropTypes.shape({
-    id: PropTypes.number,
-    owner: PropTypes.number,
-    buyer: PropTypes.number,
-    articleId: PropTypes.number,
-  }),
-};
 
 class Chats extends Component {
   static navigationOptions = {
@@ -71,13 +53,14 @@ class Chats extends Component {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate('Messages', { ChatId: chat.id, title: chat.id });
+    console.log(chat);
+    navigate('Messages', { id: chat.id });
   };
 
   renderItem = ({ item }) => <Chat chat={item} goToMessages={this.goToMessages(item)} />;
 
   render() {
-    const { loading, chats } = this.props;
+    const { loading, user: { chats } } = this.props;
     if (loading) {
       return (
         <View style={[styles.loading, styles.container]}>
@@ -85,17 +68,28 @@ class Chats extends Component {
         </View>
       );
     }
-    
+
     return (
       <View style={styles.container}>
-        <FlatList 
-          data={fakeData()} 
-          keyExtractor={this.keyExtractor} 
-          renderItem={this.renderItem} />
+        <FlatList
+          data={chats}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+        />
       </View>
     );
   }
 }
+
+Chat.propTypes = {
+  goToMessages: PropTypes.func.isRequired,
+  chat: PropTypes.shape({
+    id: PropTypes.number,
+    owner: PropTypes.number,
+    buyer: PropTypes.number,
+    articleId: PropTypes.number,
+  }),
+};
 
 Chats.propTypes = {
   navigation: PropTypes.shape({
@@ -108,10 +102,11 @@ Chats.propTypes = {
     username: PropTypes.string.isRequired,
     chats: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.arrayOf,
-        owner: PropTypes.number.isRequired,
-        buyer: PropTypes.number.isRequired,
-        article: PropTypes.number.isRequired,
+        id: PropTypes.number.isRequired,
+        owner: PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          username: PropTypes.string,
+        }),
       }),
     ),
   }),
@@ -125,4 +120,13 @@ const userQuery = graphql(USER_QUERY, {
   }),
 });
 
-export default Chats;
+const chatQuery = graphql(CHAT_QUERY, {
+  options: () => ({}),
+  props: ({ data: { loading, chats } }) => ({
+    loading,
+    chats: chats || [],
+  }),
+});
+
+
+export default compose(userQuery, chatQuery)(Chats);
