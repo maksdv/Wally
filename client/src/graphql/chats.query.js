@@ -33,6 +33,7 @@ export const CHAT_QUERY = gql`
         text
         createdAt
         from {
+          id
           username
         }
       }

@@ -116,7 +116,7 @@ const AppNavigator = createStackNavigator(
 
         },
         headerTintColor: '#fff',
-        title: 'Producto',
+        title: 'Mensajes',
       },
      },
     InfoArticles: { screen: InfoArticles,

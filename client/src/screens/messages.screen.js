@@ -16,7 +16,7 @@ import CREATE_MESSAGE_MUTATION from '../graphql/create-message.mutation';
 const styles = StyleSheet.create({
   container: {
     alignItems: 'stretch',
-    backgroundColor: '#e5ddd5',
+    backgroundColor: '#edf4ff',
     flex: 1,
     flexDirection: 'column',
   },
@@ -45,8 +45,8 @@ class Messages extends Component {
 
   keyExtractor = item => item.id.toString();
 
-  renderItem = ({ item, item: { isCurrentUser, color } }) => {
-    console.log(item);
+  renderItem = ({ item, item: { color } }) => {
+    const isCurrentUser = (item.from.id === 1); // fucking the user for now ;)
     return (
       <Message color={color} isCurrentUser={isCurrentUser} message={item} />
     );
@@ -63,8 +63,6 @@ class Messages extends Component {
     if (!chat) {
       return null;
     }
-
-    console.log('>>>>>>>', chat);
 
     return (
       <View style={styles.container}>
@@ -115,7 +113,7 @@ Messages.propTypes = {
 
 const chatQuery = graphql(CHAT_QUERY, {
   options: (ownProps) => {
-    console.log('@@@@@@@', ownProps);
+    // console.log('@@@@@@@', ownProps);
     return ({
       variables: {
         id: ownProps.navigation.state.params.id,
@@ -124,7 +122,7 @@ const chatQuery = graphql(CHAT_QUERY, {
   },
   props: (x, y) => {
     const { data: { loading, chat } } = x;
-    console.log('#######', x, y);
+    // console.log('#######', x, y);
     return ({
       loading,
       chat,

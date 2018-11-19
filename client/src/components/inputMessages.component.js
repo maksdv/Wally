@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, TextInput, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'flex-end',
-    backgroundColor: '#f5f1ee',
+    backgroundColor: 'white',
     borderColor: '#dbdbdb',
     borderTopWidth: 1,
     flexDirection: 'row',
@@ -18,9 +18,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: 'white',
-    borderColor: '#dbdbdb',
-    borderRadius: 15,
-    borderWidth: 1,
     color: 'black',
     height: 32,
     paddingHorizontal: 8,
@@ -40,13 +37,12 @@ const styles = StyleSheet.create({
 });
 const sendButton = send => (
   <Icon.Button
-    backgroundColor="blue"
-    borderRadius={16}
-    color="white"
+    backgroundColor="white"
+    color="black"
     iconStyle={styles.iconStyle}
     name="send"
     onPress={send}
-    size={16}
+    size={18}
     style={styles.sendButton}
   />
 );
@@ -74,7 +70,7 @@ class MessageInput extends Component {
             }}
             onChangeText={text => this.setState({ text })}
             style={styles.input}
-            placeholder="Escribe aqui"
+            placeholder="Type a message here.."
           />
         </View>
         <View style={styles.sendButtonContainer}>{sendButton(this.handleSend)}</View>
