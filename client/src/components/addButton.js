@@ -18,7 +18,7 @@ import React from 'react';
 const AddButton = ({ onPress }) => (
     <View>
         <TouchableHighlight onPress={onPress} style={styles.button} underlayColor='transparent'>
-            <Icon name="ios-add-circle" size={47} color='#366cc1' />
+            <Icon name="ios-add-circle" size={47} color='#02c8ef' />
         </TouchableHighlight>
     </View>
 

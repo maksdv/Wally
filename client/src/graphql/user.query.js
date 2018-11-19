@@ -22,6 +22,7 @@ export const USER_QUERY = gql`
         name
         price
         description
+        image
       }
       chats{
         id

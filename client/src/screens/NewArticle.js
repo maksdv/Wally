@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
- FlatList, StyleSheet, Text, Button, TouchableHighlight,Picker, View, TextInput,Input, ActivityIndicator, WebView, Image
+  StyleSheet, Text, Alert, TouchableHighlight,Picker, View, TextInput,Input, ActivityIndicator, WebView, Image
 } from 'react-native';
+import { graphql, compose, Mutation } from 'react-apollo';
+import { NEW_ARTICLE } from '../graphql/articles.query';
 
-import AddButton from '../components/addButton';
-import { graphql, compose } from 'react-apollo';
-import { ARTICLES_QUERY } from '../graphql/articles.query';
 
 const styles = StyleSheet.create({
    container:{
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
 class NewArticle extends Component{
    static navigationOptions = ({navigation}) => {
        const { state } = navigation;
-       const isReady = state.params && state.params.mode === 'ready';
+       
        return {
           
        };
@@ -51,14 +50,34 @@ class NewArticle extends Component{
  refreshNavigation(ready) {
    const { navigation } = this.props;
    navigation.setParams({
-     mode: ready ? 'ready' : undefined,
      create: this.create,
    });
  }
 
- goToMyArticles () {
+ goToInfoArticle = article => () => {
+  const {
+    navigation: { navigate },
+  } = this.props;
+  navigate('InfoArticles', { id: article.id, title: article.name, articleDescr: article.description });
+};
 
- };
+ create = () => {
+  const { createArticle, navigation } = this.props;
+  const { name, price, description } = this.state;
+
+  createArticle({
+    name,
+    price,
+    description,
+    userId: 1,
+    
+  })
+    .then((res) => {
+      navigation.dispatch(goToNewArticle(res.data.createArticle));
+    })
+    
+};
+
 
  render() {
    const { navigation } = this.props;
@@ -70,15 +89,15 @@ class NewArticle extends Component{
           mode='dropdown'
           style={{ height: 50, width: 200 }}>
         
-          <Picker.Item label="Elige una categoría" value="null" />
+          <Picker.Item label="Elige una categoría" value="ere" />
           <Picker.Item label="Deportes" value="deportes" />
           <Picker.Item label="Pesca" value="pesca" />
           <Picker.Item label="Coches" value="coches" />
-          <Picker.Item label="Juguetes" value="juhuetes" />
+          <Picker.Item label="Juguetes" value="juguetes" />
           <Picker.Item label="Telefonía" value="telefonia" />
           <Picker.Item label="Tecnología" value="tecnologia" />
           <Picker.Item label="Bebes" value="bebes" />
-          <Picker.Item label="Hogar" value="hogas" />
+          <Picker.Item label="Hogar" value="hogar" />
        </Picker>
     
       
@@ -86,12 +105,11 @@ class NewArticle extends Component{
                autoFocus
                maxLength={50}
                placeholder="Titulo"
-               onChangeText={value => this.setState({ value })
-             }               
+               onChangeText={name => this.setState({ name })}              
        />
        <TextInput style={styles.input}
-               onChangeText={value =>
-                 isNaN(value) ? alert("Introduzca un precio valido. Gracias") : this.setState({ value })
+               onChangeText={price =>
+                 isNaN(price) ? alert("Introduzca un precio valido. Gracias") : this.setState({ price })
                }
                placeholder="Precio"
        />
@@ -105,8 +123,8 @@ class NewArticle extends Component{
        />
        <TouchableHighlight
         style={styles.button}
-        underlayColor="#6695e2"
-        onPress={this.goToMyArticles}>
+        underlayColor="#02c8ef"
+        onPress={this.create}>
         <Text> V e n d e r </Text>
        </TouchableHighlight>
       
@@ -115,5 +133,28 @@ class NewArticle extends Component{
  }
 }
 
-export default NewArticle;
+NewArticle.propTypes = {
+  createArticle: PropTypes.func,
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+    state: PropTypes.shape({
+      params: PropTypes.object,
+      article: PropTypes.object,
+    }),
+  }),
+
+}
+
+const createArticleMutation = graphql(NEW_ARTICLE, {
+  props : ({ mutate }) => ({
+    createArticle: name => mutate ({
+      variables: { name },
+      update: ({ data: { createArticle } } ) => {
+        data.article.push(createArticle);
+      }
+    })
+  })
+})
+
+export default compose( createArticleMutation )(NewArticle);
 
