@@ -14,6 +14,7 @@ export const typeDefs = gql`
   }
 
   input CreateArticleInput {
+    userId: Int!
     name: String!
     price: Int!
     description: String!
