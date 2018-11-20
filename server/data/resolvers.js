@@ -47,7 +47,23 @@ export const resolvers = {
 
   Mutation: {
     //  #region Users
-    addUser: async (_, args) => User.create(args),
+    async addUser(_, { user: { username, email } }) {
+      return User.create({
+        username,
+        email,
+      });
+    },
+
+    updateUser: async (_, { user: { id, username, email } }) => {
+      try {
+        const userToUpdate = await User.find({ where: { id } });
+        userToUpdate.update({ email, username });
+        return userToUpdate;
+      } catch (e) {
+        throw new Error('React Native');
+      }
+    },
+
     updateUserEmail: async (_, { id, email }) => {
       try {
         const userToUpdate = await User.find({ where: { id } });
@@ -57,14 +73,25 @@ export const resolvers = {
         throw new Error('Anime was a mistake');
       }
     },
+
     deleteUser: async (_, { id }) => {
       const toDelete = await User.find({ where: { id } });
       toDelete.destroy();
       return toDelete;
     },
+
     //  #endregion
     //  #region Articles
-    addArticle: async (_, args) => Article.create(args),
+    async addArticle(_, { article: { userId, name, price, description, image } }) {
+      return Article.create({
+        userId,
+        name,
+        price,
+        description,
+        image,
+      });
+    },
+
     updatePrice: async (_, { id, price }) => {
       try {
         const articleToUpdate = await Article.find({ where: { id } });
@@ -74,6 +101,7 @@ export const resolvers = {
         throw new Error('Communism');
       }
     },
+
     updateDesc: async (_, { id, description }) => {
       try {
         const articleToUpdate = await Article.find({ where: { id } });
@@ -83,14 +111,32 @@ export const resolvers = {
         throw new Error('The economy');
       }
     },
+
+    async updateArticle(_, { article: { id, name, price, description, image } }) {
+      try {
+        const articleToUpdate = await Article.find({ where: { id } });
+        articleToUpdate.update({ description, name, price, image });
+        return articleToUpdate;
+      } catch (e) {
+        throw new Error('Memes');
+      }
+    },
+
     deleteArticle: async (_, { id }) => {
       const toDelete = await Article.find({ where: { id } });
       toDelete.destroy();
       return toDelete;
     },
+
     //  #endregion
     //  #region Chats
-    addChat: async (_, args) => Chat.create(args),
+    async addChat(_, { chat: { ownerId, buyerId, articleId } }) {
+      return Article.create({
+        ownerId,
+        articleId,
+        buyerId,
+      });
+    },
     deleteChat: async (_, { id }) => {
       const toDelete = await Chat.find({ where: { id } });
       toDelete.destroy();
@@ -98,7 +144,14 @@ export const resolvers = {
     },
     //  #endregion
     //  #region Messages
-    addMessage: async (_, args) => Message.create(args),
+    async addMessage(_, { message: { userId, chatId, text } }) {
+      return Message.create({
+        userId,
+        chatId,
+        text,
+      });
+    },
+
     deleteMessage: async (_, { id }) => {
       const toDelete = await Message.find({ where: { id } });
       toDelete.destroy();

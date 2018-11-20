@@ -2,19 +2,57 @@ import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
  scalar Date
- 
+
+  input CreateUserInput {
+    email: String!
+    username: String!
+  }
+
+  input UpdateUserInput {
+    username: String!
+    email: String!
+  }
+
+  input CreateArticleInput {
+    name: String!
+    price: Int!
+    description: String!
+    image: String!
+  }
+
+  input updateArticleInput {
+    name: String!
+    price: Int!
+    description: String!
+    image: String!
+  }
+
+  input CreateChatInput {
+    ownerId: Int!
+    buyerId: Int!
+    artileId: Int!
+  }
+
+  input CreateMessageInput {
+    userId: Int!
+    chatId: Int!
+    text: String!
+  }
+
  type User {
     id: Int! 
     email: String! 
     username: String!
     articles: [Article!]!
     chats: [Chat!]!
+    
   }
   type Message {
     id: Int!
     to: Chat!
     from: User!
     text: String!
+    createdAt: Date!
   }
 
   type Article{
@@ -23,7 +61,7 @@ export const typeDefs = gql`
       description: String!
       price: Int!
       image: String!
-      owner: User!
+      owner: User
       chats: [Chat!]!
   }
 
@@ -50,19 +88,21 @@ export const typeDefs = gql`
 
   type Mutation{
 
-    addUser(email: String!, username: String!): User
+    addUser(user: CreateUserInput): User
+    updateUser(user: UpdateUserInput): User
     updateUserEmail(id: Int!, email: String!): User
     deleteUser(id: Int!): User
     
-    addArticle(id: Int!, userId: Int!, name: String!, price: Int!, description: String!, image: String!): Article
+    addArticle(article: CreateArticleInput): Article
+    updateArticle(id: Int!, price: Int!, description: String!): Article
     updatePrice(id: Int!, price: Int!): Article
     updateDesc(id: Int!, description: String!): Article
     deleteArticle(id: Int!): Article
 
-    addChat(id: Int!, ownerId: Int!, buyerId: Int!, artileId: Int!): Chat
+    addChat(chat: CreateChatInput!): Chat
     deleteChat(id: Int!): Chat
 
-    addMessage(userId: Int!, chatId: Int!, Text: String!): Message
+    addMessage(message: CreateMessageInput!): Message
     deleteMessage(id: Int!): Message
 
   }

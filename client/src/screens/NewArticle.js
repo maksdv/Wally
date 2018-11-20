@@ -29,10 +29,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
 const emptyData = data => data.some(item => item.length === 0);
 
 class NewArticle extends Component {
-  
 
   constructor(props) {
     super(props);
@@ -44,9 +44,6 @@ class NewArticle extends Component {
       description: '',
       image: 'https://cdn-images-1.medium.com/max/1200/1*DVkLFr953djSo0q6cA0-kg.png',
     };
-
-
-
   }
 
   newName = (text) => {
@@ -73,23 +70,20 @@ class NewArticle extends Component {
     });
   };
 
-  
-
   handleCreate = async () => {
     const {
-      id,userId, name, price, description, image,
+      id, userId, name, price, description, image,
     } = this.state;
     const { addArticle, onChangeText } = this.props;
     let msg = 'Oooops something went wrong...';
-    
+
     if (!emptyData([id, userId, name, price, description, image])) {
-      const newArti = await addArticle(id, userId, name, price, description, image)
+      console.log('me cago en dios');
+      const newArti = await addArticle({ id, userId, name, price, description, image })
         .then(res => res.data.addArticle)
         .catch(err => console.log(err));
       msg = `Yeah! The  ${newArti.name} has been created!`;
-
       screenChange = onChangeText;
-
     }
     Alert.alert('Register', msg, [{ text: 'OK' }], {
       cancelable: false,
@@ -149,16 +143,8 @@ class NewArticle extends Component {
 
 const getArtic = graphql(NEW_ARTICLE, {
   props: ({ mutate }) => ({
-    addArticle: (id, userId, name, price, description, image, ) => mutate({
-      variables: {
-        id,
-        userId,
-        name,
-        price,
-        description,
-        image,
-        
-      },
+    addArticle: article => mutate({
+      variables: { article },
     }),
   }),
 });
