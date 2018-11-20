@@ -9,7 +9,6 @@ export const typeDefs = gql`
     username: String!
     articles: [Article!]!
     chats: [Chat!]!
-    
   }
   type Message {
     id: Int!
@@ -24,7 +23,7 @@ export const typeDefs = gql`
       description: String!
       price: Int!
       image: String!
-      owner: User
+      owner: User!
       chats: [Chat!]!
   }
 
@@ -55,7 +54,7 @@ export const typeDefs = gql`
     updateUserEmail(id: Int!, email: String!): User
     deleteUser(id: Int!): User
     
-    addArticle(id: Int!, name: String!, price: Int!, description: String!, image: String!): Article
+    addArticle(id: Int!, userId: Int!, name: String!, price: Int!, description: String!, image: String!): Article
     updatePrice(id: Int!, price: Int!): Article
     updateDesc(id: Int!, description: String!): Article
     deleteArticle(id: Int!): Article

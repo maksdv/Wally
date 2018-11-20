@@ -5,7 +5,7 @@ import {
   StyleSheet, Text, TouchableHighlight, Picker, View, TextInput, Input, Alert,
 } from 'react-native';
 import { NEW_ARTICLE } from '../graphql/articles.query';
-import NumericInput from 'react-native-numeric-input';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -30,16 +30,23 @@ const styles = StyleSheet.create({
   },
 });
 const emptyData = data => data.some(item => item.length === 0);
+
 class NewArticle extends Component {
+  
+
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      price: 0,
-      description: '',
       id: 0,
+      userId: 1,
+      name: '',
+      price: '',
+      description: '',
       image: 'https://cdn-images-1.medium.com/max/1200/1*DVkLFr953djSo0q6cA0-kg.png',
     };
+
+
+
   }
 
   newName = (text) => {
@@ -66,19 +73,23 @@ class NewArticle extends Component {
     });
   };
 
+  
+
   handleCreate = async () => {
     const {
-      id, name, price, description, image
+      id,userId, name, price, description, image,
     } = this.state;
     const { addArticle, onChangeText } = this.props;
     let msg = 'Oooops something went wrong...';
     
-    if (!emptyData([id, name, price, description, image])) {
-      const newArti = await addArticle(id, name, price, description, image)
+    if (!emptyData([id, userId, name, price, description, image])) {
+      const newArti = await addArticle(id, userId, name, price, description, image)
         .then(res => res.data.addArticle)
         .catch(err => console.log(err));
       msg = `Yeah! The  ${newArti.name} has been created!`;
+
       screenChange = onChangeText;
+
     }
     Alert.alert('Register', msg, [{ text: 'OK' }], {
       cancelable: false,
@@ -87,7 +98,7 @@ class NewArticle extends Component {
 
   render() {
     const {
-      id, name, price, description,
+      name, price, description,
     } = this.state;
 
     return (
@@ -138,16 +149,44 @@ class NewArticle extends Component {
 
 const getArtic = graphql(NEW_ARTICLE, {
   props: ({ mutate }) => ({
-    addArticle: (id, name, price, description, image) => mutate({
+    addArticle: (id, userId, name, price, description, image, ) => mutate({
       variables: {
         id,
+        userId,
         name,
         price,
         description,
-        image
+        image,
+        
       },
     }),
   }),
 });
+
+/*const getArtic = graphql(NEW_ARTICLE, {
+  props: ({ mutate }) => ({
+    addArticle: (id, userId, name, price, description, image, ) => mutate({
+      variables: { id, userId, name, price, description, image, },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        addArticle: {
+          __typename: 'Article',
+          id: -1, // don't know id yet, but it doesn't matter
+          description: description, // we know what the text will be
+          price: price,
+          image: image,
+          name: name,
+          userId: userId,
+          createdAt: new Date().toISOString(), // the time is now!
+          owner: {
+            __typename: 'User',
+            id: userId, // still faking the user
+            username: 'Maurine42', // still faking the user
+          },
+        },
+      },
+    }),
+  }),
+});*/
 
 export default compose(getArtic)(NewArticle);
