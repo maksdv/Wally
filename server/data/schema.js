@@ -62,7 +62,7 @@ export const typeDefs = gql`
       description: String!
       price: Int!
       image: String!
-      owner: User
+      owner: User!
       chats: [Chat!]!
   }
 

@@ -23,6 +23,9 @@ export const USER_QUERY = gql`
         price
         description
         image
+        owner{
+          id
+        }
       }
       chats{
         id

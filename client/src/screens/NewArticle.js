@@ -4,6 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import {
   StyleSheet, Text, TouchableHighlight, Picker, View, TextInput, Input, Alert,
 } from 'react-native';
+import { USER_QUERY } from '../graphql/user.query';
 import { NEW_ARTICLE } from '../graphql/articles.query';
 
 
@@ -36,10 +37,9 @@ class NewArticle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 0,
       userId: 1,
       name: '',
-      price: '',
+      price: 0,
       description: '',
       image: 'https://cdn-images-1.medium.com/max/1200/1*DVkLFr953djSo0q6cA0-kg.png',
     };
@@ -51,11 +51,6 @@ class NewArticle extends Component {
     });
   };
 
-  newId = (text) => {
-    this.setState({
-      id: text,
-    });
-  };
 
   newPrice = (text) => {
     this.setState({
@@ -119,7 +114,7 @@ class NewArticle extends Component {
         <TextInput
           style={styles.input}
           keyboardType="numeric"
-          value={price}
+          value={price.toString()}
           onChangeText={this.newPrice}
           placeholder="Precio"
         />
@@ -145,34 +140,47 @@ const getArtic = graphql(NEW_ARTICLE, {
   props: ({ mutate }) => ({
     addArticle: article => mutate({
       variables: { article },
-    }),
-  }),
-});
-
-/* const getArtic = graphql(NEW_ARTICLE, {
-  props: ({ mutate }) => ({
-    addArticle: (id, userId, name, price, description, image, ) => mutate({
-      variables: { id, userId, name, price, description, image, },
       optimisticResponse: {
         __typename: 'Mutation',
         addArticle: {
           __typename: 'Article',
           id: -1, // don't know id yet, but it doesn't matter
-          description: description, // we know what the text will be
-          price: price,
-          image: image,
-          name: name,
-          userId: userId,
+          name: article.name, // we know what the text will be
           createdAt: new Date().toISOString(), // the time is now!
+          description: article.description,
+          price: article.price,
+          image: article.image,
           owner: {
             __typename: 'User',
-            id: userId, // still faking the user
-            username: 'Maurine42', // still faking the user
+            id: 1, // still faking the user
+            username: 'Brook.Hudson', // still faking the user
           },
+          chats: [],
         },
+      },
+
+      update: (store, { data: { addArticle } }) => {
+        // Read the data from our cache for this query.
+        const userData = store.readQuery({
+          query: USER_QUERY,
+          variables: {
+            id: article.userId,
+          },
+        });
+
+        // Add our message from the mutation to the end.
+        userData.user.articles.unshift(addArticle);
+        // Write our data back to the cache.
+        store.writeQuery({
+          query: USER_QUERY,
+          variables: {
+            id: article.userId,
+          },
+          data: userData,
+        });
       },
     }),
   }),
-}); */
+});
 
 export default compose(getArtic)(NewArticle);
