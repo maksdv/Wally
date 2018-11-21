@@ -37,8 +37,6 @@ const styles = StyleSheet.create({
 });
 const sendButton = send => (
   <Icon.Button
-    backgroundColor="white"
-    color="black"
     iconStyle={styles.iconStyle}
     name="send"
     onPress={send}

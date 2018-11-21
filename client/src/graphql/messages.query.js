@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 import MESSAGE_FRAGMENT from './message.fragment';
 
-const CREATE_MESSAGE_MUTATION = gql`
+const ADD_MESSAGE = gql`
   mutation addMessage($message: CreateMessageInput!) {
     addMessage(message: $message) {
       ...MessageFragment
@@ -11,4 +11,4 @@ const CREATE_MESSAGE_MUTATION = gql`
   ${MESSAGE_FRAGMENT}
 `;
 
-export default CREATE_MESSAGE_MUTATION;
+export default ADD_MESSAGE;

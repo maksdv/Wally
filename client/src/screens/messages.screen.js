@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import Message from '../components/message.component';
 import MessageInput from '../components/inputMessages.component';
 import { CHAT_QUERY } from '../graphql/chats.query';
-import CREATE_MESSAGE_MUTATION from '../graphql/create-message.mutation';
+import ADD_MESSAGE from '../graphql/messages.query';
 
 
 const styles = StyleSheet.create({
@@ -33,14 +33,16 @@ class Messages extends Component {
   }
 
   send = (text) => {
-    const { addMessage, navigation } = this.props;
+    const { addMessage, chat } = this.props;
+    console.log('----------->', text);
     addMessage({
-      id: navigation.state.params.id,
+      chatId: chat.id,
       userId: 1, // faking the user for now
       text,
     }).then(() => {
+      console.log('·······', text);
       this.flatList.scrollToEnd({ animated: true });
-    });
+    }).catch(err => console.log('@@@@@@@@', err));
   };
 
   keyExtractor = item => item.id.toString();
@@ -50,11 +52,6 @@ class Messages extends Component {
     return (
       <Message color={color} isCurrentUser={isCurrentUser} message={item} />
     );
-  };
-
-  send = (text) => {
-    // TODO: send the message
-    console.log(`sending message: ${text}`);
   };
 
   render() {
@@ -96,8 +93,8 @@ Messages.propTypes = {
     id: PropTypes.number.isRequired,
     messages: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.number,
-        text: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired,
       }),
     ),
     owner: PropTypes.shape({
@@ -112,17 +109,13 @@ Messages.propTypes = {
 };
 
 const chatQuery = graphql(CHAT_QUERY, {
-  options: (ownProps) => {
-    // console.log('@@@@@@@', ownProps);
-    return ({
-      variables: {
-        id: ownProps.navigation.state.params.id,
-      },
-    });
-  },
-  props: (x, y) => {
+  options: ownProps => ({
+    variables: {
+      id: ownProps.navigation.state.params.id,
+    },
+  }),
+  props: (x) => {
     const { data: { loading, chat } } = x;
-    // console.log('#######', x, y);
     return ({
       loading,
       chat,
@@ -130,7 +123,7 @@ const chatQuery = graphql(CHAT_QUERY, {
   },
 });
 
-const addMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
+const addMessageMutation = graphql(ADD_MESSAGE, {
   props: ({ mutate }) => ({
     addMessage: message => mutate({
       variables: { message },
@@ -148,7 +141,7 @@ const addMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
           },
           to: {
             __typename: 'Chat',
-            id: message.id,
+            id: message.chatId,
           },
         },
       },
@@ -158,7 +151,7 @@ const addMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
         const chatData = store.readQuery({
           query: CHAT_QUERY,
           variables: {
-            id: message.id,
+            id: message.chatId,
           },
         });
 
@@ -168,7 +161,7 @@ const addMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
         store.writeQuery({
           query: CHAT_QUERY,
           variables: {
-            id: message.id,
+            id: message.chatId,
           },
           data: chatData,
         });

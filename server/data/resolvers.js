@@ -98,7 +98,10 @@ export const resolvers = {
     },
     //  #endregion
     //  #region Messages
-    addMessage: async (_, args) => Message.create(args),
+    addMessage: async (_, { message }) => {
+      const x = await Message.create(message);
+      return x;
+    },
     deleteMessage: async (_, { id }) => {
       const toDelete = await Message.find({ where: { id } });
       toDelete.destroy();

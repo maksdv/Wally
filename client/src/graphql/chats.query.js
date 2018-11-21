@@ -58,6 +58,7 @@ export const CHATS_QUERY = gql`
       }
       messages{
         id
+        text
       }
     }
   }

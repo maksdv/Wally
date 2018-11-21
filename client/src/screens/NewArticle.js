@@ -5,7 +5,6 @@ import {
   StyleSheet, Text, TouchableHighlight, Picker, View, TextInput, Input, Alert,
 } from 'react-native';
 import { NEW_ARTICLE } from '../graphql/articles.query';
-import NumericInput from 'react-native-numeric-input';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,7 +34,7 @@ class NewArticle extends Component {
     super(props);
     this.state = {
       name: '',
-      price: 0,
+      price: '',
       description: '',
       id: 0,
       image: 'https://cdn-images-1.medium.com/max/1200/1*DVkLFr953djSo0q6cA0-kg.png',

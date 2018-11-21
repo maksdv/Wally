@@ -7,9 +7,10 @@ import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
 import { ARTICLES_QUERY } from '../graphql/articles.query';
 import AddButton from '../components/addButton';
+
 const styles = StyleSheet.create({
   container: {
-    
+
     flex: 1,
   },
   articleContainer: {
@@ -51,12 +52,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const Article = ({ goToInfoArticle, article: { id, name, price, image } }) => (
+const Article = ({
+  goToInfoArticle, article: {
+    id, name, price, image,
+  },
+}) => (
   <TouchableHighlight key={id} onPress={goToInfoArticle} underlayColor="transparent">
     <View style={styles.articleContainer}>
       <Image style={styles.userImage} source={{ uri: image }} />
       <Text style={styles.articleName}>{name}</Text>
-      <Text style={styles.price}>{price}$</Text>
+      <Text style={styles.price}>
+        {price}
+          $
+      </Text>
     </View>
   </TouchableHighlight>
 );
@@ -77,7 +85,7 @@ class Articles extends Component {
     title: 'Store',
   };
 
-  keyExtractor = item => item.toString();
+  keyExtractor = item => item.id.toString();
 
   goToInfoArticle = article => () => {
     const {
@@ -90,30 +98,30 @@ class Articles extends Component {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate('NewArticle', { id: user.id, });
+    navigate('NewArticle', { id: user.id });
   };
 
-renderItem = ({ item }) => <Article article={item} goToInfoArticle={this.goToInfoArticle(item)} />;
+  renderItem = ({ item }) => <Article article={item} goToInfoArticle={this.goToInfoArticle(item)} />;
 
-render() {
-  const { loading, articles, user } = this.props;
-  if (loading) {
+  render() {
+    const { loading, articles, user } = this.props;
+    if (loading) {
+      return (
+        <View style={[styles.loading, styles.container]}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+
     return (
-      <View style={[styles.loading, styles.container]}>
-        <ActivityIndicator />
+      <View style={styles.container}>
+        <FlatList data={articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+        <View>
+          <AddButton onPress={this.goToNewArticle(user)} />
+        </View>
       </View>
     );
   }
-
-  return (
-    <View style={styles.container}>
-      <FlatList data={articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
-      <View>
-        <AddButton onPress={this.goToNewArticle(user)}/>
-      </View>
-    </View>
-  );
-}
 }
 Articles.propTypes = {
   navigation: PropTypes.shape({
@@ -155,4 +163,4 @@ const articlesquery = graphql(ARTICLES_QUERY, {
   }),
 });
 
-export default compose(articlesquery,userQuery)(Articles);
+export default compose(articlesquery, userQuery)(Articles);

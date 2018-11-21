@@ -77,7 +77,7 @@ class Articles extends Component {
     title: 'My Store',
   };
 
-  keyExtractor = item => item.toString();
+  keyExtractor = item => item.id.toString();
 
   goToInfoArticle = article => () => {
     const {
