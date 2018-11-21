@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  FlatList, StyleSheet, Text, TouchableHighlight, View, ActivityIndicator,
+  FlatList, StyleSheet, Text, TouchableHighlight, View, ActivityIndicator,Button
 } from 'react-native';
 import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
@@ -71,15 +71,16 @@ class Chats extends Component {
 
     return (
       <View style={styles.container}>
-        <FlatList
-          data={chats}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-        />
-      </View>
+      <FlatList
+      data={chats}
+      keyExtractor={this.keyExtractor}
+      renderItem={this.renderItem}
+    />
+     </View>
     );
   }
 }
+     
 
 Chat.propTypes = {
   goToMessages: PropTypes.func.isRequired,
