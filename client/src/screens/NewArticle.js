@@ -39,7 +39,7 @@ class NewArticle extends Component {
     this.state = {
       userId: 1,
       name: '',
-      price: 0,
+      price: '',
       description: '',
       image: 'https://cdn-images-1.medium.com/max/1200/1*DVkLFr953djSo0q6cA0-kg.png',
     };
@@ -68,7 +68,7 @@ class NewArticle extends Component {
     const {
       userId, name, price, description, image,
     } = this.state;
-    const { addArticle, onChangeText } = this.props;
+    const { addArticle, onChangeText, navigation } = this.props;
     let msg = 'Oooops something went wrong...';
 
     if (!emptyData([userId, name, price, description, image])) {
@@ -83,6 +83,8 @@ class NewArticle extends Component {
     Alert.alert('Register', msg, [{ text: 'OK' }], {
       cancelable: false,
     });
+
+    navigation.navigate('Buscador');
   };
 
   render() {
@@ -148,7 +150,7 @@ const getArtic = graphql(NEW_ARTICLE, {
           name: article.name, // we know what the text will be
           createdAt: new Date().toISOString(), // the time is now!
           description: article.description,
-          price: article.price,
+          price: parseInt(article.price, 10),
           image: article.image,
           owner: {
             __typename: 'User',
