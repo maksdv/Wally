@@ -82,7 +82,11 @@ export const resolvers = {
 
     //  #endregion
     //  #region Articles
-    async addArticle(_, { article: { userId, name, price, description, image } }) {
+    async addArticle(_, {
+      article: {
+        userId, name, price, description, image,
+      },
+    }) {
       return Article.create({
         userId,
         name,
@@ -112,10 +116,16 @@ export const resolvers = {
       }
     },
 
-    async updateArticle(_, { article: { id, name, price, description, image } }) {
+    async updateArticle(_, {
+      article: {
+        id, name, price, description, image,
+      },
+    }) {
       try {
         const articleToUpdate = await Article.find({ where: { id } });
-        articleToUpdate.update({ description, name, price, image });
+        articleToUpdate.update({
+          description, name, price, image,
+        });
         return articleToUpdate;
       } catch (e) {
         throw new Error('Memes');

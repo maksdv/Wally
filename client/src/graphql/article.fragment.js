@@ -2,7 +2,7 @@
 import gql from 'graphql-tag';
 
 export const ARTICLE_FRAGMENT = gql`
-  fragment ArticleFragment on Message {
+  fragment ArticleFragment on Article {
     id
     owner{
       id

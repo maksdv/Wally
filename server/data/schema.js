@@ -31,7 +31,7 @@ export const typeDefs = gql`
   input CreateChatInput {
     ownerId: Int!
     buyerId: Int!
-    artileId: Int!
+    articleId: Int!
   }
 
   input CreateMessageInput {

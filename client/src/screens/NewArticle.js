@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
 const emptyData = data => data.some(item => item.length === 0);
 
 class NewArticle extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -72,14 +71,15 @@ class NewArticle extends Component {
 
   handleCreate = async () => {
     const {
-      id, userId, name, price, description, image,
+      userId, name, price, description, image,
     } = this.state;
     const { addArticle, onChangeText } = this.props;
     let msg = 'Oooops something went wrong...';
 
-    if (!emptyData([id, userId, name, price, description, image])) {
-      console.log('me cago en dios');
-      const newArti = await addArticle({ id, userId, name, price, description, image })
+    if (!emptyData([userId, name, price, description, image])) {
+      const newArti = await addArticle({
+        userId, name, price, description, image,
+      })
         .then(res => res.data.addArticle)
         .catch(err => console.log(err));
       msg = `Yeah! The  ${newArti.name} has been created!`;
@@ -118,7 +118,7 @@ class NewArticle extends Component {
 
         <TextInput
           style={styles.input}
-          keyboardType={'numeric'}
+          keyboardType="numeric"
           value={price}
           onChangeText={this.newPrice}
           placeholder="Precio"
@@ -149,7 +149,7 @@ const getArtic = graphql(NEW_ARTICLE, {
   }),
 });
 
-/*const getArtic = graphql(NEW_ARTICLE, {
+/* const getArtic = graphql(NEW_ARTICLE, {
   props: ({ mutate }) => ({
     addArticle: (id, userId, name, price, description, image, ) => mutate({
       variables: { id, userId, name, price, description, image, },
@@ -173,6 +173,6 @@ const getArtic = graphql(NEW_ARTICLE, {
       },
     }),
   }),
-});*/
+}); */
 
 export default compose(getArtic)(NewArticle);
