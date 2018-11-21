@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { NEW_ARTICLE } from '../graphql/articles.query';
 
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -28,15 +29,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
 const emptyData = data => data.some(item => item.length === 0);
+
 class NewArticle extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
+      id: 0,
+      userId: 1,
       name: '',
       price: '',
       description: '',
-      id: 0,
       image: 'https://cdn-images-1.medium.com/max/1200/1*DVkLFr953djSo0q6cA0-kg.png',
     };
   }
@@ -67,13 +72,14 @@ class NewArticle extends Component {
 
   handleCreate = async () => {
     const {
-      id, name, price, description, image
+      id, userId, name, price, description, image,
     } = this.state;
     const { addArticle, onChangeText } = this.props;
     let msg = 'Oooops something went wrong...';
-    
-    if (!emptyData([id, name, price, description, image])) {
-      const newArti = await addArticle(id, name, price, description, image)
+
+    if (!emptyData([id, userId, name, price, description, image])) {
+      console.log('me cago en dios');
+      const newArti = await addArticle({ id, userId, name, price, description, image })
         .then(res => res.data.addArticle)
         .catch(err => console.log(err));
       msg = `Yeah! The  ${newArti.name} has been created!`;
@@ -86,7 +92,7 @@ class NewArticle extends Component {
 
   render() {
     const {
-      id, name, price, description,
+      name, price, description,
     } = this.state;
 
     return (
@@ -137,16 +143,36 @@ class NewArticle extends Component {
 
 const getArtic = graphql(NEW_ARTICLE, {
   props: ({ mutate }) => ({
-    addArticle: (id, name, price, description, image) => mutate({
-      variables: {
-        id,
-        name,
-        price,
-        description,
-        image
-      },
+    addArticle: article => mutate({
+      variables: { article },
     }),
   }),
 });
+
+/*const getArtic = graphql(NEW_ARTICLE, {
+  props: ({ mutate }) => ({
+    addArticle: (id, userId, name, price, description, image, ) => mutate({
+      variables: { id, userId, name, price, description, image, },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        addArticle: {
+          __typename: 'Article',
+          id: -1, // don't know id yet, but it doesn't matter
+          description: description, // we know what the text will be
+          price: price,
+          image: image,
+          name: name,
+          userId: userId,
+          createdAt: new Date().toISOString(), // the time is now!
+          owner: {
+            __typename: 'User',
+            id: userId, // still faking the user
+            username: 'Maurine42', // still faking the user
+          },
+        },
+      },
+    }),
+  }),
+});*/
 
 export default compose(getArtic)(NewArticle);

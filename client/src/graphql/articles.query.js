@@ -1,18 +1,15 @@
 import gql from 'graphql-tag';
+import { ARTICLE_FRAGMENT } from './article.fragment';
 
 // get the user and all user's groups
 
 export const NEW_ARTICLE = gql`
-  mutation addArticle($id: Int!, $name: String!, $description: String!, $price: Int!, $image: String!) {
-    addArticle(id: $id, name: $name, description: $description, price: $price, image: $image) {
-      name
-      description
-      price
-      id
-      image
-      
+  mutation addArticle($article: CreateArticleInput!) {
+    addArticle(article: $article) {
+      ...ArticleFragment
     }
   }
+  ${ARTICLE_FRAGMENT}
 `;
 
 export const ARTICLE_QUERY = gql`
@@ -24,6 +21,7 @@ export const ARTICLE_QUERY = gql`
       image
       owner{
         id
+        username
       }
       chats{
         id

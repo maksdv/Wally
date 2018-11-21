@@ -2,8 +2,39 @@ import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
  scalar Date
- 
- input CreateMessageInput {
+
+  input CreateUserInput {
+    email: String!
+    username: String!
+  }
+
+  input UpdateUserInput {
+    username: String!
+    email: String!
+  }
+
+  input CreateArticleInput {
+    userId: Int!
+    name: String!
+    price: Int!
+    description: String!
+    image: String!
+  }
+
+  input updateArticleInput {
+    name: String!
+    price: Int!
+    description: String!
+    image: String!
+  }
+
+  input CreateChatInput {
+    ownerId: Int!
+    buyerId: Int!
+    artileId: Int!
+  }
+
+  input CreateMessageInput {
     userId: Int!
     chatId: Int!
     text: String!
@@ -58,16 +89,18 @@ export const typeDefs = gql`
 
   type Mutation{
 
-    addUser(email: String!, username: String!): User
+    addUser(user: CreateUserInput): User
+    updateUser(user: UpdateUserInput): User
     updateUserEmail(id: Int!, email: String!): User
     deleteUser(id: Int!): User
     
-    addArticle(id: Int!, name: String!, price: Int!, description: String!, image: String!): Article
+    addArticle(article: CreateArticleInput): Article
+    updateArticle(id: Int!, price: Int!, description: String!): Article
     updatePrice(id: Int!, price: Int!): Article
     updateDesc(id: Int!, description: String!): Article
     deleteArticle(id: Int!): Article
 
-    addChat(id: Int!, ownerId: Int!, buyerId: Int!, artileId: Int!): Chat
+    addChat(chat: CreateChatInput!): Chat
     deleteChat(id: Int!): Chat
 
     addMessage(message: CreateMessageInput!): Message
