@@ -3,9 +3,18 @@ import { ARTICLE_FRAGMENT } from './article.fragment';
 
 // get the user and all user's groups
 
+export const UPDATE_ARTICLE = gql`
+  mutation updateArticle($article: UpdateArticleInput!){
+    updateArticle(article: $article){
+      ...ArticleFragment
+    }
+  }
+  ${ARTICLE_FRAGMENT}
+`;
+
 export const NEW_ARTICLE = gql`
   mutation addArticle($article: CreateArticleInput!) {
-    addArticle(article: $article) {
+    addArticle(article: $article){
       ...ArticleFragment
     }
   }

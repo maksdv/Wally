@@ -84,7 +84,7 @@ class NewArticle extends Component {
       cancelable: false,
     });
 
-    navigation.navigate('Buscador');
+    navigation.navigate('MyStore');
   };
 
   render() {
@@ -116,7 +116,7 @@ class NewArticle extends Component {
         <TextInput
           style={styles.input}
           keyboardType="numeric"
-          value={price.toString()}
+          value={price}
           onChangeText={this.newPrice}
           placeholder="Precio"
         />

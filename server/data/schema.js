@@ -21,7 +21,8 @@ export const typeDefs = gql`
     image: String!
   }
 
-  input updateArticleInput {
+  input UpdateArticleInput {
+    id: Int!
     name: String!
     price: Int!
     description: String!
@@ -95,8 +96,7 @@ export const typeDefs = gql`
     deleteUser(id: Int!): User
     
     addArticle(article: CreateArticleInput): Article
-    updateArticle(id: Int!, price: Int!, description: String!): Article
-    updatePrice(id: Int!, price: Int!): Article
+    updateArticle(article: UpdateArticleInput): Article
     updateDesc(id: Int!, description: String!): Article
     deleteArticle(id: Int!): Article
 
