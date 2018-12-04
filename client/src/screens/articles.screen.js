@@ -93,7 +93,7 @@ class Articles extends Component {
     } = this.props;
     navigate('InfoArticles', { id: article.id, title: article.name, articleDescr: article.description });
   };
-
+  
   goToNewArticle = user => () => {
     const {
       navigation: { navigate },

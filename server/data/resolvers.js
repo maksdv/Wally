@@ -96,16 +96,6 @@ export const resolvers = {
       });
     },
 
-    updatePrice: async (_, { id, price }) => {
-      try {
-        const articleToUpdate = await Article.find({ where: { id } });
-        articleToUpdate.update({ price });
-        return articleToUpdate;
-      } catch (e) {
-        throw new Error('Communism');
-      }
-    },
-
     updateDesc: async (_, { id, description }) => {
       try {
         const articleToUpdate = await Article.find({ where: { id } });
