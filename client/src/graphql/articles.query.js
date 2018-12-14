@@ -3,6 +3,14 @@ import { ARTICLE_FRAGMENT } from './article.fragment';
 
 // get the user and all user's groups
 
+export const DELETE_ARTICLE = gql`
+  mutation deleteArticle($id:Int!){
+  deleteArticle(id:$id){
+    id
+  }
+}
+`;
+
 export const UPDATE_ARTICLE = gql`
   mutation updateArticle($article: UpdateArticleInput!){
     updateArticle(article: $article){
@@ -24,6 +32,7 @@ export const NEW_ARTICLE = gql`
 export const ARTICLE_QUERY = gql`
   query articlequery($id: Int) {
     article(id: $id){
+      id
       name
       description
       price
