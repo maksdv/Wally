@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  FlatList, StyleSheet, Text, TouchableHighlight, View, ActivityIndicator, Image,
+  FlatList, StyleSheet, Text,TextInput, TouchableHighlight, View, ActivityIndicator, Image,
 } from 'react-native';
 import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 
     flex: 1,
   },
+  
   articleContainer: {
     flex: 1,
     width: 180,
@@ -26,8 +27,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 5,
-    margin: 5,
+    
     marginStart: 14,
+  },
+  input: {
+    marginStart: '10%',
+    width:'80%',
+    height:'8%',
+    borderBottomWidth:0.3,
+    borderColor:'grey',
+    margin:2,
+  
   },
   price: {
     width: '50%',
@@ -84,6 +94,11 @@ class Articles extends Component {
   static navigationOptions = {
     title: 'Store',
   };
+  constructor(props) {
+    super(props);
+    this.state = { text: '' };
+}
+  
 
   keyExtractor = item => item.id.toString();
 
@@ -112,10 +127,20 @@ class Articles extends Component {
         </View>
       );
     }
+    if (!user) {
+      return null;
+  }
 
     return (
       <View style={styles.container}>
-        <FlatList data={articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+         <TextInput style={styles.input}
+         placeholder={'Search'}
+         onChangeText={(text) => this.setState({ text })}
+         value={this.state.text}/>
+        <FlatList data={articles.filter(x => x.name.toLowerCase().includes(this.state.text))}
+        numColumns={2} 
+        keyExtractor={this.keyExtractor} 
+        renderItem={this.renderItem} />
         <View>
           <AddButton onPress={this.goToNewArticle(user)} />
         </View>
