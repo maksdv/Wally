@@ -5,7 +5,7 @@ import {
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
-import { ARTICLE_QUERY, UPDATE_ARTICLE } from '../graphql/articles.query';
+import { ARTICLE_QUERY, UPDATE_ARTICLE, DELETE_ARTICLE } from '../graphql/articles.query';
 import { navigation } from 'react-navigation';
 
 const styles = StyleSheet.create({
@@ -115,6 +115,13 @@ class InfoArticles extends Component {
     navigation.navigate('MyStore');
   };
 
+  deleteArticle = async (id) => {
+    const { deleteArticle, navigation } = this.props;
+    await deleteArticle({ id });
+    Alert.alert('ole! :)');
+    navigation.navigate('MyStore');
+}
+
    render() {
      const { article, loading, navigation } = this.props;
      const { editing } = this.state;
@@ -173,7 +180,7 @@ class InfoArticles extends Component {
                     </View> :
                     <View>
                       <Button title={'Edit'} onPress={() => this.setState({editing: true})}/>
-                      <Button title={'Delete'} onPress={() => console.log("borrar")}/>
+                      <Button title={'Delete'} onPress={() => this.deleteArticle(article.id)}/>
                     </View>
                 }
               </View>
@@ -213,6 +220,8 @@ InfoArticles.propTypes = {
     }),
   }),
 };
+
+
 
 const updateArticle = graphql(UPDATE_ARTICLE, {
   props: ({ mutate }) => ({
@@ -254,4 +263,13 @@ const articleQuery = graphql(ARTICLE_QUERY, {
   }),
 });
 
-export default compose(updateArticle, articleQuery)(InfoArticles);
+const deleteArticle = graphql(DELETE_ARTICLE, {
+  props: ({ mutate }) => ({
+    deleteArticle: ({ id }) => mutate({
+          variables: { id },
+          
+      }),
+  })
+});
+
+export default compose(updateArticle, deleteArticle, articleQuery)(InfoArticles);
