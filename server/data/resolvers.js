@@ -16,6 +16,8 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
+    userByEmail: (_, args) => User.findOne({ where: args }),
+    userLogin: (_, args) => User.findOne({ where: args }),
     user(_, args) {
       return User.findOne({ where: args });
     },
@@ -47,12 +49,7 @@ export const resolvers = {
 
   Mutation: {
     //  #region Users
-    async addUser(_, { user: { username, email } }) {
-      return User.create({
-        username,
-        email,
-      });
-    },
+    addUser: async (_,args)=> User.create(args),
 
     updateUser: async (_, { user: { id, username, email } }) => {
       try {
@@ -131,7 +128,7 @@ export const resolvers = {
     //  #endregion
     //  #region Chats
     async addChat(_, { chat: { ownerId, buyerId, articleId } }) {
-      return Article.create({
+      return Chat.create({
         ownerId,
         articleId,
         buyerId,

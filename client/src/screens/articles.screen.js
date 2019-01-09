@@ -1,3 +1,4 @@
+
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -10,13 +11,13 @@ import AddButton from '../components/addButton';
 
 const styles = StyleSheet.create({
   container: {
-
+    backgroundColor:"#dce0e8",
     flex: 1,
   },
   
   articleContainer: {
     flex: 1,
-    width: 180,
+    width: '100%',
     height: 180,
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
@@ -25,18 +26,21 @@ const styles = StyleSheet.create({
     borderBottomColor: '#DDD',
     borderBottomWidth: 3.0,
     borderRadius: 10,
-    paddingHorizontal: 12,
+    paddingHorizontal:3,
     paddingVertical: 5,
-    
-    marginStart: 14,
+    marginStart: '4%',
+    marginBottom: 3,
   },
   input: {
+    /* backgroundColor:"#fff", */
     marginStart: '10%',
     width:'80%',
-    height:'8%',
-    borderBottomWidth:0.3,
+    height: 40,
+    borderWidth:0.3,
     borderColor:'grey',
+    borderRadius:10,
     margin:2,
+    
   
   },
   price: {
@@ -55,9 +59,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-  userImage: {
+  articleImage: {
     width: 150,
-    height: 135,
+    height: 150,
     borderRadius: 10,
   },
 });
@@ -67,9 +71,9 @@ const Article = ({
     id, name, price, image,
   },
 }) => (
-  <TouchableHighlight key={id} onPress={goToInfoArticle} underlayColor="transparent">
+  <TouchableHighlight key={id} onPress={goToInfoArticle} /* onLongPress={() => } */ underlayColor="transparent">
     <View style={styles.articleContainer}>
-      <Image style={styles.userImage} source={{ uri: image }} />
+      <Image style={styles.articleImage} source={{ uri: image }} />
       <Text style={styles.articleName}>{name}</Text>
       <Text style={styles.price}>
         {price}
@@ -136,9 +140,11 @@ class Articles extends Component {
          <TextInput style={styles.input}
          placeholder={'Search'}
          onChangeText={(text) => this.setState({ text })}
-         value={this.state.text}/>
-        <FlatList data={articles.filter(x => x.name.toLowerCase().includes(this.state.text))}
-        numColumns={2} 
+         value={this.state.text}
+         
+         />
+        <FlatList data={articles.filter(x => x.name.toLowerCase().includes(this.state.text.toLowerCase()))}
+        numColumns={2}
         keyExtractor={this.keyExtractor} 
         renderItem={this.renderItem} />
         <View>

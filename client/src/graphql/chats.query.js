@@ -3,13 +3,11 @@ import gql from 'graphql-tag';
 // get the user and all user's groups
 
 export const NEW_CHAT = gql`
-  mutation addChat($ownerId: Int!, $buyerId: Int! $articleId: Int!,) {
-    addArticle(ownerId: $ownerId, buyerId: $buyer, articleId: $articleId,) {
-      ownerId
-      buyerId
-      articleId
-    }
+  mutation addChat($chat:CreateChatInput!){
+  addChat(chat:$chat){
+    id
   }
+}
 `;
 
 export const CHAT_QUERY = gql`

@@ -77,6 +77,8 @@ export const typeDefs = gql`
   }
 
   type Query{
+    userByEmail(email: String!): User
+    userLogin(username: String!, password: String!): User
     users(id: Int): [User]
     user(email: String, id: Int): User
     messages(userId: Int): [Message]
@@ -90,7 +92,7 @@ export const typeDefs = gql`
 
   type Mutation{
 
-    addUser(user: CreateUserInput): User
+    addUser(email: String!, username: String, password: String!): User
     updateUser(user: UpdateUserInput): User
     updateUserEmail(id: Int!, email: String!): User
     deleteUser(id: Int!): User

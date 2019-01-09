@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  FlatList, StyleSheet, Text, TouchableHighlight, View, ActivityIndicator,
+  FlatList, StyleSheet, Text, TouchableHighlight, View, ActivityIndicator,Image
 } from 'react-native';
+import {format} from 'date-fns';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
 import { CHAT_QUERY } from '../graphql/chats.query';
@@ -10,34 +12,70 @@ import { CHAT_QUERY } from '../graphql/chats.query';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: '#dce0e8',
     flex: 1,
   },
   chatContainer: {
     flex: 1,
     flexDirection: 'row',
-    width: 300,
-    height: 30,
-    margin: 5,
+    height: 60,
+    margin:3,
     alignItems: 'center',
     borderRadius: 8,
-    backgroundColor: '#c3d0e5',
-    borderColor: 'grey',
+    borderBottomWidth: 0.2,
+    borderTopWidth: 0.2,
+    borderColor:"grey",
+    backgroundColor: '#fff',
+    
   },
-  chatName: {
+  oponent: {
+    flex: 1,
+    /* marginStart:"50%", */
+    fontSize:15,
+    
+  },
+  articleImage:{
+    marginStart:5,
+    width: "20%",
+    height:"90%",
+    borderRadius:20
+  },
+  text:{
+    
+    marginStart: 5,
+    
+  },
+  iconoUser:{
+    marginStart: 20,
+  },
+  articleName:{
     fontWeight: 'bold',
-    flex: 0.7,
   },
   loading: {
     justifyContent: 'center',
     flex: 1,
   },
+  time:{
+    fontSize:11
+  }
 });
 
-const Chat = ({ chat: { id }, goToMessages }) => (
-  <TouchableHighlight key={id} onPress={goToMessages}>
+const Chat = ({ chat: { id, buyer, owner, from, messages}, goToMessages , user}) => (
+
+  <TouchableHighlight key={id} onPress={goToMessages} underlayColor="transparent">
     <View style={styles.chatContainer}>
-      <Text style={styles.chatName}>{` Chat numero ${id}`}</Text>
+      <Image style={styles.articleImage} source={{ uri: from.image }} />
+      <Icon style={styles.iconoUser} name="ios-contact" size={15} color='#02c8ef' />
+      <View style={styles.text}>
+        <Text style={styles.articleName}>{from.name} </Text>
+        
+        {user.username == owner.username ? 
+        <Text style={styles.oponent}>{buyer.username} </Text> : 
+        <Text style={styles.oponent}>{owner.username} </Text>}       
+        {/* <Text style={styles.time}>{ (messages) ? format(messages[messages.length-1].createdAt, 'H:mm D/MMM/YYYY' ): null}</Text> */}
+        
+      </View>
+      
     </View>
   </TouchableHighlight>
 );
@@ -57,10 +95,11 @@ class Chats extends Component {
     navigate('Messages', { id: chat.id });
   };
 
-  renderItem = ({ item }) => <Chat chat={item} goToMessages={this.goToMessages(item)} />;
+  renderItem = ({ item }) => <Chat chat={item} goToMessages={this.goToMessages(item)} user={this.props.user} />;
 
   render() {
-    const { loading, user: { chats } } = this.props;
+    const { loading, user } = this.props;
+
     if (loading) {
       return (
         <View style={[styles.loading, styles.container]}>
@@ -68,11 +107,12 @@ class Chats extends Component {
         </View>
       );
     }
+    
 
     return (
       <View style={styles.container}>
         <FlatList
-          data={chats}
+          data={user.chats}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
         />
@@ -81,7 +121,7 @@ class Chats extends Component {
   }
 }
 
-Chat.propTypes = {
+/* Chat.propTypes = {
   goToMessages: PropTypes.func.isRequired,
   chat: PropTypes.shape({
     id: PropTypes.number,
@@ -110,7 +150,7 @@ Chats.propTypes = {
       }),
     ),
   }),
-};
+}; */
 
 const userQuery = graphql(USER_QUERY, {
   options: () => ({ variables: { id: 1 } }), // fake the user for now
@@ -120,13 +160,7 @@ const userQuery = graphql(USER_QUERY, {
   }),
 });
 
-const chatQuery = graphql(CHAT_QUERY, {
-  options: () => ({}),
-  props: ({ data: { loading, chats } }) => ({
-    loading,
-    chats: chats || [],
-  }),
-});
 
 
-export default compose(userQuery, chatQuery)(Chats);
+
+export default compose(userQuery)(Chats);
