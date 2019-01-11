@@ -22,7 +22,9 @@ import Chats from './screens/chats.screen';
 import Messages from './screens/messages.screen';
 import NewArticle from './screens/NewArticle';
 import UserArticles from './screens/userArticles.screen';
-import ChatDetails from './screens/chatDetails.screen';
+import Login from './screens/login_screen.js/login';
+import Register from './screens/login_screen.js/signUp';
+import Profile from './screens/profile.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -75,10 +77,10 @@ const MainScreenNavigator = createBottomTabNavigator(
         ),
       },
     },
-    Settings: {
-      screen: TestScreen('Settingea algo pisha'),
+    Login: {
+      screen: Login,
       navigationOptions: {
-        tabBarLabel: 'Settings',
+        tabBarLabel: 'Login',
         tabBarIcon: ({ tintColor }) => (
           <Icon name="ios-settings" color={tintColor} size={24} />
         ),
@@ -93,11 +95,20 @@ const MainScreenNavigator = createBottomTabNavigator(
         ),
       },
     },
+    Profile: {
+      screen: Profile,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="ios-contact" color={tintColor} size={24} />
+        ),
+      },
+    }
 
   }, // fuera de mainscreen
   {
     initialRouteName: 'Buscador',
-    order: ['Messeges', 'Buscador', 'Settings'],
+    order: ['Messeges', 'Buscador', 'Login', 'Profile'],
     navigationOptions: {
 
     },
@@ -152,20 +163,9 @@ const AppNavigator = createStackNavigator(
         title: 'Vendiendo',
       },
     },
-    ChatDetails: {
-      screen: ChatDetails,
-      navigationOptions: {
-        headerStyle: {
-          backgroundColor: '#02c8ef',
-          height: 50,
-        },
-        headerTitleStyle: {
-
-        },
-        headerTintColor: '#fff',
-        title: 'Opciones de chat',
-      },
-    },
+    Register: {
+      screen: Register,
+    }
   },
   {
     navigationOptions: {

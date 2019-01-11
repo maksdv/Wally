@@ -9,12 +9,13 @@ import { ARTICLES_QUERY } from '../graphql/articles.query';
 import AddButton from '../components/addButton';
 const styles = StyleSheet.create({
   container: {
-    
     flex: 1,
+    paddingVertical:5,
+    backgroundColor: "#dce0e8",
   },
   articleContainer: {
     flex: 1,
-    width: 180,
+    width: '100%',
     height: 180,
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
@@ -23,10 +24,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#DDD',
     borderBottomWidth: 3.0,
     borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    margin: 5,
-    marginStart: 14,
+    paddingHorizontal:3,
+    paddingVertical:10,
+    marginBottom: 3,
+    marginStart: '4%',
+    
   },
   price: {
     width: '50%',
@@ -107,7 +109,7 @@ render() {
 
   return (
     <View style={styles.container}>
-      <FlatList data={user.articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+      <FlatList data={user.articles ? user.articles: undefined} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
       <View>
         <AddButton onPress={this.goToNewArticle(user)}/>
       </View>
@@ -147,12 +149,6 @@ const userQuery = graphql(USER_QUERY, {
   }),
 });
 
-const articlesquery = graphql(ARTICLES_QUERY, {
-  options: () => ({}),
-  props: ({ data: { loading, articles } }) => ({
-    loading,
-    articles: articles || [],
-  }),
-});
 
-export default compose(articlesquery,userQuery)(Articles);
+
+export default compose(userQuery)(Articles);

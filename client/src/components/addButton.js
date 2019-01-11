@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
     position: 'absolute',
     bottom: 10,
-    right: '46%',
+    right: '44.1%',
   },
 });
 

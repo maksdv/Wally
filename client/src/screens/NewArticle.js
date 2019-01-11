@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 
 import {
-  StyleSheet, Text, TouchableHighlight, Picker, View, TextInput, Input, Alert,
+  StyleSheet, Text, TouchableHighlight, Picker, View, TextInput, Input, Alert, Image,
 } from 'react-native';
 import { USER_QUERY } from '../graphql/user.query';
 import { NEW_ARTICLE } from '../graphql/articles.query';
+import ImagePicker from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/Feather';
 
 
 const styles = StyleSheet.create({
@@ -29,6 +31,9 @@ const styles = StyleSheet.create({
     height: 40,
     marginTop: 20,
   },
+  imgStyle: {
+  
+  },
 });
 
 const emptyData = data => data.some(item => item.length === 0);
@@ -41,7 +46,7 @@ class NewArticle extends Component {
       name: '',
       price: '',
       description: '',
-      image: 'https://cdn-images-1.medium.com/max/1200/1*DVkLFr953djSo0q6cA0-kg.png',
+      image: undefined,
     };
   }
 
@@ -63,6 +68,33 @@ class NewArticle extends Component {
       description: text,
     });
   };
+
+  openImagepicker = () => {
+    const options = {
+      title: 'Select Avatar',
+      customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+    
+        this.setState({ 
+          image: response.uri,
+        });
+      }
+    });
+  }
 
   handleCreate = async () => {
     const {
@@ -89,26 +121,26 @@ class NewArticle extends Component {
 
   render() {
     const {
-      name, price, description,
+      name, price, description, image,
     } = this.state;
 
     return (
       <View style={styles.container}>
-        <Picker mode="dropdown" style={{ height: 50, width: 200 }}>
-          <Picker.Item label="Elige una categoría" value="ere" />
-          <Picker.Item label="Deportes" value="deportes" />
-          <Picker.Item label="Pesca" value="pesca" />
-          <Picker.Item label="Coches" value="coches" />
-          <Picker.Item label="Juguetes" value="juguetes" />
-          <Picker.Item label="Telefonía" value="telefonia" />
-          <Picker.Item label="Tecnología" value="tecnologia" />
-          <Picker.Item label="Bebes" value="bebes" />
-          <Picker.Item label="Hogar" value="hogar" />
-        </Picker>
-
+        <TouchableHighlight style={styles.imgStyle}  onPress = {this.openImagepicker}>
+          { image ?
+          <Image style={{width: '80%',height: '20%'}} source={{uri: image}}/>:
+          <Icon.Button
+              iconStyle={styles.imgStyle}
+              name="image"
+              size={40}
+              style={styles.imgButton}
+              onPress={this.openImagepicker}
+            />
+          }
+        </TouchableHighlight>
         <TextInput
           style={styles.input}
-          placeholder="Titulo"
+          placeholder="Title"
           value={name}
           onChangeText={this.newName}
         />
@@ -118,10 +150,10 @@ class NewArticle extends Component {
           keyboardType="numeric"
           value={price}
           onChangeText={this.newPrice}
-          placeholder="Precio"
+          placeholder="Price"
         />
         <TextInput
-          placeholder="Descripción"
+          placeholder="Description"
           value={description}
           onChangeText={this.newDescription}
           style={styles.input}
@@ -131,7 +163,7 @@ class NewArticle extends Component {
           underlayColor="#02c8ef"
           onPress={this.handleCreate}
         >
-          <Text> V e n d e r </Text>
+          <Text> S e l l </Text>
         </TouchableHighlight>
       </View>
     );
@@ -151,7 +183,7 @@ const getArtic = graphql(NEW_ARTICLE, {
           createdAt: new Date().toISOString(), // the time is now!
           description: article.description,
           price: parseInt(article.price, 10),
-          image: article.image,
+          image: article.image.uri,
           owner: {
             __typename: 'User',
             id: 1, // still faking the user

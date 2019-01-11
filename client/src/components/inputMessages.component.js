@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, TextInput, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';'react-native-vector-icons/Feather';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +34,13 @@ const styles = StyleSheet.create({
   iconStyle: {
     marginRight: 0, // default is 12
   },
+  imgStyle: {
+    marginRight: 0, // default is 12
+  },
+  imgButton: {
+    height: 32,
+    width: 32,
+  },
 });
 const sendButton = send => (
   <Icon.Button
@@ -45,9 +52,14 @@ const sendButton = send => (
   />
 );
 class MessageInput extends Component {
+
+  
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      text: '',
+      obj:false,
+    };
   }
 
   handleSend = () => {
@@ -57,6 +69,7 @@ class MessageInput extends Component {
     this.textInput.clear();
     this.textInput.blur();
   };
+
 
   render() {
     return (
@@ -71,7 +84,21 @@ class MessageInput extends Component {
             placeholder="Type a message here.."
           />
         </View>
-        <View style={styles.sendButtonContainer}>{sendButton(this.handleSend)}</View>
+        <View>
+       
+    </View>
+          {
+            this.state.text ? <View style={styles.sendButtonContainer}>{sendButton(this.handleSend)}</View> 
+            :  
+            <Icon.Button
+            iconStyle={styles.imgStyle}
+            name="image"
+            size={18}
+            style={styles.imgButton}
+            onPress={this.changeState}
+          />
+
+          }
       </View>
     );
   }

@@ -169,7 +169,7 @@ const addMessageMutation = graphql(ADD_MESSAGE, {
           from: {
             __typename: 'User',
             id: 1, // still faking the user
-            username: 'Brook.Hudson', // still faking the user
+            username: 'COmpra la version premium, gilipollas', // still faking the user
           },
           to: {
             __typename: 'Chat',
