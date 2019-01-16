@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import R from 'ramda';
 import { graphql, compose } from 'react-apollo';
 import {
   FlatList,
@@ -46,6 +47,7 @@ class Messages extends Component {
 
      const goToChatDetails = () => navigate('ChatDetails', {
       id: state.params.id,   
+      
   });
 
   return {
@@ -53,7 +55,7 @@ class Messages extends Component {
       <TouchableOpacity style={styles.titleWrapper} onPress={goToChatDetails}>
         <View style={styles.title}>
         <Image style={styles.titleImage} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
-        <Text>{`Chat numero `}{state.params.id}</Text>
+        <Text>{state.params.name}</Text>
         </View>
       </TouchableOpacity>
     ),
@@ -63,6 +65,7 @@ class Messages extends Component {
   constructor(props) {
     super(props);
     this.renderItem = this.renderItem.bind(this);
+    this.state = { };
   }
 
   send = (text) => {
@@ -77,19 +80,39 @@ class Messages extends Component {
     })
   };
 
-  keyExtractor = item => item.id.toString();
+  onEndReached = () => {
+    const { loadingMoreEntries } = this.state;
+    const { loadMoreEntries, chat } = this.props;
+    if (!loadingMoreEntries && chat.messages.pageInfo.hasNextPage) {
+      this.setState({
+        loadingMoreEntries: true,
+      });
+      loadMoreEntries().then(() => {
+        this.setState({
+          loadingMoreEntries: false,
+        });
+      });
+    }
+  };
 
-  renderItem = ({ item, item: { color } }) => {
-    const isCurrentUser = (item.from.id === 1); // fucking the user for now ;)
+
+  keyExtractor = item => item.node.id.toString();
+
+  renderItem = ({ item : edge }) => {
+    const message = edge.node;
+    
+    const isCurrentUser = (message.from.id === 1); // fucking the user for now ;)
     return (
-      <Message color={color} isCurrentUser={isCurrentUser} message={item} />
+      <Message color={"#000000"} isCurrentUser={isCurrentUser} 
+      message={message}/>
     );
   };
 
   render() {
     const { chat } = this.props;
-
-    if (!chat) {
+    console.log(chat);
+    if (chat===undefined) {
+      console.log('wkwejbfkasbf');
       return null;
     }
 
@@ -99,10 +122,12 @@ class Messages extends Component {
           ref={(ref) => {
             this.flatList = ref;
           }}
-          data={chat.messages.reverse()}
+          inverted
+          data={chat.messages.edges}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
           ListEmptyComponent={<View />}
+          onEndReached={this.onEndReached}
         />
         <MessageInput send={this.send} />
       </View>
@@ -110,7 +135,7 @@ class Messages extends Component {
   }
 }
 
-Messages.propTypes = {
+/* Messages.propTypes = {
   addMessage: PropTypes.func,
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
@@ -138,21 +163,51 @@ Messages.propTypes = {
       username: PropTypes.string,
     }),
   }),
-};
+}; */
 
+const ITEMS_PER_PAGE = 5;
 const chatQuery = graphql(CHAT_QUERY, {
   options: ownProps => ({
     variables: {
       id: ownProps.navigation.state.params.id,
+      connectionInput: {
+        first: ITEMS_PER_PAGE,
+      },
     },
   }),
-  props: (x) => {
-    const { data: { loading, chat } } = x;
-    return ({
-      loading,
-      chat,
-    });
-  },
+  props: ({ data: { fetchMore, loading, chat } }) => ({
+    loading,
+    chat,
+    loadMoreEntries() {
+      return fetchMore({
+        // query: ... (you can specify a different query.
+        // chat_QUERY is used by default)
+        variables: {
+          connectionInput: {
+            first: ITEMS_PER_PAGE,
+            after: chat.messages.edges[chat.messages.edges.length - 1].cursor,
+          },
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          // we will make an extra call to check if no more entries
+          if (!fetchMoreResult) {
+            return previousResult;
+          }
+
+          const edgesLens = R.lensPath(['chat', 'messages', 'edges']);
+          const pageInfoLens = R.lensPath(['chat', 'messages', 'pageInfo']);
+
+          const moreEdges = R.view(edgesLens, fetchMoreResult);
+
+          // push results (older messages) to end of messages list
+          return R.compose(
+            R.set(pageInfoLens, R.view(pageInfoLens, fetchMoreResult)),
+            R.over(edgesLens, xs => R.concat(xs, moreEdges)),
+          )(previousResult);
+        },
+      });
+    },
+  }),
 });
 
 const addMessageMutation = graphql(ADD_MESSAGE, {
@@ -188,15 +243,48 @@ const addMessageMutation = graphql(ADD_MESSAGE, {
         });
 
         // Add our message from the mutation to the end.
-        chatData.chat.messages.unshift(addMessage);
+        chatData.chat.messages.edges.unshift({
+          __typename: 'MessageEdge',
+          node: createMessage,
+          cursor: Buffer.from(createMessage.id.toString()).toString('base64'),
+        });
         // Write our data back to the cache.
         store.writeQuery({
           query: CHAT_QUERY,
           variables: {
             id: message.chatId,
+            messageConnection: { first: ITEMS_PER_PAGE },
           },
           data: chatData,
         });
+        const userData = store.readQuery({
+          query: USER_QUERY,
+          variables: {
+            id: 1, // faking the user for now
+          },
+        });
+
+          // check whether the mutation is the latest message and update cache
+        const updatedChat = userData.user.chats.find(({ id }) => id === message.chatId);
+        if (
+          !updatedChat.messages.edges.length
+            || isBefore(updatedChat.messages.edges[0].node.createdAt, createMessage.createdAt)
+        ) {
+          // update the latest message
+          updatedChat.messages.edges[0] = {
+            __typename: 'MessageEdge',
+            node: createMessage,
+            cursor: Buffer.from(createMessage.id.toString()).toString('base64'),
+          };
+          // Write our data back to the cache.
+          store.writeQuery({
+            query: USER_QUERY,
+            variables: {
+              id: 1, // faking the user for now
+            },
+            data: userData,
+          });
+        }
       },
     }),
   }),

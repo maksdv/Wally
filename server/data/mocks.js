@@ -6,7 +6,7 @@ import { race } from 'async';
 // create fake starter data
 const USERS = 5;
 const ARTICLES_PER_USER = 4;
-const MESSAGES_PER_CHAT = 2;
+const MESSAGES_PER_CHAT = 10;
 const CHATS_PER_ARTICLE = 2;
 
 faker.seed(123); // get consistent data every time we reload app

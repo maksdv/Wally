@@ -20,7 +20,7 @@ export const DELETE_CHAT = gql`
 `;
 
 export const CHAT_QUERY = gql`
-  query chatquery($id: Int, $connectionInput: ConnectionInput!) {
+  query chatquery( $id: Int, $connectionInput: ConnectionInput = { first: 0 } ) {
     chat(id: $id){
       id
       from{
@@ -36,7 +36,10 @@ export const CHAT_QUERY = gql`
         username
       }
       messages(messageConnection: $connectionInput){
-      pageInfo
+        pageInfo{
+          hasNextPage
+          hasPreviousPage
+        }
         edges{
           cursor
           node{

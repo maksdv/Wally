@@ -32,6 +32,8 @@ const styles = StyleSheet.create({
     flex: 1,
     /* marginStart:"50%", */
     fontSize:15,
+    color:'red',
+    marginStart:100
     
   },
   articleImage:{
@@ -44,6 +46,10 @@ const styles = StyleSheet.create({
     
     marginStart: 5,
     
+  },
+  messege:{
+    width: '30%',
+    height:20,
   },
   iconoUser:{
     marginStart: 20,
@@ -65,15 +71,14 @@ const Chat = ({ chat: { id, buyer, owner, from, messages}, goToMessages , user})
   <TouchableHighlight key={id} onPress={goToMessages} underlayColor="transparent">
     <View style={styles.chatContainer}>
       <Image style={styles.articleImage} source={{ uri: from.image }} />
-      <Icon style={styles.iconoUser} name="ios-contact" size={15} color='#02c8ef' />
       <View style={styles.text}>
         <Text style={styles.articleName}>{from.name} </Text>
         
         {user.username == owner.username ? 
         <Text style={styles.oponent}>{buyer.username} </Text> : 
         <Text style={styles.oponent}>{owner.username} </Text>}       
-        {console.log(messages.edges[0].node)/* <Text style={styles.time}>{ (messages) ? format(messages[messages.length-1].createdAt, 'H:mm D/MMM/YYYY' ): null}</Text> */}
-        <Text>{messages.edges[0].node.text}</Text>
+        {/*console.log(messages.edges[0].node) <Text style={styles.time}>{ (messages) ? format(messages[messages.length-1].createdAt, 'H:mm D/MMM/YYYY' ): null}</Text> */}
+        <Text style={styles.messege}>{messages.edges[0].node.text}</Text>
       </View>
       
     </View>
@@ -91,8 +96,7 @@ class Chats extends Component {
     const {
       navigation: { navigate },
     } = this.props;
-    console.log(chat);
-    navigate('Messages', { id: chat.id });
+    navigate('Messages', { name: chat.owner.username, id: chat.id, loadingMoreEntries: false });
   };
 
   renderItem = ({ item }) => <Chat chat={item} goToMessages={this.goToMessages(item)} user={this.props.user} />;

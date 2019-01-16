@@ -126,7 +126,7 @@ class NewArticle extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableHighlight style={styles.imgStyle}  onPress = {this.openImagepicker}>
+        
           { image ?
           <Image style={{width: '80%',height: '20%'}} source={{uri: image}}/>:
           <Icon.Button
@@ -137,7 +137,7 @@ class NewArticle extends Component {
               onPress={this.openImagepicker}
             />
           }
-        </TouchableHighlight>
+        
         <TextInput
           style={styles.input}
           placeholder="Title"
