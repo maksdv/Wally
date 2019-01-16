@@ -72,8 +72,8 @@ const Chat = ({ chat: { id, buyer, owner, from, messages}, goToMessages , user})
         {user.username == owner.username ? 
         <Text style={styles.oponent}>{buyer.username} </Text> : 
         <Text style={styles.oponent}>{owner.username} </Text>}       
-        {/* <Text style={styles.time}>{ (messages) ? format(messages[messages.length-1].createdAt, 'H:mm D/MMM/YYYY' ): null}</Text> */}
-        
+        {console.log(messages.edges[0].node)/* <Text style={styles.time}>{ (messages) ? format(messages[messages.length-1].createdAt, 'H:mm D/MMM/YYYY' ): null}</Text> */}
+        <Text>{messages.edges[0].node.text}</Text>
       </View>
       
     </View>
@@ -121,7 +121,6 @@ class Chats extends Component {
   }
 }
      
-
 /* Chat.propTypes = {
   goToMessages: PropTypes.func.isRequired,
   chat: PropTypes.shape({
@@ -129,6 +128,13 @@ class Chats extends Component {
     owner: PropTypes.number,
     buyer: PropTypes.number,
     articleId: PropTypes.number,
+    messages: PropTypes.shape({
+      edges: PropTypes.shape({
+        node:PropTypes.shape({
+          
+        })
+      }),
+    }),
   }),
 };
 

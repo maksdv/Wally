@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import MESSAGE_FRAGMENT from './message.fragment';
 
 // get the user and all user's groups
 
@@ -19,7 +20,7 @@ export const DELETE_CHAT = gql`
 `;
 
 export const CHAT_QUERY = gql`
-  query chatquery($id: Int) {
+  query chatquery($id: Int, $connectionInput: ConnectionInput!) {
     chat(id: $id){
       id
       from{
@@ -34,17 +35,17 @@ export const CHAT_QUERY = gql`
         id
         username
       }
-      messages{
-        id
-        text
-        createdAt
-        from {
-          id
-          username
+      messages(messageConnection: $connectionInput){
+      pageInfo
+        edges{
+          cursor
+          node{
+            ...MessageFragment
+          }
         }
       }
     }
-  }
+  }${MESSAGE_FRAGMENT}
 `;
 
 export const CHATS_QUERY = gql`
@@ -62,12 +63,20 @@ export const CHATS_QUERY = gql`
         id
         username
       }
-      messages{
-        id
-        text
+      messages(messageConnection: $connectionInput){
+      pageInfo{
+        hasNextPage
+        hasPreviousPage
+      }
+        edges{
+          cursor
+          node{
+            ...MessageFragment
+          }
+        }
       }
     }
-  }
+  }${MESSAGE_FRAGMENT}
 `;
 
 

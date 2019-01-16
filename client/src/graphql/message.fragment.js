@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 const MESSAGE_FRAGMENT = gql`
   fragment MessageFragment on Message {
     id
+    text
+    createdAt
     to {
       id
     }
@@ -11,8 +13,6 @@ const MESSAGE_FRAGMENT = gql`
       id
       username
     }
-    createdAt
-    text
   }
 `;
 

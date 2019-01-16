@@ -55,10 +55,11 @@ export const USER_QUERY = gql`
         }
       }
       chats{
-        messages{
+        messages(messageConnection: {first: 1, after: ""}){
           edges{
             node{
               createdAt
+              text
             }
           }
         }

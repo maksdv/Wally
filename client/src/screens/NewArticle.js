@@ -170,51 +170,22 @@ class NewArticle extends Component {
   }
 }
 
+const userQuery = graphql(USER_QUERY, {
+  options: () => ({ variables: { id: 1 } }), // fake the user for now
+  props: ({ data: { loading, user } }) => ({
+    loading,
+    user,
+  }),
+});
+
+
 const getArtic = graphql(NEW_ARTICLE, {
   props: ({ mutate }) => ({
     addArticle: article => mutate({
       variables: { article },
-      optimisticResponse: {
-        __typename: 'Mutation',
-        addArticle: {
-          __typename: 'Article',
-          id: -1, // don't know id yet, but it doesn't matter
-          name: article.name, // we know what the text will be
-          createdAt: new Date().toISOString(), // the time is now!
-          description: article.description,
-          price: parseInt(article.price, 10),
-          image: article.image.uri,
-          owner: {
-            __typename: 'User',
-            id: 1, // still faking the user
-            username: 'Brook.Hudson', // still faking the user
-          },
-          chats: [],
-        },
-      },
-
-      update: (store, { data: { addArticle } }) => {
-        // Read the data from our cache for this query.
-        const userData = store.readQuery({
-          query: USER_QUERY,
-          variables: {
-            id: article.userId,
-          },
-        });
-
-        // Add our message from the mutation to the end.
-        userData.user.articles.unshift(addArticle);
-        // Write our data back to the cache.
-        store.writeQuery({
-          query: USER_QUERY,
-          variables: {
-            id: article.userId,
-          },
-          data: userData,
-        });
-      },
+      refetchQueries: [{ query: USER_QUERY }, 'user']
     }),
   }),
 });
 
-export default compose(getArtic)(NewArticle);
+export default compose(getArtic,userQuery)(NewArticle);
