@@ -3,7 +3,7 @@ import Sequelize from 'sequelize';
 const db = new Sequelize('wally', null, null, {
   dialect: 'sqlite',
   storage: './wally.sqlite',
-  logging: 0, // mark this true if you want to see logs
+  logging: true, // mark this true if you want to see logs
 });
 // define articles
 const ArticleModel = db.define('article', {
@@ -35,8 +35,7 @@ ChatModel.belongsTo(ArticleModel);
 ChatModel.belongsTo(UserModel, { as: 'owner' });
 ChatModel.belongsTo(UserModel, { as: 'buyer' });
 // articles belong to users
-ArticleModel.belongsTo(UserModel, { as: 'user'});
-ArticleModel.belongsToMany(UserModel, { through: 'favs' } );
+ArticleModel.belongsTo(UserModel);
 
 const Article = db.models.article;
 const Message = db.models.message;

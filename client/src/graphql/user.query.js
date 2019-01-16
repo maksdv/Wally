@@ -58,7 +58,7 @@ export const USER_QUERY = gql`
         messages{
           edges{
             node{
-              id
+              createdAt
             }
           }
         }
