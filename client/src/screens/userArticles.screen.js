@@ -109,7 +109,7 @@ render() {
 
   return (
     <View style={styles.container}>
-      <FlatList data={user.articles} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+      <FlatList data={user.articles ? user.articles: undefined} numColumns={2} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
       <View>
         <AddButton onPress={this.goToNewArticle(user)}/>
       </View>

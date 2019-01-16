@@ -2,8 +2,10 @@ import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import {
   FlatList,
+  Image,
   StyleSheet,
   View,
+  TouchableOpacity,
   Text,
 } from 'react-native';
 import React, { Component } from 'react';
@@ -20,12 +22,43 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+  titleWrapper: {
+    alignItems: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+  },
+  title: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  }, 
+  titleImage: {
+    marginRight: 6,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+  },
 });
 
 class Messages extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.title}`,
+  static navigationOptions = ({ navigation }) => {
+    const { state, navigate } = navigation;
+
+     const goToChatDetails = () => navigate('ChatDetails', {
+      id: state.params.id,   
   });
+
+  return {
+    headerTitle: (
+      <TouchableOpacity style={styles.titleWrapper} onPress={goToChatDetails}>
+        <View style={styles.title}>
+        <Image style={styles.titleImage} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
+        <Text>{`Chat numero `}{state.params.id}</Text>
+        </View>
+      </TouchableOpacity>
+    ),
+  };
+};
 
   constructor(props) {
     super(props);
@@ -34,7 +67,6 @@ class Messages extends Component {
 
   send = (text) => {
     const { addMessage, chat } = this.props;
-    console.log('----------->', text);
     addMessage({
       chatId: chat.id,
       userId: 1, // faking the user for now
@@ -42,7 +74,7 @@ class Messages extends Component {
     }).then(() => {
       console.log('·······', text);
       this.flatList.scrollToEnd({ animated: true });
-    }).catch(err => console.log('@@@@@@@@', err));
+    })
   };
 
   keyExtractor = item => item.id.toString();
@@ -137,7 +169,7 @@ const addMessageMutation = graphql(ADD_MESSAGE, {
           from: {
             __typename: 'User',
             id: 1, // still faking the user
-            username: 'Brook.Hudson', // still faking the user
+            username: 'COmpra la version premium, gilipollas', // still faking the user
           },
           to: {
             __typename: 'Chat',

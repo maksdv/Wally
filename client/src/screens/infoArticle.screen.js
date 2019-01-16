@@ -1,6 +1,6 @@
 
 import {
-  FlatList,TouchableHighlight, StyleSheet, View, TextInput, Alert, Button, Text, ActivityIndicator, Image,
+  ScrollView,FlatList,TouchableHighlight, StyleSheet, View, TextInput, Alert, Button, Text, ActivityIndicator, Image,
 } from 'react-native';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -185,7 +185,7 @@ class InfoArticles extends Component {
        );
      }
      return (
-       <View style={styles.container}>
+       <ScrollView style={styles.container}>
          <FlatList
            data={article.title}
            keyExtractor={this.keyExtractor}
@@ -258,7 +258,7 @@ class InfoArticles extends Component {
               )
           } 
          </View>
-       </View>
+       </ScrollView>
      );
    }
 }

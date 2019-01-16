@@ -27,7 +27,7 @@ import { NEW_USER } from '../../graphql/user.query';
         marginStart:'33.3%',
       },
       logo:{
-        margin:'10%',
+        marginStart:'10%',
         width:'80%'
        },
 

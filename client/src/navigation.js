@@ -26,7 +26,6 @@ import Login from './screens/login_screen.js/login';
 import Register from './screens/login_screen.js/signUp';
 import Profile from './screens/profile.screen';
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -90,7 +89,7 @@ const MainScreenNavigator = createBottomTabNavigator(
     Messeges: {
       screen: Chats,
       navigationOptions: {
-        tabBarLabel: 'Messeges',
+        tabBarLabel: 'Messages',
         tabBarIcon: ({ tintColor }) => (
           <Icon name="ios-mail" color={tintColor} size={24} />
         ),

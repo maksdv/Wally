@@ -120,6 +120,7 @@ class Chats extends Component {
     );
   }
 }
+     
 
 /* Chat.propTypes = {
   goToMessages: PropTypes.func.isRequired,

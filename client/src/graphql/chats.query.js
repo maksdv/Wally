@@ -10,6 +10,14 @@ export const NEW_CHAT = gql`
 }
 `;
 
+export const DELETE_CHAT = gql`
+  mutation deleteChat($id: Int!) {
+    chat(id: $id){
+      id
+    }
+   }
+`;
+
 export const CHAT_QUERY = gql`
   query chatquery($id: Int) {
     chat(id: $id){
@@ -61,5 +69,6 @@ export const CHATS_QUERY = gql`
     }
   }
 `;
+
 
 export default CHAT_QUERY;

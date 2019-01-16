@@ -17,8 +17,8 @@ import {
          
       },
       logo:{
-       margin:'10%',
-       width:'80%'
+        marginStart:"10%",
+        width:'80%'
       },
       input:{
           borderRadius:15,
@@ -46,11 +46,13 @@ import {
         title: `${'Login'}`,
       });
 
+
       constructor(props) {
         super(props);
         this.state = {
           username:'',
           password:'',
+          obj:'Mostrar',
           logOk: false,
           kk:[]
         };
@@ -96,6 +98,20 @@ import {
             Alert.alert("Usuario o la contraseña no coinciden.");
         } 
     }
+
+    changeState = () =>{
+        const { obj } = this.state;
+        if (obj === 'Mostrar') {
+            this.setState({
+                obj:'ha cambiado'
+            })
+        } else {
+            this.setState({
+                obj:'Mostrar'
+            })
+        }
+
+    }
     
 
     render(){
@@ -121,11 +137,14 @@ import {
                     secureTextEntry
                     
                 />
+
                 <View style={styles.buttonLog} >
                     <Button color={'#0a50db'} 
                         title={'Login'} 
                         onPress={this.login}/>
                 </View>
+
+
                 <Text style={styles.texto}>
                     Not registered yet?
                 </Text>
