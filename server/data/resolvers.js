@@ -16,8 +16,6 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
-    userByEmail: (_, args) => User.findOne({ where: args }),
-    userLogin: (_, args) => User.findOne({ where: args }),
     user(_, args) {
       return User.findOne({ where: args });
     },
@@ -49,7 +47,12 @@ export const resolvers = {
 
   Mutation: {
     //  #region Users
-    addUser: async (_,args)=> User.create(args),
+    async addUser(_, { user: { username, email } }) {
+      return User.create({
+        username,
+        email,
+      });
+    },
 
     updateUser: async (_, { user: { id, username, email } }) => {
       try {
@@ -70,7 +73,6 @@ export const resolvers = {
         throw new Error('Anime was a mistake');
       }
     },
-
     deleteUser: async (_, { id }) => {
       const toDelete = await User.find({ where: { id } });
       toDelete.destroy();
@@ -128,7 +130,7 @@ export const resolvers = {
     //  #endregion
     //  #region Chats
     async addChat(_, { chat: { ownerId, buyerId, articleId } }) {
-      return Chat.create({
+      return Article.create({
         ownerId,
         articleId,
         buyerId,
@@ -174,6 +176,60 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
+    /*articles(user, { articleConnection = {} }) {
+      const { first, after } = articleConnection;
+
+      // base query -- get messages from the right chat
+      const where = { userId: user.id };
+
+      // because we return messages from newest -> oldest
+      // after actually means older (id < cursor)
+
+      if (after) {
+        where.id = { $lt: Buffer.from(after, 'base64').toString() };
+      }
+
+      return Article.findAll({
+        where,
+        order: [['id', 'DESC']],
+        limit: first,
+      }).then((articles) => {
+        const edges = articles.map(article => ({
+          cursor: Buffer.from(article.id.toString()).toString('base64'), // convert id to cursor
+          node: article, // the node is the message itself
+        }));
+
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage() {
+              if (articles.length < first) {
+                return Promise.resolve(false);
+              }
+
+              return Article.findOne({
+                where: {
+                  userId: user.id,
+                  id: {
+                    $lt: article[article.length - 1].id,
+                  },
+                },
+                order: [['id', 'DESC']],
+              }).then(article => !!article);
+            },
+            hasPreviousPage() {
+              return Article.findOne({
+                where: {
+                  userId: user.id,
+                  id: where.id,
+                },
+                order: [['id']],
+              }).then(article => !!article);
+            },
+          },
+        };
+      });
+    },*/
   },
   Article: {
     owner(article) {
@@ -187,10 +243,58 @@ export const resolvers = {
     },
   },
   Chat: {
-    messages(chat) {
+    messages(chat, { messageConnection = {} }) {
+      const { first, after } = messageConnection;
+
+      // base query -- get messages from the right chat
+      const where = { chatId: chat.id };
+
+      // because we return messages from newest -> oldest
+      // after actually means older (id < cursor)
+
+      if (after) {
+        where.id = { $lt: Buffer.from(after, 'base64').toString() };
+      }
+
       return Message.findAll({
-        where: { chatId: chat.id },
-        order: [['createdAt', 'DESC']],
+        where,
+        order: [['id', 'DESC']],
+        limit: first,
+      }).then((messages) => {
+        const edges = messages.map(message => ({
+          cursor: Buffer.from(message.id.toString()).toString('base64'), // convert id to cursor
+          node: message, // the node is the message itself
+        }));
+
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage() {
+              if (messages.length < first) {
+                return Promise.resolve(false);
+              }
+
+              return Message.findOne({
+                where: {
+                  chatId: chat.id,
+                  id: {
+                    $lt: messages[messages.length - 1].id,
+                  },
+                },
+                order: [['id', 'DESC']],
+              }).then(message => !!message);
+            },
+            hasPreviousPage() {
+              return Message.findOne({
+                where: {
+                  chatId: chat.id,
+                  id: where.id,
+                },
+                order: [['id']],
+              }).then(message => !!message);
+            },
+          },
+        };
       });
     },
     buyer(chat) {

@@ -20,7 +20,7 @@ import { NEW_USER } from '../../graphql/user.query';
         borderWidth:1,
         borderColor:'grey',
         backgroundColor:'#d1d3d6',
-        margin: 10,
+        margin: 5,
       },
       buttonReg:{
         width:'33.3%',

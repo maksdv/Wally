@@ -15,7 +15,6 @@ faker.seed(123); // get consistent data every time we reload app
 // just trust that it fakes a bunch of groups, users, and messages
 
 const randomUser = async (ammount, self) => {
-  console.log('loop');
   const hoy = Math.floor((Math.random() * (ammount)) + 1);
   return (hoy !== self) ? hoy : randomUser(ammount, self);
 };

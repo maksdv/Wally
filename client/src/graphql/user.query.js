@@ -56,7 +56,11 @@ export const USER_QUERY = gql`
       }
       chats{
         messages{
-          createdAt
+          edges{
+            node{
+              id
+            }
+          }
         }
         id
         buyer{

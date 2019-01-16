@@ -3,6 +3,38 @@ import { gql } from 'apollo-server';
 export const typeDefs = gql`
  scalar Date
 
+  input ConnectionInput {
+    first: Int
+    after: String
+    last: Int
+    before: String
+  }
+
+  type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+  }
+
+  type MessageConnection {
+    edges: [MessageEdge]
+    pageInfo: PageInfo!
+  }
+
+  type MessageEdge {
+    cursor: String!
+    node: Message!
+  }
+
+  type ArticleConnection {
+    edges: [ArticleEdge]
+    pageInfo: PageInfo!
+  }
+
+  type ArticleEdge {
+    cursor: String!
+    node: Article!
+  }
+
   input CreateUserInput {
     email: String!
     username: String!
@@ -45,6 +77,7 @@ export const typeDefs = gql`
     id: Int! 
     email: String! 
     username: String!
+    #articles(articleConnection: ConnectionInput): ArticleConnection
     articles: [Article!]!
     chats: [Chat!]!
     
@@ -71,7 +104,7 @@ export const typeDefs = gql`
     id: Int!
     buyer: User!
     owner: User!
-    messages: [Message!]!
+    messages(messageConnection: ConnectionInput): MessageConnection
     from: Article!
 
   }
@@ -86,8 +119,6 @@ export const typeDefs = gql`
     article(id: Int): Article
     chats(articleId: Int): [Chat]
     chat(id: Int): Chat
-    
-
   }
 
   type Mutation{
