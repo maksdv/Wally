@@ -37,6 +37,7 @@ export const typeDefs = gql`
 
   input CreateUserInput {
     email: String!
+    password: String!
     username: String!
   }
 
@@ -68,7 +69,6 @@ export const typeDefs = gql`
   }
 
   input CreateMessageInput {
-    userId: Int!
     chatId: Int!
     text: String!
   }
@@ -80,6 +80,7 @@ export const typeDefs = gql`
     #articles(articleConnection: ConnectionInput): ArticleConnection
     articles: [Article!]!
     chats: [Chat!]!
+    jwt: String,
     
   }
   type Message {
@@ -138,6 +139,8 @@ export const typeDefs = gql`
 
     addMessage(message: CreateMessageInput!): Message
     deleteMessage(id: Int!): Message
+    login(email: String!, password: String!): User
+    signup(user: CreateUserInput): User
 
   }
 

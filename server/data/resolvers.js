@@ -1,8 +1,15 @@
+import { withFilter, ForbiddenError } from 'apollo-server';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import Sequelize from 'sequelize';
 import GraphQLDate from 'graphql-date';
 import {
   Article, Message, User, Chat,
 } from './connectors';
+import configurationManager from '../configurationManager';
+
+const JWT_SECRET = configurationManager.jwt.secret;
+
 
 const { Op } = Sequelize;
 
@@ -176,7 +183,7 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
-    /*articles(user, { articleConnection = {} }) {
+    /* articles(user, { articleConnection = {} }) {
       const { first, after } = articleConnection;
 
       // base query -- get messages from the right chat
@@ -229,7 +236,7 @@ export const resolvers = {
           },
         };
       });
-    },*/
+    }, */
   },
   Article: {
     owner(article) {

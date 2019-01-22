@@ -1,7 +1,8 @@
 import R from 'ramda';
 import faker from 'faker';
 import { db } from './connectors';
-import { race } from 'async';
+import bcrypt from 'bcrypt';
+
 
 // create fake starter data
 const USERS = 5;
@@ -31,10 +32,12 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
   console.log('Populating users');
   const users = await Promise.all(
     R.times(async () => {
+      const email = faker.internet.email();
+      const password = await bcrypt.hash(email, 10);
       const user = await db.models.user.create({
         username: faker.internet.userName(),
-        email: faker.internet.email(),
-        password: faker.internet.password(),
+        email,
+        password,
       });
       R.times(async () => {
         const article = await db.models.article.create({
@@ -42,7 +45,6 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
           price: Math.floor(Math.random() * 201),
           image: faker.image.avatar(),
           description: faker.lorem.sentences(4),
-
           userId: user.id,
         });
         R.times(async () => {

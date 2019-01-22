@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
-import { graphql, compose } from 'react-apollo';
-
 import {
-  StyleSheet, Text, TouchableHighlight, Picker, View, TextInput, Input, Alert, Image,
+  StyleSheet, Text, TouchableHighlight, View, TextInput, Alert, Image,
 } from 'react-native';
-import { USER_QUERY } from '../graphql/user.query';
-import { NEW_ARTICLE } from '../graphql/articles.query';
 import ImagePicker from 'react-native-image-picker';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginTop: 10,
   },
   input: {
     borderBottomWidth: 0.5,
@@ -31,8 +28,9 @@ const styles = StyleSheet.create({
     height: 40,
     marginTop: 20,
   },
-  imgStyle: {
-  
+  imgButton: {
+    width: '100%',
+    marginStart: '90%',
   },
 });
 
@@ -88,8 +86,7 @@ class NewArticle extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-    
-        this.setState({ 
+        this.setState({
           image: response.uri,
         });
       }
@@ -126,18 +123,16 @@ class NewArticle extends Component {
 
     return (
       <View style={styles.container}>
-        
-          { image ?
-          <Image style={{width: '80%',height: '20%'}} source={{uri: image}}/>:
-          <Icon.Button
-              iconStyle={styles.imgStyle}
-              name="image"
-              size={40}
-              style={styles.imgButton}
-              onPress={this.openImagepicker}
-            />
-          }
-        
+
+        {image
+          ? <Image style={{ width: 200, height: 100, marginTop: 10 }} source={{ uri: image }} />
+          : (  
+            <TouchableHighlight onPress={this.openImagepicker} style={styles.imgButton} underlayColor='transparent'>
+              <Icon name="ios-image" size={40} color='#02c8ef' />
+            </TouchableHighlight>
+          )
+        }
+
         <TextInput
           style={styles.input}
           placeholder="Title"
@@ -170,22 +165,4 @@ class NewArticle extends Component {
   }
 }
 
-const userQuery = graphql(USER_QUERY, {
-  options: () => ({ variables: { id: 1 } }), // fake the user for now
-  props: ({ data: { loading, user } }) => ({
-    loading,
-    user,
-  }),
-});
-
-
-const getArtic = graphql(NEW_ARTICLE, {
-  props: ({ mutate }) => ({
-    addArticle: article => mutate({
-      variables: { article },
-      refetchQueries: [{ query: USER_QUERY }, 'user']
-    }),
-  }),
-});
-
-export default compose(getArtic,userQuery)(NewArticle);
+export default NewArticle;

@@ -17,13 +17,13 @@ import {
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Articles from './screens/articles.screen';
-import InfoArticles from './screens/infoArticle.screen';
+import InfoArticle from './screens/infoArticle.screen';
 import Chats from './screens/chats.screen';
 import Messages from './screens/messages.screen';
-import NewArticle from './screens/NewArticle';
+import NewArticle from './screens/newArticle.screen';
 import UserArticles from './screens/userArticles.screen';
-import Login from './screens/login_screen.js/login';
-import Register from './screens/login_screen.js/signUp';
+import Login from './screens/login.screen.js/login';
+import Register from './screens/login.screen.js/signUp';
 import Profile from './screens/profile.screen';
 
 const styles = StyleSheet.create({
@@ -34,11 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
 });
-const TestScreen = title => () => (
-  <View style={styles.container}>
-    <Text>{title}</Text>
-  </View>
-);
+
 // tabs in main screen
 const MyStoreNavigate = createMaterialTopTabNavigator({
   Store: { screen: Articles },
@@ -103,7 +99,7 @@ const MainScreenNavigator = createBottomTabNavigator(
           <Icon name="ios-contact" color={tintColor} size={24} />
         ),
       },
-    }
+    },
 
   }, // fuera de mainscreen
   {
@@ -135,8 +131,8 @@ const AppNavigator = createStackNavigator(
         title: 'Mensajes',
       },
     },
-    InfoArticles: {
-      screen: InfoArticles,
+    InfoArticle: {
+      screen: InfoArticle,
       navigationOptions: {
         headerStyle: {
           backgroundColor: '#02c8ef',

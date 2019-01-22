@@ -10,14 +10,14 @@ const styles = StyleSheet.create({
     zIndex: 100,
     position: 'absolute',
     bottom: 10,
-    right: '44.1%',
+    right: '46%',
   },
 });
 
 const AddButton = ({ onPress }) => (
   <View>
     <TouchableHighlight onPress={onPress} style={styles.button} underlayColor='transparent'>
-      <Icon name="ios-add-circle" size={47} color='#02c8ef' />
+      <Icon name="ios-add-circle" size={40} color='#02c8ef' />
     </TouchableHighlight>
   </View>
 
