@@ -36,6 +36,7 @@ export const ARTICLE_QUERY = gql`
       name
       description
       price
+      location
       image
       owner{
         id
@@ -55,6 +56,7 @@ export const ARTICLES_QUERY = gql`
       description
       price
       image
+      location
       id
       owner{
         id

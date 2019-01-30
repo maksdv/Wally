@@ -11,6 +11,7 @@ const ArticleModel = db.define('article', {
   price: { type: Sequelize.INTEGER },
   description: { type: Sequelize.STRING },
   image: { type: Sequelize.STRING },
+  location: { type: Sequelize.STRING },
 });
 // define messages
 const MessageModel = db.define('message', {

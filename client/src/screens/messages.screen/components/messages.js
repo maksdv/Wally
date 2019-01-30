@@ -4,12 +4,12 @@ import {
   Image,
   StyleSheet,
   View,
-  TouchableOpacity,
   Text,
 } from 'react-native';
 import React, { Component } from 'react';
 import Message from './message';
 import MessageInput from './input';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -42,12 +42,12 @@ class Messages extends Component {
       const { state } = navigation;
       return {
         headerTitle: (
-          <TouchableOpacity style={styles.titleWrapper}>
+          <View style={styles.titleWrapper}>
             <View style={styles.title}>
               <Image style={styles.titleImage} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
               <Text>{state.params.name}</Text>
             </View>
-          </TouchableOpacity>
+          </View>
         ),
       };
     };

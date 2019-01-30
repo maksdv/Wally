@@ -46,6 +46,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
           image: faker.image.avatar(),
           description: faker.lorem.sentences(4),
           userId: user.id,
+          location: faker.address.city(),
         });
         R.times(async () => {
           const buyer = await randomUser(USERS + 1, user.id);

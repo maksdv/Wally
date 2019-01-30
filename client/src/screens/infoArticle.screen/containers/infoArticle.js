@@ -20,6 +20,7 @@ const updateArticle = graphql(UPDATE_ARTICLE, {
       data.updateArticle.name = name;
       data.updateArticle.price = price;
       data.updateArticle.image = image;
+      data.updateArticle.location = location;
       data.updateArticle.description = description;
       // Add our message from the mutation to the end.
       userData.user.articles.unshift(updateArticle);

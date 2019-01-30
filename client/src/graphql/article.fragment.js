@@ -10,7 +10,8 @@ export const ARTICLE_FRAGMENT = gql`
     name
     description
     price
-    image    
+    image  
+    location  
   }
 `;
 

@@ -44,6 +44,7 @@ class NewArticle extends Component {
       name: '',
       price: '',
       description: '',
+      location: '',
       image: undefined,
     };
   }
@@ -64,6 +65,12 @@ class NewArticle extends Component {
   newDescription = (text) => {
     this.setState({
       description: text,
+    });
+  };
+
+  newLocation = (text) => {
+    this.setState({
+      location: text,
     });
   };
 
@@ -95,18 +102,18 @@ class NewArticle extends Component {
 
   handleCreate = async () => {
     const {
-      userId, name, price, description, image,
+      userId, name, price, description, image, location,
     } = this.state;
     const { addArticle, onChangeText, navigation } = this.props;
     let msg = 'Oooops something went wrong...';
 
-    if (!emptyData([userId, name, price, description, image])) {
+    if (!emptyData([userId, name, price, description, image, location])) {
       const newArti = await addArticle({
-        userId, name, price, description, image,
+        userId, name, price, description, image, location,
       })
         .then(res => res.data.addArticle)
         .catch(err => console.log(err));
-      msg = `Yeah! The  ${newArti.name} has been created!`;
+      msg = `Yeah! ${newArti.name} has been created!`;
       screenChange = onChangeText;
     }
     Alert.alert('Register', msg, [{ text: 'OK' }], {
@@ -118,7 +125,7 @@ class NewArticle extends Component {
 
   render() {
     const {
-      name, price, description, image,
+      name, price, description, image, location,
     } = this.state;
 
     return (
@@ -127,8 +134,8 @@ class NewArticle extends Component {
         {image
           ? <Image style={{ width: 200, height: 100, marginTop: 10 }} source={{ uri: image }} />
           : (  
-            <TouchableHighlight onPress={this.openImagepicker} style={styles.imgButton} underlayColor='transparent'>
-              <Icon name="ios-image" size={40} color='#02c8ef' />
+            <TouchableHighlight onPress={this.openImagepicker} style={styles.imgButton} underlayColor="transparent">
+              <Icon name="ios-image" size={40} color="#02c8ef" />
             </TouchableHighlight>
           )
         }
@@ -151,6 +158,12 @@ class NewArticle extends Component {
           placeholder="Description"
           value={description}
           onChangeText={this.newDescription}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Location"
+          value={location}
+          onChangeText={this.newLocation}
           style={styles.input}
         />
         <TouchableHighlight

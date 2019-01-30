@@ -13,8 +13,10 @@ import {
 } from 'react-native';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Iconito from 'react-native-vector-icons/Entypo';
 import PropTypes from 'prop-types';
-
+import Geocoder from 'react-native-geocoding';
+import Map from './mapComponent';
 
 const styles = StyleSheet.create({
   articleImage: {
@@ -24,6 +26,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   container: {
+    backgroundColor: '#dce0e8'
 
 
   },
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 15,
     margin: 5,
-    backgroundColor: '#e6ecf7',
+    backgroundColor: '#dce0e8',
     borderRadius: 20,
   },
   textCont: {
@@ -68,6 +71,15 @@ const styles = StyleSheet.create({
   buttonDelete: {
     marginLeft: 30,
   },
+  text: {
+    marginTop: 6,
+    color: 'black',
+  
+  },
+  pin: {
+    flex: 1, 
+    flexDirection: 'row',
+  },
 
 });
 
@@ -88,6 +100,10 @@ class InfoArticle extends Component {
       price: '',
       image: 'https://www.definicionabc.com/wp-content/uploads/Im%C3%A1gen-Vectorial.jpg',
       description: '',
+      location: {
+        lat: 0,
+        lng: 0,
+      },
     };
   }
 
@@ -132,7 +148,7 @@ class InfoArticle extends Component {
       })
         .then(res => res.data.updateArticle)
         .catch(err => console.log(err));
-      msg = `Yeah! The  ${updArti.name} has been updated!`;
+      msg = `Yeah! ${updArti.name} has been updated!`;
       screenChange = onChangeText;
     }
     Alert.alert('Register', msg, [{ text: 'OK' }], {
@@ -146,7 +162,7 @@ class InfoArticle extends Component {
   deleteArticle = async (id) => {
     const { deleteArticle, navigation } = this.props;
     await deleteArticle({ id });
-    Alert.alert('ole! :)');
+    Alert.alert('Deleted');
 
     navigation.navigate('MyStore');
   }
@@ -160,10 +176,25 @@ class InfoArticle extends Component {
     } else {
       addChat({ ownerId, buyerId, articleId })
         .then((res) => {
-          Alert.alert('Recuerda ser amable!');
+          Alert.alert('Remember to be kind!');
           navigation.navigate('Messages', { id: res.data.addChat.id }); // Then recupera la respuesta de la mutacion
         });
     }
+  }
+
+  getCoords = () => {
+    const { location } = this.state;
+    const { article } = this.props;
+
+    Geocoder.setApiKey('AIzaSyAXZx8pXwho5DZIT7HrDmTEenGW8SRwGV0');
+
+    Geocoder.from(article.location).then(
+      json => json.results[0].geometry.location,
+    ).then((newLocation) => {
+      if (true) {
+        this.setState({ location: { lat: newLocation.lat, lng: newLocation.lng } });
+      }
+    }).catch(() => console.log('Mecaguen'));
   }
 
 
@@ -171,9 +202,10 @@ class InfoArticle extends Component {
     const {
       article, loading, navigation,
     } = this.props;
-    const { editing } = this.state;
+    const { editing, location } = this.state;
+    const { lat, lng } = location;
     const titul = navigation.state.params.title;
-
+    //  console.log(this.getCoords());
 
     if (!article || loading) {
       return (
@@ -182,6 +214,8 @@ class InfoArticle extends Component {
         </View>
       );
     }
+    
+    this.getCoords();
     return (
       <ScrollView style={styles.container}>
         <FlatList
@@ -256,7 +290,7 @@ class InfoArticle extends Component {
                             <TouchableHighlight
                               onPress={() => this.setState({ editing: true })}
                               style={styles.button}
-                              underlayColor="transparent'"
+                              underlayColor="transparent"
                             >
                               <Icon name="md-create" size={47} color="#02c8ef" />
                             </TouchableHighlight>
@@ -291,6 +325,13 @@ class InfoArticle extends Component {
               )
           }
         </View>
+        <View style={styles.map}>
+        <View style={styles.pin}>
+          <Iconito name="location-pin" size={25} />
+          <Text>{article.location}</Text>
+          </View>
+          <Map location={location} />
+        </View>
       </ScrollView>
     );
   }
@@ -308,6 +349,7 @@ InfoArticle.propTypes = {
       id: PropTypes.number,
       username: PropTypes.string,
     }),
+    location: PropTypes.string,
   }),
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,

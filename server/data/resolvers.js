@@ -90,7 +90,7 @@ export const resolvers = {
     //  #region Articles
     async addArticle(_, {
       article: {
-        userId, name, price, description, image,
+        userId, name, price, description, image, location,
       },
     }) {
       return Article.create({
@@ -99,6 +99,7 @@ export const resolvers = {
         price,
         description,
         image,
+        location,
       });
     },
 
@@ -114,13 +115,13 @@ export const resolvers = {
 
     async updateArticle(_, {
       article: {
-        id, name, price, description, image,
+        id, name, price, description, image, location,
       },
     }) {
       try {
         const articleToUpdate = await Article.find({ where: { id } });
         articleToUpdate.update({
-          description, name, price, image,
+          description, name, price, image, location,
         });
         return articleToUpdate;
       } catch (e) {

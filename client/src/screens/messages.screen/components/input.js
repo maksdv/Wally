@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     paddingVertical: 6,
   },
+  imgButtonContainer: {
+    paddingRight: 12,
+    paddingVertical: 6,
+  },
   sendButton: {
     height: 32,
     width: 32,
@@ -87,13 +91,15 @@ class MessageInput extends Component {
           text
             ? <View style={styles.sendButtonContainer}>{sendButton(this.handleSend)}</View>
             : (
-              <Icon.Button
-                iconStyle={styles.imgStyle}
-                name="image"
-                size={18}
-                style={styles.imgButton}
-                onPress={this.changeState}
-              />
+              <View style={styles.imgButtonContainer}>
+                <Icon.Button
+                  iconStyle={styles.imgStyle}
+                  name="image"
+                  size={18}
+                  style={styles.imgButton}
+                  onPress={this.changeState}
+                />
+              </View>
             )
           }
       </View>

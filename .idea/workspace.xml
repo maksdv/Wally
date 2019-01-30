@@ -2,32 +2,47 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="324e8912-8773-4cbe-b5b9-b14598970a41" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/images/logo.png" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/images/perfil.jpeg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/images/perfil.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/screens/login_screen.js/login.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/screens/login_screen.js/signUp.js" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/screens/profile.screen.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/screens/infoArticle.screen/components/mapComponent.js" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/client/android/app/build.gradle" afterPath="$PROJECT_DIR$/client/android/app/build.gradle" />
       <change beforePath="$PROJECT_DIR$/client/android/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/client/android/app/src/main/AndroidManifest.xml" />
+      <change beforePath="$PROJECT_DIR$/client/android/app/src/main/assets/fonts/FontAwesome5_Brands.ttf" afterPath="$PROJECT_DIR$/client/android/app/src/main/assets/fonts/FontAwesome5_Brands.ttf" />
+      <change beforePath="$PROJECT_DIR$/client/android/app/src/main/assets/fonts/FontAwesome5_Regular.ttf" afterPath="$PROJECT_DIR$/client/android/app/src/main/assets/fonts/FontAwesome5_Regular.ttf" />
+      <change beforePath="$PROJECT_DIR$/client/android/app/src/main/assets/fonts/FontAwesome5_Solid.ttf" afterPath="$PROJECT_DIR$/client/android/app/src/main/assets/fonts/FontAwesome5_Solid.ttf" />
       <change beforePath="$PROJECT_DIR$/client/android/app/src/main/java/com/wally/MainApplication.java" afterPath="$PROJECT_DIR$/client/android/app/src/main/java/com/wally/MainApplication.java" />
+      <change beforePath="$PROJECT_DIR$/client/android/build.gradle" afterPath="$PROJECT_DIR$/client/android/build.gradle" />
       <change beforePath="$PROJECT_DIR$/client/android/settings.gradle" afterPath="$PROJECT_DIR$/client/android/settings.gradle" />
-      <change beforePath="$PROJECT_DIR$/client/ios/Wally.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/client/ios/Wally.xcodeproj/project.pbxproj" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally-tvOS/Info.plist" afterPath="$PROJECT_DIR$/client/ios/wally-tvOS/Info.plist" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally-tvOSTests/Info.plist" afterPath="$PROJECT_DIR$/client/ios/wally-tvOSTests/Info.plist" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/client/ios/wally.xcodeproj/project.pbxproj" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally.xcodeproj/xcshareddata/xcschemes/Wally-tvOS.xcscheme" afterPath="$PROJECT_DIR$/client/ios/wally.xcodeproj/xcshareddata/xcschemes/wally-tvOS.xcscheme" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally.xcodeproj/xcshareddata/xcschemes/Wally.xcscheme" afterPath="$PROJECT_DIR$/client/ios/wally.xcodeproj/xcshareddata/xcschemes/wally.xcscheme" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally/AppDelegate.h" afterPath="$PROJECT_DIR$/client/ios/wally/AppDelegate.h" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally/AppDelegate.m" afterPath="$PROJECT_DIR$/client/ios/wally/AppDelegate.m" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally/Base.lproj/LaunchScreen.xib" afterPath="$PROJECT_DIR$/client/ios/wally/Base.lproj/LaunchScreen.xib" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally/Images.xcassets/AppIcon.appiconset/Contents.json" afterPath="$PROJECT_DIR$/client/ios/wally/Images.xcassets/AppIcon.appiconset/Contents.json" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally/Images.xcassets/Contents.json" afterPath="$PROJECT_DIR$/client/ios/wally/Images.xcassets/Contents.json" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally/Info.plist" afterPath="$PROJECT_DIR$/client/ios/wally/Info.plist" />
+      <change beforePath="$PROJECT_DIR$/client/ios/Wally/main.m" afterPath="$PROJECT_DIR$/client/ios/wally/main.m" />
+      <change beforePath="$PROJECT_DIR$/client/ios/WallyTests/Info.plist" afterPath="$PROJECT_DIR$/client/ios/wallyTests/Info.plist" />
+      <change beforePath="$PROJECT_DIR$/client/ios/WallyTests/WallyTests.m" afterPath="$PROJECT_DIR$/client/ios/wallyTests/wallyTests.m" />
       <change beforePath="$PROJECT_DIR$/client/package-lock.json" afterPath="$PROJECT_DIR$/client/package-lock.json" />
       <change beforePath="$PROJECT_DIR$/client/package.json" afterPath="$PROJECT_DIR$/client/package.json" />
       <change beforePath="$PROJECT_DIR$/client/src/app.js" afterPath="$PROJECT_DIR$/client/src/app.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/addButton.js" afterPath="$PROJECT_DIR$/client/src/components/addButton.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/inputMessages.component.js" afterPath="$PROJECT_DIR$/client/src/components/inputMessages.component.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/graphql/article.fragment.js" afterPath="$PROJECT_DIR$/client/src/graphql/article.fragment.js" />
       <change beforePath="$PROJECT_DIR$/client/src/graphql/articles.query.js" afterPath="$PROJECT_DIR$/client/src/graphql/articles.query.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/graphql/chats.query.js" afterPath="$PROJECT_DIR$/client/src/graphql/chats.query.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/graphql/user.query.js" afterPath="$PROJECT_DIR$/client/src/graphql/user.query.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/navigation.js" afterPath="$PROJECT_DIR$/client/src/navigation.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/screens/NewArticle.js" afterPath="$PROJECT_DIR$/client/src/screens/NewArticle.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/screens/articles.screen.js" afterPath="$PROJECT_DIR$/client/src/screens/articles.screen.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/screens/chats.screen.js" afterPath="$PROJECT_DIR$/client/src/screens/chats.screen.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/screens/infoArticle.screen.js" afterPath="$PROJECT_DIR$/client/src/screens/infoArticle.screen.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/screens/messages.screen.js" afterPath="$PROJECT_DIR$/client/src/screens/messages.screen.js" />
-      <change beforePath="$PROJECT_DIR$/client/src/screens/userArticles.screen.js" afterPath="$PROJECT_DIR$/client/src/screens/userArticles.screen.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/screens/articles.screen/components/articles.js" afterPath="$PROJECT_DIR$/client/src/screens/articles.screen/components/articles.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/screens/infoArticle.screen/components/infoArticle.js" afterPath="$PROJECT_DIR$/client/src/screens/infoArticle.screen/components/infoArticle.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/screens/infoArticle.screen/containers/infoArticle.js" afterPath="$PROJECT_DIR$/client/src/screens/infoArticle.screen/containers/infoArticle.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/screens/login.screen.js/login.js" afterPath="$PROJECT_DIR$/client/src/screens/login.screen.js/login.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/screens/messages.screen/components/input.js" afterPath="$PROJECT_DIR$/client/src/screens/messages.screen/components/input.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/screens/messages.screen/components/messages.js" afterPath="$PROJECT_DIR$/client/src/screens/messages.screen/components/messages.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/screens/newArticle.screen/components/newArticle.js" afterPath="$PROJECT_DIR$/client/src/screens/newArticle.screen/components/newArticle.js" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" afterPath="$PROJECT_DIR$/package-lock.json" />
+      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change beforePath="$PROJECT_DIR$/server/data/connectors.js" afterPath="$PROJECT_DIR$/server/data/connectors.js" />
+      <change beforePath="$PROJECT_DIR$/server/data/mocks.js" afterPath="$PROJECT_DIR$/server/data/mocks.js" />
       <change beforePath="$PROJECT_DIR$/server/data/resolvers.js" afterPath="$PROJECT_DIR$/server/data/resolvers.js" />
       <change beforePath="$PROJECT_DIR$/server/data/schema.js" afterPath="$PROJECT_DIR$/server/data/schema.js" />
     </list>
@@ -47,8 +62,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="268" />
-    <option name="y" value="17" />
+    <option name="x" value="500" />
+    <option name="y" value="22" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -190,7 +205,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="268" y="17" width="1400" height="1000" extended-state="0" />
+    <frame x="500" y="22" width="1400" height="1000" extended-state="0" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />

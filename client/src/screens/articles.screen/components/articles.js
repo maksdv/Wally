@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Geocoder from 'react-native-geocoding';
 import {
   FlatList, StyleSheet, TextInput, View, ActivityIndicator,
 } from 'react-native';
 import AddButton from '../../../components/addButton';
 import Article from './article';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -42,7 +44,8 @@ class Articles extends Component {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate('InfoArticle', { id: article.id, title: article.name, articleDescr: article.description });
+
+    navigate('InfoArticle', { id: article.id, title: article.name, articleDescr: article.description, location: article.location });
   };
 
   goToNewArticle = user => () => {

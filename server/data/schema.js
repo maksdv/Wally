@@ -51,6 +51,7 @@ export const typeDefs = gql`
     name: String!
     price: Int!
     description: String!
+    location: String!
     image: String!
   }
 
@@ -59,6 +60,7 @@ export const typeDefs = gql`
     name: String!
     price: Int!
     description: String!
+    location: String!
     image: String!
   }
 
@@ -99,6 +101,7 @@ export const typeDefs = gql`
       image: String!
       owner: User!
       chats: [Chat!]!
+      location: String!
   }
 
   type Chat{
