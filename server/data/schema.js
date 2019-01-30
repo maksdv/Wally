@@ -107,7 +107,6 @@ export const typeDefs = gql`
     owner: User!
     messages(messageConnection: ConnectionInput): MessageConnection
     from: Article!
-
   }
 
   type Query{
@@ -124,7 +123,7 @@ export const typeDefs = gql`
 
   type Mutation{
 
-    addUser(email: String!, username: String, password: String!): User
+    addUser(user: CreateUserInput): User
     updateUser(user: UpdateUserInput): User
     updateUserEmail(id: Int!, email: String!): User
     deleteUser(id: Int!): User

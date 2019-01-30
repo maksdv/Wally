@@ -1,4 +1,4 @@
-import { withFilter, ForbiddenError } from 'apollo-server';
+import { ForbiddenError } from 'apollo-server';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Sequelize from 'sequelize';
@@ -9,7 +9,6 @@ import {
 import configurationManager from '../configurationManager';
 
 const JWT_SECRET = configurationManager.jwt.secret;
-
 
 const { Op } = Sequelize;
 
@@ -54,10 +53,11 @@ export const resolvers = {
 
   Mutation: {
     //  #region Users
-    async addUser(_, { user: { username, email } }) {
+    async addUser(_, { user: { username, email, password } }) {
       return User.create({
         username,
         email,
+        password,
       });
     },
 
@@ -137,11 +137,18 @@ export const resolvers = {
     //  #endregion
     //  #region Chats
     async addChat(_, { chat: { ownerId, buyerId, articleId } }) {
-      return Article.create({
-        ownerId,
-        articleId,
-        buyerId,
-      });
+      try {
+        const newArticle = await Chat.create({
+          ownerId,
+          articleId,
+          buyerId,
+        });
+        console.log(newArticle);
+        return newArticle;
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
     },
     deleteChat: async (_, { id }) => {
       const toDelete = await Chat.find({ where: { id } });
@@ -150,16 +157,85 @@ export const resolvers = {
     },
     //  #endregion
     //  #region Messages
-    addMessage: async (_, { message }) => {
-      const x = await Message.create(message);
-      return x;
+    addMessage: async (_, { message }, ctx) => {
+      if (!ctx.user) {
+        throw new ForbiddenError('Unauthorized');
+      }
+      return ctx.user.then((user) => {
+        if (!user) {
+          throw new ForbiddenError('Unauthorized');
+        }
+        try {
+          const newMessage = Message.create(
+            {
+              chatId: message.chatId,
+              text: message.text,
+              userId: user.id,
+            },
+          );
+          return newMessage;
+        } catch (e) {
+          return null;
+        }
+      });
     },
+
     deleteMessage: async (_, { id }) => {
       const toDelete = await Message.find({ where: { id } });
       toDelete.destroy();
       return toDelete;
     },
     //  #endregion
+
+    login(_, { email, password }, ctx) {
+      // find user by email
+      return User.findOne({ where: { email } }).then((user) => {
+        if (user) {
+          // validate password
+          return bcrypt.compare(password, user.password).then((res) => {
+            if (res) {
+              // create jwt
+              const token = jwt.sign(
+                {
+                  id: user.id,
+                  email: user.email,
+                },
+                JWT_SECRET,
+              );
+              ctx.user = Promise.resolve(user);
+              user.jwt = token; // eslint-disable-line no-param-reassign
+              return user;
+            }
+            return Promise.reject(new Error('password incorrect'));
+          });
+        }
+        return Promise.reject(new Error('email not found'));
+      });
+    },
+
+    signup(_, { email, password, username }, ctx) {
+      // find user by email
+      return User.findOne({ where: { email } }).then((existing) => {
+        if (!existing) {
+          // hash password and create user
+          return bcrypt
+            .hash(password, 10)
+            .then(hash => User.create({
+              email,
+              password: hash,
+              username: username || email,
+            }))
+            .then((user) => {
+              const { id } = user;
+              const token = jwt.sign({ id, email }, JWT_SECRET);
+              ctx.user = Promise.resolve(user);
+              user.jwt = token; // eslint-disable-line no-param-reassign
+              return user;
+            });
+        }
+        return Promise.reject(new Error('email already exists')); // email already exists
+      });
+    },
   },
 
   Message: {

@@ -3,7 +3,7 @@ import Sequelize from 'sequelize';
 const db = new Sequelize('wally', null, null, {
   dialect: 'sqlite',
   storage: './wally.sqlite',
-  logging: true, // mark this true if you want to see logs
+  logging: 0, // mark this true if you want to see logs
 });
 // define articles
 const ArticleModel = db.define('article', {

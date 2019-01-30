@@ -57,7 +57,7 @@ class NewArticle extends Component {
 
   newPrice = (text) => {
     this.setState({
-      price: text,
+      price: parseInt(text,10)
     });
   };
 
@@ -99,7 +99,7 @@ class NewArticle extends Component {
     } = this.state;
     const { addArticle, onChangeText, navigation } = this.props;
     let msg = 'Oooops something went wrong...';
-
+    
     if (!emptyData([userId, name, price, description, image])) {
       const newArti = await addArticle({
         userId, name, price, description, image,
@@ -143,7 +143,7 @@ class NewArticle extends Component {
         <TextInput
           style={styles.input}
           keyboardType="numeric"
-          value={price}
+          value={price ? price.toString() : ''}
           onChangeText={this.newPrice}
           placeholder="Price"
         />

@@ -11,7 +11,8 @@
     "apollo-cache-redux": "0.1.2",
     "apollo-client": "^2.4.5",
     "apollo-link": "^1.2.3",
-    "apollo-link-error": "^1.1.1",
+    "apollo-link-context": "^1.0.12",
+    "apollo-link-error": "^1.1.5",
     "apollo-link-http": "^1.5.5",
     "apollo-link-redux": "^0.2.1",
     "apollo-server": "^2.1.0",
@@ -28,6 +29,7 @@
     "react": "^16.6.1",
     "react-apollo": "^2.2.4",
     "react-native": "^0.57.4",
+    "react-native-circle-button": "^1.0.9",
     "react-native-elements": "^0.19.1",
     "react-native-fs": "^2.13.2",
     "react-native-image-picker": "^0.28.0",
@@ -39,6 +41,7 @@
     "react-redux": "^5.1.0",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.5",
+    "redux-thunk": "^2.3.0",
     "watchman": "^1.0.0"
   },
   "devDependencies": {

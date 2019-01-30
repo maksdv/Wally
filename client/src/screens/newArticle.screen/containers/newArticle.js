@@ -2,6 +2,7 @@ import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../../../graphql/user.query';
 import { NEW_ARTICLE } from '../../../graphql/articles.query';
 import NewArticle from '../components/newArticle';
+import { ARTICLES_QUERY } from '../../../graphql/articles.query';
 
 
 const userQuery = graphql(USER_QUERY, {
@@ -11,13 +12,22 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
+const articlesquery = graphql(ARTICLES_QUERY, {
+  options: () => ({}),
+  props: ({ data: { loading, articles } }) => ({
+    loading,
+    articles: articles || [],
+    refetchQueries: [{ query: USER_QUERY }, 'user'],
+  }),
+});
 
 
 const getArtic = graphql(NEW_ARTICLE, {
   props: ({ mutate }) => ({
     addArticle: article => mutate({
       variables: { article },
-      refetchQueries: [{ query: USER_QUERY }, 'user'],
+      refetchQueries: [{ query: ARTICLES_QUERY },{ query: USER_QUERY }, 'articles', 'user'],
+      refetchQueries: [{ query: USER_QUERY }, 'user']
     }),
   }),
 });

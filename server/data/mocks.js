@@ -6,9 +6,9 @@ import bcrypt from 'bcrypt';
 
 // create fake starter data
 const USERS = 5;
-const ARTICLES_PER_USER = 4;
+const ARTICLES_PER_USER = 3;
 const MESSAGES_PER_CHAT = 10;
-const CHATS_PER_ARTICLE = 2;
+const CHATS_PER_ARTICLE = 1;
 
 faker.seed(123); // get consistent data every time we reload app
 
@@ -16,12 +16,11 @@ faker.seed(123); // get consistent data every time we reload app
 // just trust that it fakes a bunch of groups, users, and messages
 
 const randomUser = async (ammount, self) => {
-  console.log('loop');
   const hoy = Math.floor((Math.random() * (ammount)) + 1);
   return (hoy !== self) ? hoy : randomUser(ammount, self);
 };
 
-const mockDB = async ({ populating = true, force = true } = {}) => {
+const mockDB = async ({ populating = false, force = false } = {}) => {
   console.log('creating database....');
   await db.sync({ force });
 
@@ -34,6 +33,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
     R.times(async () => {
       const email = faker.internet.email();
       const password = await bcrypt.hash(email, 10);
+      console.log('password: ', password);
       const user = await db.models.user.create({
         username: faker.internet.userName(),
         email,
