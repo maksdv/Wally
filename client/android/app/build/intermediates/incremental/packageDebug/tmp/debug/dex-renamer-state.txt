@@ -1,0 +1,4 @@
+#Sat Feb 02 23:19:13 CET 2019
+base.0=/home/mola/Wally-master/client/android/app/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
