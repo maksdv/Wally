@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/mola/Wally-master/client/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rGB/values-en-rGB.xml",
+            "outputFile": "/home/maxdv/Wally/client/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rGB/values-en-rGB.xml",
             "map": [
                 {
-                    "source": "/home/mola/.gradle/caches/transforms-1/files-1.1/play-services-basement-16.0.1.aar/bdc78c4400d806554320c92e29880d12/res/values-en-rGB/values.xml",
+                    "source": "/home/maxdv/.gradle/caches/transforms-1/files-1.1/play-services-basement-16.0.1.aar/bb9f8ab38d785637ba70712cd7ef596b/res/values-en-rGB/values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/mola/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/2613a9e095f848d9306f9fe2b2a16e5f/res/values-en-rGB/values.xml",
+                    "source": "/home/maxdv/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/ef5f2bdfd56df899638394c39b5c644c/res/values-en-rGB/values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -38,24 +38,7 @@
                     }
                 },
                 {
-                    "source": "/home/mola/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/48f42febfeffc8f137a8a087e5278a37/res/values-en-rGB/values-en-rGB.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,209,309,417,501,601,716,793,869,951,1054,1158,1257,1362,1465,1569,1725,1825",
-                        "endColumns": "103,99,107,83,99,114,76,75,81,102,103,98,104,102,103,155,99,81",
-                        "endOffsets": "204,304,412,496,596,711,788,864,946,1049,1153,1252,1357,1460,1564,1720,1820,1902"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,37",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,209,309,417,501,601,716,793,869,951,1054,1158,1257,1362,1465,1569,1725,4473",
-                        "endColumns": "103,99,107,83,99,114,76,75,81,102,103,98,104,102,103,155,99,81",
-                        "endOffsets": "204,304,412,496,596,711,788,864,946,1049,1153,1252,1357,1460,1564,1720,1820,4550"
-                    }
-                },
-                {
-                    "source": "/home/mola/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/ab8a84417287a45baffe27772c10000b/res/values-en-rGB/values-en-rGB.xml",
+                    "source": "/home/maxdv/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/ec4e65909843cae564355737b102b58c/res/values-en-rGB/values-en-rGB.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -69,6 +52,23 @@
                         "startOffsets": "4555",
                         "endColumns": "100",
                         "endOffsets": "4651"
+                    }
+                },
+                {
+                    "source": "/home/maxdv/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/b321a84464165e7eda210d83392075de/res/values-en-rGB/values-en-rGB.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,209,309,417,501,601,716,793,869,951,1054,1158,1257,1362,1465,1569,1725,1825",
+                        "endColumns": "103,99,107,83,99,114,76,75,81,102,103,98,104,102,103,155,99,81",
+                        "endOffsets": "204,304,412,496,596,711,788,864,946,1049,1153,1252,1357,1460,1564,1720,1820,1902"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,37",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,209,309,417,501,601,716,793,869,951,1054,1158,1257,1362,1465,1569,1725,4473",
+                        "endColumns": "103,99,107,83,99,114,76,75,81,102,103,98,104,102,103,155,99,81",
+                        "endOffsets": "204,304,412,496,596,711,788,864,946,1049,1153,1252,1357,1460,1564,1720,1820,4550"
                     }
                 }
             ]

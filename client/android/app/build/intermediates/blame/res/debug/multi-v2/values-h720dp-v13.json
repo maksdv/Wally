@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/mola/Wally-master/client/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-h720dp-v13/values-h720dp-v13.xml",
+            "outputFile": "/home/maxdv/Wally/client/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-h720dp-v13/values-h720dp-v13.xml",
             "map": [
                 {
-                    "source": "/home/mola/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/48f42febfeffc8f137a8a087e5278a37/res/values-h720dp-v13/values-h720dp-v13.xml",
+                    "source": "/home/maxdv/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/b321a84464165e7eda210d83392075de/res/values-h720dp-v13/values-h720dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
