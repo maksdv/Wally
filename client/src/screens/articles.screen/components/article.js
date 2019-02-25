@@ -8,13 +8,14 @@ import {
 const styles = StyleSheet.create({
 
   articleContainer: {
+    flex: 1,
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     paddingHorizontal: 3,
     paddingVertical: 5,
-    marginStart: '4.5%',
     marginBottom: 3,
+
   },
   input: {
     marginStart: '10%',
@@ -25,8 +26,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 2,
   },
+  articleName: {
+    textAlign: 'center',
+  },
   price: {
-    width: '50%',
+    flex: 0.2,
     color: '#EF4413',
     backgroundColor: 'rgba(255,255,255,0.72)',
     alignContent: 'center',
@@ -38,10 +42,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   articleImage: {
-    width: 150,
-    height: 150,
+    width: '90%',
+    height: 200,
     borderRadius: 10,
   },
+  articleWrapper: {
+    flex: 1,
+    marginHorizontal: 5,
+    marginBottom: 5,
+  }
 });
 const strReduce = (s, n) => s.substring(0, Math.min(s.length, n));
 const dotIt = (s,n) => (s.length > n) ? s+'...' : s;
@@ -50,7 +59,7 @@ const Article = ({
     id, name, price, image,
   },
 }) => (
-  <TouchableHighlight key={id} onPress={goToInfoArticle} underlayColor="transparent">
+  <TouchableHighlight style={styles.articleWrapper} key={id} onPress={goToInfoArticle} underlayColor="transparent">
     <View style={styles.articleContainer}>
       <Image style={styles.articleImage} source={{ uri: image }} />
       <Text style={styles.articleName}>

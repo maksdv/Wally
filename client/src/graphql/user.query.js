@@ -38,6 +38,16 @@ export const USER_BY_EMAIL = gql`
   }
 `;
 
+export const EDIT_USER_MUTATION = gql`
+  mutation editUser($user: EditUserInput!) {
+    editUser(user: $user) {
+      id
+      username
+      email
+    }
+  }
+`;
+
 export const GET_USER = gql`
   query userLogin($username: String!, $password: String!) {
     userLogin(username: $username, password: $password) {
@@ -89,5 +99,6 @@ export const USER_QUERY = gql`
     }
   }
 `;
+
 
 export default USER_QUERY;

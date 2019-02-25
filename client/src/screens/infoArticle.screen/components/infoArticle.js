@@ -10,24 +10,24 @@ import {
   Text,
   ActivityIndicator,
   Image
-} from "react-native";
-import React, { Component } from "react";
-import Icon from "react-native-vector-icons/Ionicons";
-import Iconito from "react-native-vector-icons/Entypo";
-import PropTypes from "prop-types";
-import Geocoder from "react-native-geocoding";
-import Map from "./mapComponent";
-import PinchZoomView from "react-native-pinch-zoom-view";
+} from 'react-native';
+import React, { Component } from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Iconito from 'react-native-vector-icons/Entypo';
+import PropTypes from 'prop-types';
+import Geocoder from 'react-native-geocoding';
+import Map from './mapComponent';
+import PinchZoomView from 'react-native-pinch-zoom-view';
 
 const styles = StyleSheet.create({
   articleImage: {
-    marginLeft: "2.5%",
-    width: "95%",
+    marginLeft: '2.5%',
+    width: '95%',
     height: 350,
     borderRadius: 12
   },
   container: {
-    backgroundColor: "#dce0e8"
+    backgroundColor: '#dce0e8'
   },
   article: {
     flex: 1,
@@ -39,30 +39,30 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 15,
     margin: 5,
-    backgroundColor: "#dce0e8",
+    backgroundColor: '#dce0e8',
     borderRadius: 20
   },
   textCont: {
-    alignItems: "center"
+    alignItems: 'center'
   },
   priceStyle: {
     margin: 2,
-    width: "50%",
-    color: "#000",
-    alignContent: "center",
-    textAlign: "center",
+    width: '50%',
+    color: '#000',
+    alignContent: 'center',
+    textAlign: 'center',
     fontSize: 25,
-    fontWeight: "bold",
-    backgroundColor: "#FFD700",
+    fontWeight: 'bold',
+    backgroundColor: '#FFD700',
     borderRadius: 10
   },
   userName: {
-    color: "red",
-    marginLeft: "30%"
+    color: 'red',
+    marginLeft: '30%'
   },
   buttons: {
-    flexDirection: "row",
-    justifyContent: "center"
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   buttonEdit: {},
   buttonDelete: {
@@ -70,11 +70,11 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: 6,
-    color: "black"
+    color: 'black'
   },
   pin: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: 'row'
   }
 });
 
@@ -91,11 +91,11 @@ class InfoArticle extends Component {
     this.state = {
       editing: false,
       id: this.props.navigation.state.params.id,
-      name: "",
-      price: "",
+      name: '',
+      price: '',
       image:
-        "https://www.definicionabc.com/wp-content/uploads/Im%C3%A1gen-Vectorial.jpg",
-      description: "",
+        'https://www.definicionabc.com/wp-content/uploads/Im%C3%A1gen-Vectorial.jpg',
+      description: '',
       location: {
         lat: 0,
         lng: 0
@@ -133,7 +133,7 @@ class InfoArticle extends Component {
     const { id, name, price, image, description, location } = this.state;
 
     const { updateArticle, onChangeText, navigation, article } = this.props;
-    let msg = "Oooops something went wrong...";
+    let msg = 'Oooops something went wrong...';
 
     const updatedArticle = {
       id,
@@ -151,31 +151,30 @@ class InfoArticle extends Component {
       msg = `Yeah! The  ${updArti.name} has been updated!`;
       screenChange = onChangeText;
     }
-    Alert.alert("Register", msg, [{ text: "OK" }], {
+    Alert.alert('Register', msg, [{ text: 'OK' }], {
       cancelable: false
     });
 
-    navigation.navigate("MyStore");
+    navigation.navigate('MyStore');
   };
 
   deleteArticle = async id => {
     const { deleteArticle, navigation } = this.props;
     await deleteArticle({ id });
-    Alert.alert("Deleted");
+    Alert.alert('Deleted');
 
-    navigation.navigate("MyStore");
+    navigation.navigate('MyStore');
   };
 
   addChat = async (ownerId, buyerId, articleId) => {
     const { addChat, navigation, user } = this.props;
-    const articleChat = user.chats.filter(x => x.from.id === articleId); // if we have
-
+    const articleChat = user.chats.filter(x => x.from.id === articleId); 
     if (articleChat.length) {
-      navigation.navigate("Messages", { id: articleChat[0].id });
+      navigation.navigate('Messages', { id: articleChat[0].id });
     } else {
       addChat({ ownerId, buyerId, articleId }).then(res => {
-        Alert.alert("Remember to be kind!");
-        navigation.navigate("Messages", { id: res.data.addChat.id }); // Then recupera la respuesta de la mutacion
+        Alert.alert('Remember to be kind!');
+        navigation.navigate('Messages', { id: res.data.addChat.id });
       });
     }
   };
@@ -184,7 +183,7 @@ class InfoArticle extends Component {
     const { location } = this.state;
     const { article } = this.props;
 
-    Geocoder.setApiKey("AIzaSyAXZx8pXwho5DZIT7HrDmTEenGW8SRwGV0");
+    Geocoder.setApiKey('AIzaSyAXZx8pXwho5DZIT7HrDmTEenGW8SRwGV0');
 
     Geocoder.from(article.location)
       .then(json => json.results[0].geometry.location)
@@ -199,11 +198,10 @@ class InfoArticle extends Component {
   };
 
   render() {
-    const { article, loading, navigation } = this.props;
+    const { article, loading, navigation, auth } = this.props;
     const { editing, location } = this.state;
     const { lat, lng } = location;
     const titul = navigation.state.params.title;
-    console.log(this.props);
 
     if (!article || loading) {
       return (
@@ -266,11 +264,11 @@ class InfoArticle extends Component {
 
           <Text style={styles.userName}>Owner: {article.owner.username}</Text>
 
-          {article.owner.id === 1 ? (
+          {article.owner.id === auth.id ? (
             <View>
               {editing ? (
                 <View>
-                  <Button title="Save" onPress={this.updateArticle} />
+                  <Button title='Save' onPress={this.updateArticle} />
                 </View>
               ) : (
                 <View style={styles.buttons}>
@@ -278,18 +276,18 @@ class InfoArticle extends Component {
                     <TouchableHighlight
                       onPress={() => this.setState({ editing: true })}
                       style={styles.button}
-                      underlayColor="transparent"
+                      underlayColor='transparent'
                     >
-                      <Icon name="md-create" size={47} color="#02c8ef" />
+                      <Icon name='md-create' size={47} color='#02c8ef' />
                     </TouchableHighlight>
                   </View>
                   <View style={styles.buttonDelete}>
                     <TouchableHighlight
                       onPress={() => this.deleteArticle(article.id)}
                       style={styles.button}
-                      underlayColor="transparent"
+                      underlayColor='transparent'
                     >
-                      <Icon name="md-trash" size={47} color="#02c8ef" />
+                      <Icon name='md-trash' size={47} color='#02c8ef' />
                     </TouchableHighlight>
                   </View>
                 </View>
@@ -298,19 +296,19 @@ class InfoArticle extends Component {
           ) : (
             <View style={styles.buttons}>
               <TouchableHighlight
-                onPress={() => this.addChat(article.owner.id, 1, article.id)}
+                onPress={() => this.addChat(article.owner.id, auth.id, article.id)}
                 style={styles.button}
-                underlayColor="transparent"
+                underlayColor='transparent'
               >
-                <Icon name="md-mail" size={47} color="#02c8ef" />
+                <Icon name='md-mail' size={47} color='#02c8ef' />
               </TouchableHighlight>
             </View>
           )}
         </View>
         <View style={styles.map}>
-        <View style={styles.pin}>
-          <Iconito name="location-pin" size={25} />
-          <Text>{article.location}</Text>
+          <View style={styles.pin}>
+            <Iconito name='location-pin' size={25} />
+            <Text>{article.location}</Text>
           </View>
           <Map location={location} />
         </View>

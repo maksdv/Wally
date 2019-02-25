@@ -73,7 +73,7 @@ class Register extends Component {
 
   signup = async () => {
     const {
-      email, username, password, repassword,
+      email, password, username, repassword,
     } = this.state;
     if (!email || !goodEmail(email)) {
       Alert.alert('The email adress is empty or contains wrong characters.');
@@ -83,7 +83,7 @@ class Register extends Component {
       Alert.alert('The password form must be complete correctly.');
     } else {
       const { signup, navigation } = this.props;
-      await signup({ email, username, password })
+      await signup({ email, password, username })
         .then(() => console.log('success'),
           Alert.alert('Welcome :)'),
           navigation.navigate('Login'),

@@ -26,6 +26,7 @@ import UserArticles from './screens/userArticles.screen';
 import Login from './screens/login.screen.js/login';
 import Register from './screens/login.screen.js/signUp';
 import Profile from './screens/profile.screen';
+import EditProfile from './screens/editProfile.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -120,6 +121,12 @@ const StackNavigator = createStackNavigator(
         ),
       },
     },
+    EditProfile: {
+      screen: EditProfile,
+      navigationOptions: {
+        title: 'EditProfile',
+      },
+    },
     Messeges: {
       screen: Chats,
       navigationOptions: {
@@ -142,7 +149,7 @@ const StackNavigator = createStackNavigator(
       headerLeft:
   <View>
 
-    <Icon name="ios-share-alt" style={styles.iconoPerf} color="#02c8ef" size={34} />
+    <Icon name="ios-menu" style={styles.iconoPerf} onPress={() => console.log('')} color="#02c8ef" size={34} />
   </View>,
     }),
   },

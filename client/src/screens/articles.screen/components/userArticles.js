@@ -40,7 +40,6 @@ class userArticles extends Articles {
     const { text } = this.state;
     const { loading, user } = this.props;
     const { articles } = user.articles;
-
     if (loading) {
       return (
         <View style={[styles.loading, styles.container]}>
