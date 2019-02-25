@@ -154,12 +154,17 @@ export const typeDefs = gql`
 
   }
 
-schema {
-    query: Query
-    mutation: Mutation
-
+  type Subscription {
+    # Subscription fires on every message added
+    # for any of the groups with one of these groupIds
+    messageAdded(userId: Int, groupIds: [Int]): Message
+    chatAdded(userId: Int): Chat
   }
 
-
+  schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+  }
  `;
 export default typeDefs;

@@ -1,4 +1,5 @@
-import { ForbiddenError } from 'apollo-server';
+import { withFilter, ForbiddenError } from 'apollo-server';
+import R from 'ramda';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Sequelize from 'sequelize';
@@ -6,11 +7,14 @@ import GraphQLDate from 'graphql-date';
 import {
   Article, Message, User, Chat,
 } from './connectors';
+import { pubsub } from '../subscriptions';
 import configurationManager from '../configurationManager';
 
 const JWT_SECRET = configurationManager.jwt.secret;
 
 const { Op } = Sequelize;
+const MESSAGE_ADDED_TOPIC = 'messageAdded';
+const CHAT_ADDED_TOPIC = 'chatAdded';
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -158,6 +162,7 @@ export const resolvers = {
           buyerId,
         });
         console.log(newArticle);
+        pubsub.publish(CHAT_ADDED_TOPIC, { [CHAT_ADDED_TOPIC]: chat });
         return newArticle;
       } catch (e) {
         console.log(e);
@@ -172,6 +177,7 @@ export const resolvers = {
     //  #endregion
     //  #region Messages
     addMessage: async (_, { message }, ctx) => {
+      
       if (!ctx.user) {
         throw new ForbiddenError('Unauthorized');
       }
@@ -187,6 +193,8 @@ export const resolvers = {
               text: message.text,
             },
           );
+          // Publish subscription notification with message
+          pubsub.publish(MESSAGE_ADDED_TOPIC, { [MESSAGE_ADDED_TOPIC]: message });
           return newMessage;
         } catch (e) {
           return null;
@@ -247,10 +255,33 @@ export const resolvers = {
               user.jwt = token; // eslint-disable-line no-param-reassign
               return user;
             })
-            .catch(error => console.log(error, ">>>>>>>>>>>>"))
+            .catch(error => console.log(error, ">>>>>>>>>>>>"));
         }
         return Promise.reject(new Error('email already exists')); // email already exists
       });
+    },
+  },
+  Subscription: {
+    messageAdded: {
+      // the subscription payload is the message.
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(MESSAGE_ADDED_TOPIC),
+        (payload, args) => Boolean(
+          args.chatIds
+              && ~args.chatIds.indexOf(payload.messageAdded.chatId)
+              && args.userId !== payload.messageAdded.userId, // don't send to user creating message
+        ),
+      ),
+    },
+    chatAdded: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(CHAT_ADDED_TOPIC),
+        (payload, args) => Boolean(
+          args.userId
+              && ~R.pluck('id', payload.chatAdded.users).indexOf(args.userId)
+              && args.userId !== payload.chatAdded.users[0].id, // don't send to user creating chat
+        ),
+      ),
     },
   },
 
