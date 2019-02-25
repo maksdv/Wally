@@ -46,6 +46,12 @@ export const typeDefs = gql`
     email: String!
   }
 
+  input EditUserInput {
+    id: Int!
+    username: String
+    email: String!
+  }
+
   input CreateArticleInput {
     userId: Int!
     name: String!
@@ -72,6 +78,7 @@ export const typeDefs = gql`
 
   input CreateMessageInput {
     chatId: Int!
+    userId: Int!
     text: String!
   }
 
@@ -130,7 +137,8 @@ export const typeDefs = gql`
     updateUser(user: UpdateUserInput): User
     updateUserEmail(id: Int!, email: String!): User
     deleteUser(id: Int!): User
-    
+    editUser(user: EditUserInput!): User
+
     addArticle(article: CreateArticleInput): Article
     updateArticle(article: UpdateArticleInput): Article
     updateDesc(id: Int!, description: String!): Article

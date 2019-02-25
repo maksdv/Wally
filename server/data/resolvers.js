@@ -85,7 +85,20 @@ export const resolvers = {
       toDelete.destroy();
       return toDelete;
     },
-
+    editUser(
+      _,
+      {
+        user: {
+          id, username, email,
+        },
+      },
+    ) {
+      return User.findOne({ where: { id } }).then(user => user.update({
+        username,
+        email,
+      }));
+    },
+    
     //  #endregion
     //  #region Articles
     async addArticle(_, {
@@ -170,6 +183,7 @@ export const resolvers = {
           const newMessage = Message.create(
             {
               chatId: message.chatId,
+              userId: message.userId,
               text: message.text,
             },
           );
